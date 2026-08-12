@@ -1,0 +1,6 @@
+# Bing Webmaster Tools site ownership (optional)
+# Download BingSiteAuth.xml from Bing after verifying https://bab.com.sa
+# and place it at public/BingSiteAuth.xml so https://bab.com.sa/BingSiteAuth.xml resolves.
+#
+# For IndexNow keys, prefer:
+#   npm run seo:rotate-indexnow-key -- --key=<bing-indexnow-key>

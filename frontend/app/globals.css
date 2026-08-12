@@ -1,0 +1,125 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-navy: var(--navy);
+  --color-navy-foreground: var(--navy-foreground);
+  --color-brand-indigo: var(--brand-indigo);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.4);
+}
+
+:root {
+  color-scheme: light;
+  --background: #ffffff;
+  --foreground: #1d253d;
+  --card: #ffffff;
+  --card-foreground: #1d253d;
+  --muted: #f4f6f9;
+  --muted-foreground: #5b6478;
+  --primary: #e67e22;
+  --primary-foreground: #ffffff;
+  --secondary: #f4f6f9;
+  --secondary-foreground: #17213f;
+  --navy: #1d253d;
+  --navy-foreground: #ffffff;
+  --brand-indigo: #3e3e93;
+  --border: #e6e9ef;
+  --input: #e6e9ef;
+  --ring: #e67e22;
+  --radius: 0.75rem;
+}
+
+/* Admin CMS — palette matched to BAB logo (orange + indigo) */
+.admin-theme {
+  --background: #f6f5fb;
+  --foreground: #2a2a5c;
+  --card: #ffffff;
+  --card-foreground: #2a2a5c;
+  --muted: #efedf8;
+  --muted-foreground: #5c5c8a;
+  --primary: #e67e22;
+  --primary-foreground: #ffffff;
+  --secondary: #efedf8;
+  --secondary-foreground: #3e3e93;
+  --navy: #3e3e93;
+  --navy-foreground: #ffffff;
+  --brand-indigo: #3e3e93;
+  --border: #ddd9ee;
+  --input: #ddd9ee;
+  --ring: #e67e22;
+  --admin-sidebar: #1a1a3d;
+  --admin-sidebar-hover: rgba(230, 126, 34, 0.14);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html[dir='rtl'] body {
+    text-align: start;
+  }
+}
+
+@keyframes bab-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.bab-marquee {
+  animation: bab-marquee 36s linear infinite;
+}
+
+.bab-marquee-reverse {
+  animation: bab-marquee 42s linear infinite reverse;
+}
+
+@media (max-width: 640px) {
+  .bab-marquee {
+    animation-duration: 24s;
+  }
+
+  .bab-marquee-reverse {
+    animation-duration: 28s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bab-marquee,
+  .bab-marquee-reverse {
+    animation: none !important;
+    transform: none !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}

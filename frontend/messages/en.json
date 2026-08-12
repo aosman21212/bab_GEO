@@ -1,0 +1,577 @@
+{
+  "nav": {
+    "home": "Home",
+    "solutions": "Solutions",
+    "about": "About Us",
+    "spamPolicy": "SMS Spam Policy",
+    "contact": "Contact Us",
+    "language": "العربية",
+    "omnichannelGroup": "OMNICHANNEL",
+    "solutionsGroup": "SOLUTIONS",
+    "callCenterGroup": "CALL CENTER",
+    "liveEngagement": "Live Engagement Platform",
+    "rcs": "Rich Communication Services",
+    "socialMessaging": "Social Media Messaging Integration",
+    "omnichannel": "Omnichannel",
+    "digitalTransform": "DIGITAL TRANSFORMATION",
+    "voiceBot": "VOICE BOT",
+    "aiSolution": "AI Solution",
+    "callCenter": "CALL CENTER",
+    "foodBeverage": "Food & Beverage",
+    "government": "Government & Public Sector",
+    "healthcare": "Healthcare Solution",
+    "insurance": "Insurance BPO Solutions",
+    "retail": "Retail Support Solutions"
+  },
+  "topBar": {
+    "celebrating": "Celebrating 10 years :",
+    "years": "2014 - 2024",
+    "callUs": "Call us:"
+  },
+  "hero": {
+    "title": "Empower your business with seamless connectivity and intelligent solutions.",
+    "body": "Engage customers across channels, unlock new revenue streams, and enhance experiences with data-driven insights — all supported by AI.",
+    "cta": "Contact Us",
+    "productivityTitle": "Increased Productivity:",
+    "productivityBody": "Simplify complex workflows and enhance operational efficiency."
+  },
+  "works": {
+    "title": "Our Works",
+    "items": {
+      "productivity": {
+        "title": "Increasing Productivity & Operational Efficiency",
+        "body": "Simplifying complex processes and enhancing operational efficiency to achieve optimal performance at work."
+      },
+      "experience": {
+        "title": "Enhancing Customer Experience",
+        "body": "Secure and reliable platform to ensure efficient communication with customers."
+      },
+      "reporting": {
+        "title": "Reporting and Collaboration",
+        "body": "Advanced analytical tools to improve visibility and enable smart decision-making."
+      }
+    }
+  },
+  "experience": {
+    "eyebrow": "Experience Elevating",
+    "title": "Deliver a consistent user experience across all customer touchpoints.",
+    "watermark": "Contact Center Solutions",
+    "connect": {
+      "label": "CONNECT",
+      "title": "Unified Customer Experience:",
+      "body": "Deliver a seamless and consistent user experience across all digital and physical customer touchpoints, ensuring brand cohesion and maximizing customer satisfaction at every interaction."
+    },
+    "engage": {
+      "label": "ENGAGE",
+      "title": "Personalized Communication:",
+      "body": "Deliver timely and highly relevant communication experiences, meticulously tailored to your audience's individual preferences and needs, fostering stronger connections."
+    },
+    "analyze": {
+      "label": "ANALYZE",
+      "title": "Data-Driven Insights:",
+      "body": "Implement comprehensive reporting tools that provide enhanced visibility into key performance indicators and customer behavior, empowering you to make informed decisions and drive strategic growth."
+    }
+  },
+  "industries": {
+    "eyebrow": "Beyond the Surface:",
+    "title": "Exploring Our Core Statistics",
+    "bookDemo": "Book a demo",
+    "food": {
+      "tab": "Food & beverage",
+      "title": "Food & Beverage",
+      "body": "We help food and beverage businesses enhance operational efficiency, improve customer engagement, and streamline supply chain processes. From customer support to order management and loyalty programs, our tailored BPO solutions ensure smooth operations and memorable customer experiences that drive brand loyalty and growth"
+    },
+    "government": {
+      "tab": "Government & public sector",
+      "title": "Government & public sector",
+      "body": "We support government entities and public organizations in streamlining operations, improving citizen services, and optimizing resource management. Our secure and scalable BPO solutions ensure efficiency, compliance, and high service quality—empowering you to focus on policy delivery and community impact."
+    },
+    "healthcare": {
+      "tab": "Healthcare support solutions",
+      "title": "Healthcare support solution",
+      "body": "We empower healthcare providers and organizations to focus on patient care by streamlining administrative processes, enhancing patient engagement, and ensuring regulatory compliance. Our specialized BPO services cover patient support, appointment management, medical billing, and data processing—delivering efficiency, accuracy, and improved healthcare outcomes."
+    },
+    "insurance": {
+      "tab": "Insurance solutions",
+      "title": "Insurance solutions",
+      "body": "We help insurance providers accelerate claims processing, improve customer service, and optimize policy management through our end-to-end BPO solutions. By combining industry expertise with advanced technologies, we ensure faster turnaround times, compliance with regulations, and seamless customer experiences that build trust and loyalty."
+    },
+    "retail": {
+      "tab": "Retail",
+      "title": "Retail",
+      "body": "We enable retail businesses to deliver exceptional customer experiences while optimizing back-office operations. From customer support and order fulfillment to inventory management and loyalty program administration, our BPO solutions help you improve efficiency, reduce costs, and drive sustainable growth in a highly competitive market"
+    }
+  },
+  "stats": {
+    "sms": "SMS Provider",
+    "vas": "VAS (Value-Added Services)",
+    "language": "Language Oriented Service",
+    "ott": "OTT Platform (VOD/AOD)",
+    "nlu": "NLU Chatbot",
+    "genai": "GenAl Chatbot / Al"
+  },
+  "transformation": {
+    "badge": "Digital transformation",
+    "title": "As emerging technologies reshape industries, we've developed an Al-native approach to digital transformation.",
+    "body": "By harnessing the power of Al and the most innovative technologies, we help our customers accelerate growth, navigate complex challenges and drive success in rapidly evolving markets.",
+    "cta": "Get To Know Us"
+  },
+  "channels": {
+    "headline": "Your <accent>customers</accent>.<br></br><muted>Their Channels.</muted>",
+    "body": "It's easier to get the attention of your customers when you meet them where they are. You focus on the message; we get it delivered loud and clear.",
+    "sms": "SMS",
+    "mms": "MMS",
+    "voice": "Voice API",
+    "liveChat": "Live Chat",
+    "rcs": "RCS",
+    "email": "Email",
+    "instagram": "Instagram",
+    "whatsapp": "WhatsApp",
+    "messenger": "Messenger",
+    "telegram": "Telegram",
+    "viber": "Viber",
+    "apple": "Apple Messages"
+  },
+  "partners": {
+    "title": "Empowering Partnerships for Seamless Customer Experiences",
+    "body": "At BAB, we believe in building lasting partnerships that drive success. Through our comprehensive solutions, we help you deliver consistent, personalized, and efficient customer interactions across every touchpoint. Together, we unlock new growth opportunities and elevate the customer journey",
+    "cta": "Become a partner"
+  },
+  "testimonials": {
+    "title": "What Our <accent>Clients</accent> Say"
+  },
+  "impact": {
+    "eyebrow": "Real-World Impact",
+    "title": "Ignite Possibility Through Connection & Intelligence Transform how you engage, grow, and thrive.",
+    "body": "Harness the power of seamless communication and smart technologies to elevate experiences, foster meaningful connections, and open the door to new opportunities.",
+    "cta": "Contact Us"
+  },
+  "cta": {
+    "title": "Let’s start project together!",
+    "body": "To lead the eCommerce market, you need ambition and possibilities to grow. We assist our clients in achieving real business results."
+  },
+  "form": {
+    "name": "What is your name?",
+    "company": "What company do you represent?",
+    "phone": "Phone number?",
+    "email": "E-mail",
+    "project": "A few words about your project",
+    "send": "Send",
+    "thanksTitle": "Thank you!",
+    "thanksBody": "Your message has been received. Our team will get back to you shortly."
+  },
+  "footer": {
+    "company": "Company",
+    "address": "Address",
+    "addressValue": "Al-Yasmin, King Abdulaziz Rd, Riyadh, KSA",
+    "viewMaps": "View on Maps",
+    "inquiries": "Inquiries",
+    "newsletter": "Newsletter",
+    "newsletterBody": "Stay updated with our latest news",
+    "emailPlaceholder": "Enter your email",
+    "agree": "I agree to the Terms, Privacy Policy.",
+    "subscribed": "Thanks for subscribing!",
+    "copyright": "© 2024 BAB International Corp. All rights reserved.",
+    "home": "Home",
+    "about": "About Us",
+    "privacy": "Privacy Policy",
+    "terms": "Terms & Conditions",
+    "contact": "Contact Us"
+  },
+  "about": {
+    "title": "Pioneering Change",
+    "intro": "At Bab International, we redefine the way businesses connect, communicate, and grow. Since 1999, we have been at the forefront of digital transformation, delivering cutting-edge IT and communication solutions tailored to our clients' unique needs.",
+    "contact": "Contact Us",
+    "engineer": "We engineer intelligent, result-driven digital experiences that shape the future of businesses!",
+    "engineerBody": "With expertise in AI-driven digital channels, intelligent CRM systems, VoIP solutions, and omni-channel engagement, we empower organizations to enhance customer interactions, streamline operations, and drive measurable success.",
+    "empowering": "Empowering Digital Innovation",
+    "empoweringBody": "With a deep understanding of the Saudi and global markets, we provide end-to-end IT solutions, from strategic planning and system design to execution and optimization.",
+    "milestones": "Our milestones",
+    "missionVision": "Our mission and vision",
+    "mission": "MISSION",
+    "missionBody": "Empowering businesses with innovative, tailored digital solutions to accelerate growth, enhance efficiency, and drive digital transformation.",
+    "vision": "VISION",
+    "visionBody": "To revolutionize customer engagement through intelligent communication technologies, empowering businesses to thrive in a digitally connected world.",
+    "valuesTitle": "Dedicated to Delivering Value",
+    "valuesBody": "Through strategic partnerships with businesses and governments, we're shaping a smarter, more secure, and connected future, in line with Saudi Vision 2030.",
+    "statYears": "Years of ICT and communication innovation",
+    "statOffices": "Regional offices in Saudi Arabia, UAE, USA, and Egypt",
+    "statProjects": "Projects delivered across industries",
+    "statSolutions": "Solutions implemented globally",
+    "statPartners": "Partners — WhatsApp, SMS, and VoIP integrations",
+    "statPros": "Certified professionals providing exceptional service",
+    "m1999": "Bab International was founded",
+    "m2000": "First office established in Riyadh, Saudi Arabia",
+    "m2002": "Recognized as a leading technology provider in Saudi Arabia",
+    "m2010": "Expanded with 3 new regional offices in UAE, USA, and Egypt",
+    "m2015": "Achieved 70+ partner integrations with a team of 50+ professionals",
+    "v1Title": "Seize Opportunities",
+    "v1Body": "With over 25 years of industry leadership in ICT and communication, we drive impactful results.",
+    "v2Title": "Think Beyond Limits",
+    "v2Body": "We push the boundaries of what's possible, leveraging our potential to drive innovation.",
+    "v3Title": "Embrace Innovation",
+    "v3Body": "We embrace transformation for continual growth, setting the stage for sustained success.",
+    "v4Title": "Make a Difference",
+    "v4Body": "Impact through actions, not just words. We focus on creating meaningful change, internally and externally."
+  },
+  "contactPage": {
+    "title": "Get in Touch With Us!",
+    "body": "Reach out for questions, demos or partnerships.",
+    "info": "Contact Information",
+    "address": "Address",
+    "phone": "Phone",
+    "email": "Email"
+  },
+  "legal": {
+    "privacyTitle": "Privacy Policy",
+    "termsTitle": "Terms & Conditions",
+    "privacyBody": "BAB International Corp respects your privacy. We collect and use personal information only as needed to provide our services, respond to inquiries, and improve your experience. We do not sell your data to third parties. For questions about this policy, contact info@bab.com.sa.",
+    "termsBody": "By using this website and our services, you agree to these terms. Content on this site is owned by BAB International Corp. Services are provided subject to applicable contracts and Saudi law. Contact us for full commercial terms."
+  },
+  "common": {
+    "contactUs": "Contact Us",
+    "realWorldImpact": "Real-World Impact"
+  },
+  "siteSettings": {
+    "maintenanceMode": false,
+    "defaultLanguage": "en",
+    "email": "info@bab.com.sa",
+    "phone": "+966 11 512 1440",
+    "hoursEn": "Sun - Thu 8:00 AM - 5:00 PM",
+    "hoursAr": "الأحد - الخميس ٨:٠٠ ص - ٥:٠٠ م",
+    "addressEn": "Al-Yasmin, King Abdulaziz Rd, Riyadh, KSA",
+    "addressAr": "الياسمين، طريق الملك عبدالعزيز، الرياض، المملكة العربية السعودية",
+    "seoTitleEn": "BAB International Corp | Omnichannel, Contact Center & AI Voice Bots in Saudi Arabia",
+    "seoTitleAr": "باب الدولية | قنوات متعددة ومراكز اتصال وروبوتات صوتية بالذكاء الاصطناعي في السعودية",
+    "seoDescriptionEn": "Saudi enterprise partner for seamless connectivity and intelligent CX: omnichannel engagement, AI and voice bots, and contact-center platforms across Saudi Arabia and the MENA region.",
+    "seoDescriptionAr": "شريك مؤسسي سعودي للاتصال السلس وتجربة العملاء الذكية: تفاعل متعدد القنوات، وروبوتات صوتية وذكاء اصطناعي، ومنصات مراكز اتصال في المملكة ومنطقة الشرق الأوسط وشمال أفريقيا.",
+    "homepageFaqsEn": [
+      {
+        "question": "What does BAB International Corp offer?",
+        "answer": "BAB delivers seamless connectivity and intelligent solutions including omnichannel engagement, AI, voice bots, and industry contact-center platforms across Saudi Arabia and the region."
+      },
+      {
+        "question": "What contact-center and omnichannel solutions does BAB provide?",
+        "answer": "BAB helps enterprises unify customer journeys across voice, digital, and social channels, with contact-center platforms, live engagement, and omnichannel orchestration designed for Saudi and regional operations."
+      },
+      {
+        "question": "Does BAB offer voice bots and AI for customer service?",
+        "answer": "Yes. BAB provides AI solutions and voice bots that support assisted and automated customer service, helping teams contain routine inquiries and improve response quality."
+      },
+      {
+        "question": "Why choose a Saudi connectivity and CX partner?",
+        "answer": "BAB is based in Riyadh and focuses on local delivery for enterprises that need contact-center, omnichannel, and intelligent service platforms aligned with Saudi and MENA market needs."
+      },
+      {
+        "question": "Where is BAB located?",
+        "answer": "BAB is based in Al-Yasmin, King Abdulaziz Rd, Riyadh, Kingdom of Saudi Arabia."
+      },
+      {
+        "question": "How can I contact BAB?",
+        "answer": "Email info@bab.com.sa or call +966 11 512 1440. Business hours are Sunday–Thursday, 8:00 AM–5:00 PM."
+      }
+    ],
+    "homepageFaqsAr": [
+      {
+        "question": "ماذا تقدم شركة باب الدولية؟",
+        "answer": "تقدم باب حلول اتصال سلسة وذكية تشمل التفاعل متعدد القنوات والذكاء الاصطناعي والروبوتات الصوتية ومنصات مراكز الاتصال في المملكة والمنطقة."
+      },
+      {
+        "question": "ما حلول مراكز الاتصال والقنوات المتعددة التي تقدمها باب؟",
+        "answer": "تساعد باب المؤسسات على توحيد رحلات العملاء عبر الصوت والرقمي ووسائل التواصل، عبر منصات مراكز اتصال وتفاعل مباشر وتنسيق متعدد القنوات مصممة لعمليات السعودية والمنطقة."
+      },
+      {
+        "question": "هل تقدم باب روبوتات صوتية وذكاء اصطناعي لخدمة العملاء؟",
+        "answer": "نعم. توفر باب حلول ذكاء اصطناعي وروبوتات صوتية تدعم الخدمة الآلية والمدعومة، مما يساعد الفرق على احتواء الاستفسارات الروتينية وتحسين جودة الاستجابة."
+      },
+      {
+        "question": "لماذا تختار شريكاً سعودياً للاتصال وتجربة العملاء؟",
+        "answer": "باب مقرها الرياض وتركّز على التنفيذ المحلي للمؤسسات التي تحتاج منصات مراكز اتصال وقنوات متعددة وخدمة ذكية متوافقة مع احتياجات السوق السعودي ومنطقة الشرق الأوسط وشمال أفريقيا."
+      },
+      {
+        "question": "أين تقع باب؟",
+        "answer": "تقع باب في الياسمين، طريق الملك عبدالعزيز، الرياض، المملكة العربية السعودية."
+      },
+      {
+        "question": "كيف أتواصل مع باب؟",
+        "answer": "راسل info@bab.com.sa أو اتصل على +966 11 512 1440. ساعات العمل الأحد–الخميس ٨:٠٠ ص–٥:٠٠ م."
+      }
+    ]
+  },
+  "admin": {
+    "dashboard": "DASHBOARD",
+    "nav": {
+      "overview": "Overview",
+      "settings": "Site Settings",
+      "geo": "GEO",
+      "content": "Content",
+      "partners": "Partners",
+      "contactUs": "Contact Us"
+    },
+    "newContent": "New Content",
+    "viewLive": "View live site",
+    "signOut": "Sign out",
+    "preview": "Preview",
+    "language": "Language",
+    "editingLocale": "Editing",
+    "english": "English",
+    "arabic": "Arabic",
+    "overview": {
+      "title": "Overview",
+      "description": "Control homepage copy, solution/industry pages, partners, and contact form submissions.",
+      "addContent": "Add content",
+      "contentPages": "Content pages",
+      "partners": "Partners",
+      "newInquiries": "New inquiries",
+      "siteSettings": "Site Settings",
+      "siteSettingsBody": "Edit homepage sections (hero, partners copy, footer) for English and Arabic.",
+      "contentLibrary": "Content Library",
+      "contentLibraryBody": "Manage solutions and industry pages shown on the public website."
+    },
+    "common": {
+      "save": "Save",
+      "saveChanges": "Save changes",
+      "saving": "Saving…",
+      "saved": "Saved",
+      "saveFailed": "Save failed",
+      "cancel": "Cancel",
+      "cancelEdit": "Cancel edit",
+      "edit": "Edit",
+      "delete": "Delete",
+      "add": "Add",
+      "remove": "Remove",
+      "loading": "Loading…",
+      "search": "Search",
+      "actions": "Actions",
+      "active": "Active",
+      "hidden": "Hidden",
+      "close": "Close",
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "status": "Status",
+      "slug": "Slug",
+      "type": "Type",
+      "title": "Title",
+      "description": "Description",
+      "order": "Order",
+      "date": "Date",
+      "locale": "Locale",
+      "company": "Company",
+      "message": "Message",
+      "view": "View",
+      "uploadFailed": "Upload failed",
+      "uploading": "Uploading…",
+      "published": "Published",
+      "draft": "Draft",
+      "solution": "Solution",
+      "industry": "Industry",
+      "all": "All",
+      "updated": "Updated",
+      "added": "Added",
+      "createFailed": "Create failed",
+      "pageNotFound": "Page not found"
+    },
+    "login": {
+      "title": "CMS Admin",
+      "subtitle": "Sign in to manage website content, partners, and inquiries.",
+      "password": "Password",
+      "signIn": "Sign in",
+      "signingIn": "Signing in…",
+      "failed": "Login failed"
+    },
+    "settings": {
+      "title": "Site Settings",
+      "description": "Manage SEO, homepage FAQ, contact details, default language, and maintenance — Arabic and English.",
+      "general": "General",
+      "generalBody": "Site-wide preferences",
+      "maintenance": "Maintenance mode",
+      "maintenanceBody": "Redirect all public pages to the maintenance screen (dashboard stays accessible).",
+      "defaultLanguage": "Default language",
+      "arabicOption": "Arabic (العربية)",
+      "seo": "SEO",
+      "seoBody": "Site title and meta description used across the public site and GEO files.",
+      "seoTitleEn": "Site title (English)",
+      "seoDescEn": "Meta description (English)",
+      "seoTitleAr": "Site title (Arabic)",
+      "seoDescAr": "Meta description (Arabic)",
+      "contact": "Contact information",
+      "contactBody": "Shown in the footer and contact page. Used in AI summaries and Organization markup.",
+      "openInbox": "Open Contact Us inbox",
+      "hoursAr": "Business hours (Arabic)",
+      "hoursEn": "Business hours (English)",
+      "addressAr": "Address (Arabic)",
+      "addressEn": "Address (English)",
+      "faq": "Homepage FAQ",
+      "faqBody": "Questions and answers appear in llms-full.txt and FAQ structured data.",
+      "faqsEn": "English FAQs",
+      "faqsAr": "Arabic FAQs",
+      "faqEmpty": "No FAQ items yet. Add a question to get started.",
+      "question": "Question",
+      "answer": "Answer"
+    },
+    "inquiries": {
+      "title": "Contact Us",
+      "description": "Inquiries submitted from the website contact form.",
+      "filterAll": "All",
+      "filterNew": "New",
+      "filterRead": "Read",
+      "filterArchived": "Archived",
+      "emptyAll": "No inquiries yet.",
+      "emptyFilter": "No inquiries with status “{status}”.",
+      "markRead": "Mark read",
+      "archive": "Archive",
+      "modalEyebrow": "CONTACT US",
+      "modalTitle": "Inquiry details"
+    },
+    "partners": {
+      "title": "Partners",
+      "description": "Upload partner logos from your computer — no image URLs. Names appear on the homepage marquee.",
+      "namePlaceholder": "e.g. Microsoft",
+      "slugPlaceholder": "microsoft",
+      "activeOnHomepage": "Active on homepage",
+      "logo": "Partner logo",
+      "logoHint": "Choose an image file from your device. Do not paste a URL.",
+      "logoReady": "Logo ready — click to replace",
+      "uploadLogo": "Upload partner logo",
+      "formats": "PNG, JPG, SVG, or WebP",
+      "chooseFile": "Choose image file",
+      "imageOnly": "Please choose an image file (PNG, JPG, SVG, WebP)",
+      "logoUploaded": "Logo uploaded — click Add/Update to save",
+      "nameSlugRequired": "Name and slug are required",
+      "uploadLogoFirst": "Upload a logo image first",
+      "updatePartner": "Update partner",
+      "addPartner": "Add partner",
+      "deleteConfirm": "Delete this partner?",
+      "empty": "No partners yet. Upload a logo and add one above.",
+      "logoCol": "Logo"
+    },
+    "library": {
+      "title": "Content Library",
+      "description": "Manage solutions and industry pages displayed on your public website.",
+      "addContent": "Add content",
+      "solutions": "Solutions",
+      "industries": "Industries",
+      "searchPlaceholder": "Search by title or slug...",
+      "empty": "No content matches your filters.",
+      "newTitle": "New Content",
+      "newDescription": "Fill the form for English and Arabic. Use the language switch in the header.",
+      "create": "Create content",
+      "creating": "Creating…",
+      "slugRequired": "Slug is required",
+      "editTitle": "Edit content",
+      "editDescription": "Editing /{slug} — switch language in the header to edit EN or AR.",
+      "loadingDescription": "Loading /{slug}…",
+      "deleteConfirm": "Delete this page?"
+    },
+    "pageForm": {
+      "page": "Page",
+      "pageSubtitle": "Shared settings for this content item",
+      "seo": "SEO",
+      "seoSubtitle": "Search / browser title ({locale})",
+      "metaTitle": "Meta title",
+      "metaDescription": "Meta description",
+      "hero": "Hero",
+      "heroSubtitle": "Top of the public page",
+      "eyebrow": "Eyebrow",
+      "ctaLabel": "CTA label",
+      "heading": "Heading",
+      "heroImage": "Hero image",
+      "noImage": "No image",
+      "uploadImage": "Upload image",
+      "imageHint": "Upload a file or paste an image path/URL.",
+      "impact": "Impact",
+      "impactSubtitle": "Closing section",
+      "text": "Text",
+      "features": "Features",
+      "enableFeatures": "Enable features section",
+      "card": "Card {n}",
+      "accent": "Accent",
+      "points": "Points (one per line)",
+      "addFeatureCard": "Add feature card",
+      "benefits": "Benefits",
+      "enableBenefits": "Enable benefits section",
+      "addBenefit": "Add benefit",
+      "useCases": "Use cases",
+      "enableUseCases": "Enable use cases section",
+      "items": "Items (one per line)"
+    },
+    "geo": {
+      "title": "GEO — AI visibility",
+      "description": "GEO helps ChatGPT, Gemini, Copilot, Claude, and Perplexity find and describe BAB as a Saudi connectivity and intelligent solutions company. Files update when you save Site Settings and Content.",
+      "checkAll": "Check all links",
+      "allOk": "All 6 GEO crawler files are online. AI tools can read your public summary pages.",
+      "partialOk": "{ok}/6 crawler files OK. Recheck failed rows or ensure the site is running.",
+      "shouldShowOk": "Should all show OK when the site is live.",
+      "crawlerFiles": "CRAWLER FILES",
+      "liveEndpoints": "Live plain-text endpoints",
+      "publicSiteUrl": "PUBLIC SITE URL",
+      "configured": "Configured",
+      "missing": "Missing",
+      "yourRole": "YOUR ROLE",
+      "updateContent": "Update content",
+      "roleBody": "FAQ, SEO, and Content Library feed GEO automatically",
+      "indexNowTitle": "Search engines — IndexNow",
+      "indexNowBody": "Push the sitemap to Bing (and partners). Same action as npm run seo:submit-indexnow. Covers Bing, Yandex, Seznam, and Naver — not Google.",
+      "refreshStatus": "Refresh status",
+      "submitSitemap": "Submit sitemap (IndexNow)",
+      "submitting": "Submitting…",
+      "sitemap": "Sitemap",
+      "urls": "URLs",
+      "keyFile": "Key file",
+      "keyLive": "Live",
+      "keyMissing": "Not configured — run npm run seo:rotate-indexnow-key",
+      "bingHelp": "For Bing IndexNow (if GEO shows Bing 403 while Yandex OK): open Bing Webmaster Tools → confirm the site is Verified → URL Submission → IndexNow → Generate API key → run npm run seo:rotate-indexnow-key — then deploy and retry Submit.",
+      "googleHelp": "For Google: open Search Console → Sitemaps → submit sitemap.xml, then URL Inspection → Request indexing for the priority URLs below. Gemini uses Google Search — IndexNow does not notify Google.",
+      "urlsTitle": "URLs to request indexing",
+      "urlsBody": "Paste these in Google Search Console → URL Inspection. IndexNow already uses the same lists.",
+      "doFirst": "DO FIRST (GEO — 5 URLS)",
+      "whatIs": "What is GEO?",
+      "whatIsBody": "Simple explanation — no extra setup required",
+      "seoVsGeo": "SEO vs GEO",
+      "seoPoint": "SEO — Google and normal search engines",
+      "geoPoint": "GEO — AI chatbots and AI search (ChatGPT, Gemini, Copilot, Claude, Perplexity)",
+      "howWorks": "How it works",
+      "how1": "You update FAQ, SEO, and content in this dashboard",
+      "how2": "The website publishes plain-text files for AI bots",
+      "how3": "Over days or weeks, AI may mention BAB in answers",
+      "liveSite": "Live site",
+      "crawlerSection": "Crawler files",
+      "crawlerSectionBody": "Open each link in a new tab — you should see plain text, not an error page",
+      "file": "File",
+      "purpose": "Purpose",
+      "open": "Open",
+      "recheck": "Recheck",
+      "ok": "OK",
+      "error": "Error",
+      "purposeLlms": "Short summary about BAB for AI tools",
+      "purposeLlmsFull": "Summary plus FAQ questions",
+      "purposeLlmsSmall": "Compact summary for AI crawlers",
+      "purposeRobots": "Crawler rules and sitemap",
+      "purposeSitemap": "List of all public pages",
+      "purposeAi": "AI crawler guidance (.well-known)",
+      "feedsTitle": "Content that feeds GEO",
+      "feedsBody": "Update these sections — GEO files refresh automatically on save",
+      "feedFaq": "Site Settings → Homepage FAQ",
+      "feedFaqBody": "Questions and answers appear in llms-full.txt",
+      "feedSeo": "Site Settings → SEO",
+      "feedSeoBody": "Site title and meta description used across the public site",
+      "feedContact": "Site Settings → Contact",
+      "feedContactBody": "Phone, email, and address in AI summaries",
+      "feedLibrary": "Content Library",
+      "feedLibraryBody": "Solutions, products, and use cases listed in llms.txt",
+      "checklist": "Checklist & tips",
+      "checklistBody": "What you need to do — and what happens automatically",
+      "tip1": "Keep the website online on your real domain (not localhost only)",
+      "tip2": "Fill in Homepage FAQ in Site Settings — Arabic and English",
+      "tip3": "Keep SEO title and description accurate",
+      "tip4": "Publish solutions, products, and use cases in Content Library",
+      "tip5": "All 6 crawler files above should show OK",
+      "tip6": "If Bing IndexNow 403: Generate key in Bing Webmaster → npm run seo:rotate-indexnow-key",
+      "tip7": "Use Submit sitemap (IndexNow) after deploy (Yandex may succeed even when Bing 403s)",
+      "tip8": "Be patient — AI citations can take days or weeks",
+      "submitted": "Submitted",
+      "partialFailed": "Partial/failed"
+    }
+  }
+}

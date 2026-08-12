@@ -1,0 +1,831 @@
+﻿export type FeatureCard = {
+  accent: string
+  title: string
+  points: string[]
+}
+
+export type Benefit = {
+  title: string
+  desc?: string
+}
+
+export type PageContent = {
+  slug: string
+  category: 'solution' | 'industry'
+  metaTitle: string
+  metaDescription: string
+  eyebrow: string
+  heroHeading: string
+  heroDescription: string
+  ctaLabel: string
+  image: string
+  features?: {
+    eyebrow: string
+    heading: string
+    cards: FeatureCard[]
+  }
+  benefits?: {
+    heading: string
+    items: Benefit[]
+  }
+  useCases?: {
+    heading: string
+    items: string[]
+  }
+  impact: {
+    heading: string
+    text: string
+  }
+}
+
+export const solutions: PageContent[] = [
+  {
+    slug: 'omnichannel',
+    category: 'solution',
+    metaTitle: 'Omnichannel',
+    metaDescription:
+      'Unify every touchpoint and deliver seamless customer journeys across all channels with BAB omnichannel solutions.',
+    eyebrow: 'Omnichannel',
+    heroHeading: 'Unify Every Touchpoint. Deliver Seamless Customer Journeys',
+    heroDescription:
+      'Connect, engage, and retain customers effortlessly across all channels with our advanced omnichannel solutionsâ€”turning every interaction into a growth opportunity.',
+    ctaLabel: 'Get Started with Digital Transformation Today',
+    image: '/images/bab-hero.png',
+    features: {
+      eyebrow: 'Omnichannel, Simplified',
+      heading: 'Connect. Communicate. Convert',
+      cards: [
+        {
+          accent: 'Unify',
+          title: 'Multi-Channel Integration',
+          points: [
+            'Combines SMS, email, voice calls, video conferencing, instant messaging, and social media messaging.',
+            'Ensures seamless communication across multiple touchpoints.',
+          ],
+        },
+        {
+          accent: 'Control',
+          title: 'Centralized Dashboard',
+          points: [
+            'Provides a unified interface for managing conversations, contacts, and communication history.',
+            'Reduces the need to switch between multiple tools.',
+          ],
+        },
+        {
+          accent: 'Live',
+          title: 'Real-Time Communication',
+          points: [
+            'Enables instant messaging, video calls, and voice calls to improve collaboration.',
+            'Often includes presence indicators to show team availability.',
+          ],
+        },
+        {
+          accent: 'Loop',
+          title: 'Automation & Workflow Management',
+          points: [
+            'Automates responses, message routing, and task assignments.',
+            'Supports chatbots, automated follow-ups, and triggered notifications.',
+          ],
+        },
+      ],
+    },
+    benefits: {
+      heading: 'Turning Connections Into Results',
+      items: [
+        { title: 'Enhanced Productivity', desc: 'Reduces time spent switching between communication tools.' },
+        { title: 'Improved Customer Experience', desc: 'Ensures consistent and prompt communication across all channels.' },
+        { title: 'Cost Efficiency', desc: 'Consolidates multiple tools into one platform, reducing software costs.' },
+        { title: 'Stronger Collaboration', desc: 'Teams can collaborate more effectively with integrated tools.' },
+        { title: 'Better Data Management', desc: 'All communication data is stored in one place for better insights.' },
+        { title: 'Faster Decision-Making', desc: 'Real-time communication and collaboration boost operational speed.' },
+        { title: 'Increased Flexibility', desc: 'Supports remote and hybrid work with accessible tools.' },
+      ],
+    },
+    useCases: {
+      heading: 'One Platform. Every Channel',
+      items: [
+        'Customer Support Centers: For streamlined ticket management and faster resolutions.',
+        'Sales Teams: For improved lead nurturing through multi-channel engagement.',
+        'Healthcare Providers: For secure patient communication and appointment reminders.',
+        'E-commerce Businesses: For better customer engagement via personalized messaging.',
+        'Remote Work Environments: For improved collaboration across distributed teams.',
+      ],
+    },
+    impact: {
+      heading: "Unify Your Customer Experience â€” Connect All Channels with BAB's Omnichannel Solutions",
+      text: 'Contact BAB today to explore customized omnichannel communication solutions for your business.',
+    },
+  },
+  {
+    slug: 'live-engagement-platform',
+    category: 'solution',
+    metaTitle: 'Live Engagement Platform',
+    metaDescription:
+      'Turn every visitor into a real-time conversation. Boost engagement and convert faster with BAB live interaction tools.',
+    eyebrow: 'Live Engagement Platform',
+    heroHeading: 'Turn Every Visitor into a Real-Time Conversation',
+    heroDescription:
+      'Boost engagement, answer questions instantly, and convert faster with our powerful live interaction tools.',
+    ctaLabel: 'Contact Us',
+    image: '/images/bab-hero.png',
+    features: {
+      eyebrow: 'Features',
+      heading: 'Real Time Engagement, Redefined',
+      cards: [
+        {
+          accent: 'Connect',
+          title: 'Instant Communication Channels',
+          points: [
+            'Supports real-time interactions via live chat, video calls, voice messaging, push notifications, and in-app messaging.',
+            'Ensures immediate connection when customer action or attention is required.',
+          ],
+        },
+        {
+          accent: 'Trigger',
+          title: 'Event-Triggered Engagement',
+          points: [
+            'Automatic triggers based on user behavior: cart abandonment reminders, limited-time offers, support escalations.',
+            'Ensures messages reach customers at the most impactful moment.',
+          ],
+        },
+        {
+          accent: 'Support',
+          title: 'Live Chat Support',
+          points: [
+            'Real-time chat with typing indicators and agent handoff.',
+            'AI chatbots for instant responses when agents are unavailable.',
+          ],
+        },
+        {
+          accent: 'Engage',
+          title: 'Interactive Messaging',
+          points: [
+            'Supports rich media content such as images, videos, carousels, and clickable buttons.',
+            'Enhances engagement with actionable messages (e.g., â€œBook Now,â€ â€œGet a Discountâ€).',
+          ],
+        },
+      ],
+    },
+    benefits: {
+      heading: 'Live Engagement Unpacked',
+      items: [
+        { title: 'Increased Conversions', desc: 'Timely engagement ensures customers act when theyâ€™re most interested.' },
+        { title: 'Enhanced Customer Experience', desc: 'Fast responses reduce frustration and build trust.' },
+        { title: 'Improved Customer Retention', desc: 'Engaging with users at key moments improves loyalty.' },
+        { title: 'Reduced Abandonment Rates', desc: 'Proactive messages address hesitations during checkout or sign-up.' },
+        { title: 'Better Support Efficiency', desc: 'Real-time chat and automation improve first-contact resolution.' },
+        { title: 'Boosted Sales Opportunities', desc: 'Instant engagement creates upselling and cross-selling moments.' },
+        { title: 'Personalized Customer Journeys', desc: 'Event-triggered communication reaches customers when engaged.' },
+        { title: 'Data-Driven Insights', desc: 'Real-time analytics refine messaging strategies.' },
+      ],
+    },
+    impact: {
+      heading: 'Turn Every Visitor into a Real-Time Conversation',
+      text: 'Contact BAB today to bring real-time engagement to your customer experience.',
+    },
+  },
+  {
+    slug: 'rich-communication-services',
+    category: 'solution',
+    metaTitle: 'Rich Communication Services',
+    metaDescription:
+      'Revolutionize customer conversations with RCS messaging â€” rich, interactive, branded messages with no downloads needed.',
+    eyebrow: 'Rich Communication Services',
+    heroHeading: 'Revolutionize Customer Conversations with RCS Messaging',
+    heroDescription:
+      'Deliver rich, interactive, and branded messages directly to your customersâ€™ native messaging appsâ€”no downloads needed.',
+    ctaLabel: 'Contact Us',
+    image: '/images/bab-hero.png',
+    features: {
+      eyebrow: 'Framework',
+      heading: 'Design. Flow. Confidence. Intelligence',
+      cards: [
+        {
+          accent: 'Display',
+          title: 'Media-Rich Content',
+          points: [
+            'Supports high-resolution images, GIFs, videos, and carousels for dynamic engagement.',
+            'Enables visually compelling promotions, product showcases, and interactive messages.',
+          ],
+        },
+        {
+          accent: 'Journey',
+          title: 'Interactive Buttons & Quick Actions',
+          points: [
+            'Offers clickable CTAs like â€œBuy Nowâ€, â€œTrack Orderâ€, or â€œBook an Appointment.â€',
+            'Improves user convenience by reducing friction in decision-making.',
+          ],
+        },
+        {
+          accent: 'Trust',
+          title: 'Verified Business Profiles',
+          points: [
+            'Branded profiles with logos, company names, and verified checkmarks.',
+            'Builds trust by ensuring recipients know theyâ€™re communicating with a legitimate business.',
+          ],
+        },
+        {
+          accent: 'Clarity',
+          title: 'Enhanced Analytics & Insights',
+          points: [
+            'Tracks message delivery, read receipts, interaction rates, and engagement metrics.',
+            'Provides insights to optimize campaigns and measure ROI.',
+          ],
+        },
+      ],
+    },
+    benefits: {
+      heading: 'Value Delivered',
+      items: [
+        { title: 'Higher Engagement Rates', desc: 'Richer visuals and interactive elements lead to better engagement.' },
+        { title: 'Improved Conversions', desc: 'In-message buttons and streamlined checkout reduce drop-off.' },
+        { title: 'Stronger Brand Presence', desc: 'Verified profiles build trust and enhance credibility.' },
+        { title: 'Enhanced Customer Support', desc: 'Faster resolution with FAQs, chatbots, or escalation options.' },
+        { title: 'Increased Open Rates', desc: 'RCS messages appear in the native SMS app for higher visibility.' },
+        { title: 'Cost Efficiency', desc: 'Eliminates the need for third-party apps.' },
+        { title: 'Better Campaign Insights', desc: 'Advanced analytics track engagement and boost ROI.' },
+      ],
+    },
+    impact: {
+      heading: 'Deliver Branded, Interactive Messaging with BAB RCS',
+      text: 'Contact BAB today to launch rich communication services for your business.',
+    },
+  },
+  {
+    slug: 'social-media-messaging-integration',
+    category: 'solution',
+    metaTitle: 'Conversational Messaging Platform',
+    metaDescription:
+      'Connect all your social channels in one seamless inbox â€” WhatsApp, Instagram, Facebook and more.',
+    eyebrow: 'Conversational Messaging Platform',
+    heroHeading: 'Connect All Your Social Channels in One Seamless Inbox',
+    heroDescription:
+      'Manage conversations across WhatsApp, Instagram, Facebook, and moreâ€”boost response time and never miss a lead.',
+    ctaLabel: 'Contact Us',
+    image: '/images/bab-hero.png',
+    features: {
+      eyebrow: 'Social, Centralized',
+      heading: 'All In One Messaging',
+      cards: [
+        {
+          accent: 'Sync',
+          title: 'Multi-Platform Integration',
+          points: [
+            'Connects with Twitter, Instagram, Facebook Messenger, Google Business Messaging, and more.',
+            'Ensures all conversations are managed from a single platform.',
+          ],
+        },
+        {
+          accent: 'Console',
+          title: 'Unified Inbox',
+          points: [
+            'Centralizes all social media messages, reducing the need to switch between platforms.',
+            'Provides a clear overview of customer inquiries, ensuring no message is missed.',
+          ],
+        },
+        {
+          accent: 'Automation',
+          title: 'Automated Responses & Chatbots',
+          points: [
+            'AI-driven chatbots handle common inquiries, FAQs, and appointment bookings.',
+            'Supports automated replies for out-of-office hours or high-traffic periods.',
+          ],
+        },
+        {
+          accent: 'Respond',
+          title: 'Real-Time Conversations',
+          points: [
+            'Facilitates instant, two-way communication for faster customer support.',
+            'Improves engagement and response times across every channel.',
+          ],
+        },
+      ],
+    },
+    benefits: {
+      heading: 'Seamless Integrations. Real-Time Results',
+      items: [
+        { title: 'Improved Customer Engagement', desc: 'Real-time conversations foster stronger connections.' },
+        { title: 'Enhanced Efficiency', desc: 'Unified inboxes and automated workflows streamline communication.' },
+        { title: 'Better Customer Support', desc: 'Faster response times improve satisfaction and loyalty.' },
+        { title: 'Increased Sales Opportunities', desc: 'Showcase products and close deals directly within chat.' },
+        { title: 'Stronger Brand Presence', desc: 'Verified profiles and proactive messaging boost trust.' },
+        { title: 'Data-Driven Decisions', desc: 'Analytics refine messaging strategies and improve engagement.' },
+        { title: 'Reduced Costs', desc: 'Automation reduces manpower for routine inquiries.' },
+      ],
+    },
+    useCases: {
+      heading: 'See It In Action',
+      items: [
+        'Retail & E-commerce: Personalized product recommendations and order updates.',
+        'Healthcare: Secure appointment booking and reminders.',
+        'Hospitality: Instant reservations and guest support.',
+        'Finance: Secure, verified customer communication.',
+      ],
+    },
+    impact: {
+      heading: 'Centralize Every Conversation with BAB',
+      text: 'Contact BAB today to connect all your social channels in one inbox.',
+    },
+  },
+  {
+    slug: 'digital-transformation',
+    category: 'solution',
+    metaTitle: 'Digital Transformation Solutions',
+    metaDescription:
+      'Transform your business with cloud solutions, custom development, interactive services, and data analytics.',
+    eyebrow: 'Digital Transformation Solutions',
+    heroHeading: 'Transform Your Business with Digital Innovation',
+    heroDescription:
+      'Unlock New Opportunities with Cloud Solutions, Custom Development, Interactive Services, and Data Analytics.',
+    ctaLabel: 'Get Started with Digital Transformation Today',
+    image: '/images/network-sphere.png',
+    benefits: {
+      heading: 'Transformation That Delivers',
+      items: [
+        { title: 'Cloud Infrastructure', desc: 'Secure collaboration and scalable cloud environments.' },
+        { title: 'Custom Web & Mobile Applications', desc: 'Tailored applications built for your business.' },
+        { title: 'Interactive Web & Digital Experiences', desc: 'Engaging digital experiences across platforms.' },
+        { title: 'Data Analytics & BI', desc: 'Smarter insights for data-driven decisions.' },
+      ],
+    },
+    useCases: {
+      heading: 'Solutions Tailored for Every Industry',
+      items: [
+        'Cloud Infrastructure for Secure Collaboration',
+        'Custom Web & Mobile Applications',
+        'Interactive Web & Digital Experiences',
+        'Data Analytics & BI for Smarter Insights',
+      ],
+    },
+    impact: {
+      heading: "Transform Your Business Operations â€” Modernize Your Processes with BAB's Digital Solutions",
+      text: 'Contact BAB today to explore customized digital transformation solutions for your business.',
+    },
+  },
+  {
+    slug: 'voice-bot',
+    category: 'solution',
+    metaTitle: 'Voice Bot',
+    metaDescription:
+      'AI Voice Bot that speaks your customerâ€™s language â€” human-like conversations in Saudi dialects, anytime.',
+    eyebrow: 'Voice Bot',
+    heroHeading: 'Natural. Local. Instant.',
+    heroDescription:
+      'AI Voice Bot that speaks your customerâ€™s language â€” anytime, anywhere. Deliver human-like conversations in Saudi dialects across government, healthcare, retail, and real estate.',
+    ctaLabel: 'Contact Us',
+    image: '/images/network-sphere.png',
+    features: {
+      eyebrow: 'Bring Voice To Your Service',
+      heading: 'Built for Every Call That Matters',
+      cards: [
+        {
+          accent: 'Feels Human',
+          title: 'Understands tone, dialect, and intent',
+          points: ['Just like your best agent â€” natural, tone-aware responses that feel truly human.'],
+        },
+        {
+          accent: 'Always Ready',
+          title: 'Answers instantly',
+          points: ['Answers calls 24/7 with zero wait, even outside working hours.'],
+        },
+        {
+          accent: 'Custom to You',
+          title: 'Works around your business logic',
+          points: ['Adapts to your services, goals, and business logic.'],
+        },
+        {
+          accent: 'Accuracy',
+          title: 'Consistency at scale',
+          points: ['24/7 peak performance with 100% knowledge accuracy.'],
+        },
+      ],
+    },
+    benefits: {
+      heading: 'A Voice Assistant Built for Modern Service',
+      items: [
+        { title: 'Humanlike Conversations', desc: 'Natural, tone-aware responses that feel truly human.' },
+        { title: 'Personalized Interactions', desc: 'Tailored interactions that make every call count.' },
+        { title: 'Discover Sales Opportunities', desc: 'Unlock sales potential in every customer interaction.' },
+        { title: 'Automates Support', desc: 'Handles bookings and common questions automatically.' },
+      ],
+    },
+    impact: {
+      heading: 'Letâ€™s Talk Voice.',
+      text: 'Book a free demo and experience human-like voice automation built for your business.',
+    },
+  },
+  {
+    slug: 'ai-solution',
+    category: 'solution',
+    metaTitle: 'AI Solutions',
+    metaDescription:
+      'Accelerate business growth with AI-powered automation and intelligence. Unlock efficiency and personalize customer experiences.',
+    eyebrow: 'AI Solutions',
+    heroHeading: 'Accelerating Business Growth with AI-Powered Automation and Intelligence',
+    heroDescription:
+      'Unlock Efficiency, Personalize Customer Experiences, and Drive Growth.',
+    ctaLabel: 'Discover AI Solutions for Your Business',
+    image: '/images/network-sphere.png',
+    benefits: {
+      heading: 'Why Choose Our AI Solutions?',
+      items: [
+        { title: 'AI-Powered Chatbots', desc: 'Automate conversations with intelligent, always-on assistants.' },
+        { title: 'AI-Enhanced Customer Support', desc: 'Smarter platforms that scale your support operations.' },
+        { title: 'Predictive Analytics', desc: 'Data-driven insights to guide better decisions.' },
+        { title: 'NLP Solutions', desc: 'Smarter communication through natural language processing.' },
+        { title: 'Automated Workflow Tools', desc: 'Improved efficiency through intelligent automation.' },
+        { title: 'Agentic AI Systems', desc: 'Adaptive solutions that learn and evolve.' },
+      ],
+    },
+    impact: {
+      heading: "Supercharge Your Business Intelligence â€” Harness AI Power with BAB's Smart Solutions",
+      text: 'Contact BAB today to explore customized AI automation and intelligence solutions for your business.',
+    },
+  },
+  {
+    slug: 'call-center',
+    category: 'solution',
+    metaTitle: 'Call Center',
+    metaDescription:
+      'Grow your call center operations with advanced technology. Drive efficiency, ensure data security, and improve client experiences.',
+    eyebrow: 'Call Center',
+    heroHeading: 'Grow Your Call Center Operations with Advanced Technology Solutions',
+    heroDescription:
+      'Drive Efficiency, Ensure Data Security, and Improve Client Experiences.',
+    ctaLabel: 'Boost Your BPO Performance Today',
+    image: '/images/bab-telecom.png',
+    features: {
+      eyebrow: 'Built for Performance, Designed to Scale',
+      heading: 'Call Center Solutions: Efficiency, Experience & AI',
+      cards: [
+        {
+          accent: 'Performance',
+          title: 'Enhanced Efficiency & Productivity',
+          points: [
+            'Automation of repetitive tasks through AI-driven tools and RPA.',
+            'Intelligent call routing directs calls to the most suitable agents.',
+            'Performance analytics help supervisors optimize team output.',
+          ],
+        },
+        {
+          accent: 'Experience',
+          title: 'Improved Customer Experience',
+          points: [
+            'Omnichannel support across email, chat, voice, and social media.',
+            'AI-powered sentiment analysis and chatbots enhance interactions.',
+            'Faster resolution times improve customer satisfaction scores.',
+          ],
+        },
+        {
+          accent: 'Lean',
+          title: 'Cost Optimization',
+          points: [
+            'Cloud solutions minimize costly on-premise hardware.',
+            'Scalable resources adapt to fluctuating call volumes.',
+          ],
+        },
+        {
+          accent: 'Secure',
+          title: 'Data Security & Compliance',
+          points: [
+            'Certified data protection and compliance controls.',
+            'Secure handling of sensitive customer information.',
+          ],
+        },
+      ],
+    },
+    impact: {
+      heading: 'Scale Your Call Center with BAB',
+      text: 'Contact BAB today to boost your BPO performance with advanced technology.',
+    },
+  },
+]
+
+export const industries: PageContent[] = [
+  {
+    slug: 'healthcare-solutions',
+    category: 'industry',
+    metaTitle: 'Healthcare Solutions',
+    metaDescription:
+      'Enhancing healthcare delivery with integrated patient engagement technology â€” reliable, scalable, and compassionate.',
+    eyebrow: 'Healthcare Support Solutions',
+    heroHeading: 'Enhancing Healthcare Delivery with Integrated Patient Engagement Technology',
+    heroDescription:
+      'Reliable, scalable, and compassionate solutions designed to improve patient experiences, reduce operational strain, and streamline healthcare communication.',
+    ctaLabel: 'Contact Us',
+    image: '/images/industries/healthcare.png',
+    features: {
+      eyebrow: 'Tech-Enabled. Patient-Focused',
+      heading: 'Designed To Solve',
+      cards: [
+        {
+          accent: 'Reach',
+          title: '24/7 Availability for Immediate Support',
+          points: [
+            'Always available to manage patient calls, inquiries, and urgent issues.',
+            'Ensures seamless communication during peak hours or emergencies.',
+          ],
+        },
+        {
+          accent: 'Signal',
+          title: 'AI-Enhanced Efficiency',
+          points: ['Advanced AI automates reminders, streamlines data entry, and improves response times.'],
+        },
+        {
+          accent: 'Protocol',
+          title: 'Industry-Leading Compliance & Security',
+          points: [
+            'Certified with PCI, SOC 2, and ISO 27001 for data protection.',
+            'Dedicated compliance teams ensure adherence to healthcare regulations.',
+          ],
+        },
+        {
+          accent: 'Agent',
+          title: 'Trained Healthcare Specialists',
+          points: ['Compassionate agents trained in healthcare communication for professional, empathetic interactions.'],
+        },
+      ],
+    },
+    benefits: {
+      heading: 'Powering Healthcare Support Services',
+      items: [
+        { title: 'Real-Time Data Analysis', desc: 'Faster decision-making for improved patient care.' },
+        { title: 'Automated Appointment Scheduling', desc: 'Increased accuracy and fewer missed appointments.' },
+        { title: 'AI-Enhanced Quality Assurance', desc: 'Consistent service delivery across every interaction.' },
+        { title: 'Intelligent Call Routing', desc: 'Faster connection to the appropriate medical staff.' },
+      ],
+    },
+    useCases: {
+      heading: 'When Should You Outsource Patient Support Services?',
+      items: [
+        'Your practice is expanding and you need scalable support.',
+        'Call volumes are rising and your staff struggles to keep up.',
+        'Your patients expect 24/7 support but maintaining in-house staff isnâ€™t feasible.',
+        'Your team faces operational strain that affects the quality of care.',
+      ],
+    },
+    impact: {
+      heading: 'Driving Better Patient Outcomes for a Leading Healthcare Provider',
+      text: 'Contact BAB to explore compassionate, tech-enabled patient support solutions.',
+    },
+  },
+  {
+    slug: 'food-and-beverage',
+    category: 'industry',
+    metaTitle: 'Food & Beverage Industry',
+    metaDescription:
+      'Driving growth for F&B businesses â€” outsource key operations to improve efficiency, customer satisfaction, and profitability.',
+    eyebrow: 'Food & Beverage Industry',
+    heroHeading: 'Driving Growth for F&B Businesses',
+    heroDescription:
+      'Outsource Key Operations to Improve Efficiency, Customer Satisfaction, and Profitability.',
+    ctaLabel: 'Get Started with Smarter Solutions',
+    image: '/images/industries/food.png',
+    features: {
+      eyebrow: 'Why Us',
+      heading: 'Unlock These Advantages',
+      cards: [
+        {
+          accent: 'Support',
+          title: 'Customer Support Solutions',
+          points: [
+            '24/7 multilingual customer support for reservations, inquiries, and complaints.',
+            'Seamless communication across phone, email, chat, and social platforms.',
+          ],
+        },
+        {
+          accent: 'Processing',
+          title: 'Order Management & Processing',
+          points: [
+            'Efficient handling of online, phone, and third-party delivery platform orders.',
+            'Real-time order tracking to improve accuracy and customer satisfaction.',
+          ],
+        },
+        {
+          accent: 'Management',
+          title: 'Data Entry & Management',
+          points: [
+            'Accurate entry of customer information, supplier details, and menu updates.',
+            'Organized databases to ensure quick access to key business insights.',
+          ],
+        },
+        {
+          accent: 'Billing',
+          title: 'Billing & Invoice Processing',
+          points: [
+            'Accurate financial transactions for customer orders and supplier invoices.',
+            'Automated processes to minimize errors and ensure compliance.',
+          ],
+        },
+      ],
+    },
+    useCases: {
+      heading: 'Solutions Tailored for the Food & Beverage Industry',
+      items: [
+        '24/7 Customer Support Services',
+        'Order Management & Fulfillment Solutions',
+        'Data Entry & Management Services',
+        'Billing & Invoicing Solutions',
+        'IT Support & System Maintenance',
+      ],
+    },
+    impact: {
+      heading: 'Ready to Boost Customer Loyalty',
+      text: 'Contact BAB today to explore our Food & Beverage customized solutions.',
+    },
+  },
+  {
+    slug: 'government-public-sector',
+    category: 'industry',
+    metaTitle: 'Government & Public Sector',
+    metaDescription:
+      'Equipping the government and public sector â€” driving digital transformation and enhancing citizen engagement.',
+    eyebrow: 'Government & Public Sector',
+    heroHeading: 'Equipping the Government & Public Sector',
+    heroDescription:
+      'Driving Digital Transformation, Enhancing Citizen Engagement, and Ensuring Operational Excellence.',
+    ctaLabel: 'Partner with Us for Smarter Government Solutions',
+    image: '/images/industries/government.png',
+    features: {
+      eyebrow: 'Service Reach',
+      heading: 'Reliable, Secure, & Scalable for Government Needs',
+      cards: [
+        {
+          accent: 'Engaging',
+          title: 'Omni-Channel Citizen Engagement',
+          points: [
+            'Deliver secure, fast, and consistent support across multiple channels.',
+            'Enable seamless transitions between communication platforms without losing context.',
+          ],
+        },
+        {
+          accent: 'Experience',
+          title: 'Intelligent Experience Solutions',
+          points: [
+            'Efficient handling of citizen requests across online and phone channels.',
+            'Real-time tracking to improve accuracy and satisfaction.',
+          ],
+        },
+        {
+          accent: 'Quality',
+          title: 'Quality Assurance for Service Consistency',
+          points: [
+            'Accurate records and organized databases for quick access to insights.',
+            'Consistent service quality across every interaction.',
+          ],
+        },
+        {
+          accent: 'Security',
+          title: 'Data Security and Compliance',
+          points: [
+            'Secure handling of sensitive citizen data.',
+            'Automated processes to minimize errors and ensure compliance.',
+          ],
+        },
+      ],
+    },
+    useCases: {
+      heading: 'Solutions Tailored for the Government Sector',
+      items: [
+        'Multi-Channel Citizen Support Systems',
+        'Predictive Analytics & AI Solutions',
+        'Case Management & Workflow Automation',
+        'Digital Transformation Consulting Services',
+        'IT Support & Service Automation Platforms',
+      ],
+    },
+    impact: {
+      heading: 'Ready to Deliver Efficient, Citizen-Focused Services',
+      text: 'Contact BAB to explore our solutions tailored to regulatory and compliance standards.',
+    },
+  },
+  {
+    slug: 'insurance-bpo-solutions',
+    category: 'industry',
+    metaTitle: 'Insurance Call Center',
+    metaDescription:
+      'Future-proof your insurance operations with BAB â€” trusted insurance BPO solutions for efficiency and compliance.',
+    eyebrow: 'Insurance Call Center',
+    heroHeading: 'Future-Proof Your Insurance Operations with BAB',
+    heroDescription:
+      'Trusted insurance BPO solutions that ensure efficiency, compliance, and outstanding customer experience â€” empowering your business to thrive in a competitive landscape.',
+    ctaLabel: 'Contact Us',
+    image: '/images/industries/insurance.png',
+    features: {
+      eyebrow: 'A New Standard',
+      heading: 'Built For Insurance Excellence',
+      cards: [
+        {
+          accent: 'Assurance',
+          title: 'Unmatched Reliability & Compliance',
+          points: [
+            'Certified for robust data security.',
+            'In-house compliance team ensures adherence to changing regulations.',
+          ],
+        },
+        {
+          accent: 'Presence',
+          title: '24/7 Customer Support Across Channels',
+          points: [
+            'Customer experience experts ready to support your clients anytime, anywhere.',
+            'Scalable solutions that expand or reduce based on your business needs.',
+          ],
+        },
+        {
+          accent: 'Expertise',
+          title: 'Global Talent Pool with Industry Expertise',
+          points: ['Experienced professionals with an industry-leading 4-year average agent tenure.'],
+        },
+        {
+          accent: 'Systems',
+          title: 'Advanced Technology Integration',
+          points: [
+            'AI-driven processes improve efficiency in customer experience, back-office tasks, and data management.',
+            'Human-annotated data in multiple languages for superior accuracy.',
+          ],
+        },
+      ],
+    },
+    benefits: {
+      heading: 'Stay Competitive in a Complex, Evolving Industry',
+      items: [
+        { title: 'Dynamic Regulations', desc: 'Navigate compliance challenges with confidence.' },
+        { title: 'Rising Operational Costs', desc: 'Reduce costs with efficient BPO operations.' },
+        { title: '24/7 Customer Expectations', desc: 'Meet growing demand for always-on support.' },
+      ],
+    },
+    impact: {
+      heading: 'Empowering Insurance Success',
+      text: 'For 20 years, BAB has helped insurance companies achieve seamless operations, reduced costs, and improved customer satisfaction.',
+    },
+  },
+  {
+    slug: 'retail-support-solutions',
+    category: 'industry',
+    metaTitle: 'Retail Support Solutions',
+    metaDescription:
+      'Delivering retail growth with smart, scalable solutions. Enhance customer experience and streamline operations.',
+    eyebrow: 'Retail Support Solutions',
+    heroHeading: 'Delivering Retail Growth with Smart, Scalable Solutions',
+    heroDescription:
+      'Enhance customer experience, streamline operations, and scale efficiently with BABâ€™s expert retail BPO services.',
+    ctaLabel: 'Contact Us',
+    image: '/images/industries/retail.png',
+    benefits: {
+      heading: 'Improve Customer Satisfaction',
+      items: [
+        { title: 'Inventory Management Issues', desc: 'Prevent overstocking or understocking with smarter solutions.' },
+        { title: 'Customer Service Gaps', desc: 'Deliver consistent, high-quality support across multiple channels.' },
+        { title: 'Order Processing Delays', desc: 'Ensure fast and accurate fulfillment to improve retention.' },
+        { title: 'After-Sales Support Needs', desc: 'Provide exceptional post-purchase care to boost loyalty.' },
+      ],
+    },
+    features: {
+      eyebrow: 'Retail Support Services',
+      heading: 'AI-Enhanced Retail Solutions',
+      cards: [
+        {
+          accent: 'Insights',
+          title: 'Data Collection & Analysis',
+          points: ['Smarter business decisions powered by accurate data.'],
+        },
+        {
+          accent: 'Visibility',
+          title: 'Product Listing Optimization',
+          points: ['Boost visibility in search results and marketplaces.'],
+        },
+        {
+          accent: 'Fulfillment',
+          title: 'AI-Enhanced Fulfillment',
+          points: ['Predict inventory needs and improve delivery efficiency.'],
+        },
+        {
+          accent: 'Support',
+          title: 'Intelligent Customer Support Tools',
+          points: ['Automated, accurate routing and inquiry handling.'],
+        },
+      ],
+    },
+    useCases: {
+      heading: 'Flexible Support for Retailers of All Sizes',
+      items: [
+        'Your business is scaling rapidly.',
+        'Customer inquiries are increasing.',
+        '24/7 customer support is needed.',
+        'Inventory tracking is inconsistent.',
+        'Your e-commerce content needs optimization.',
+      ],
+    },
+    impact: {
+      heading: 'Case Study: Driving E-Commerce Growth With BAB',
+      text: 'Contact BAB today to scale your retail operations with smart, AI-enhanced solutions.',
+    },
+  },
+]
+
+export const allPages = [...solutions, ...industries]
+
+export function getPage(slug: string): PageContent | undefined {
+  return allPages.find((p) => p.slug === slug)
+}
+

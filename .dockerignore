@@ -1,0 +1,13 @@
+**/node_modules
+**/.next
+**/dist
+.git
+.gitignore
+**/.env.local
+**/.env*.local
+backend/.env
+*.md
+!README.md
+.cursor
+agent-transcripts
+**/tsconfig.tsbuildinfo
