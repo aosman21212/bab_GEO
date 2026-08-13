@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useTransition } from 'react'
+import { useEffect, useState, useTransition } from 'react'
+import Image from 'next/image'
 import { useLocale, useTranslations } from 'next-intl'
 import { AnimatePresence, motion } from 'motion/react'
 import { ChevronDown, Menu, X, ArrowRight } from 'lucide-react'
@@ -8,6 +9,13 @@ import { Link, usePathname, useRouter } from '@/i18n/navigation'
 import { BabLogo } from './bab-logo'
 
 type SimpleLink = { labelKey: string; href: string }
+
+const menuSlides = [
+  '/images/bab-technology.png',
+  '/images/bab-hero.png',
+  '/images/network-sphere.png',
+  '/images/bab-telecom.png',
+] as const
 
 const solutionGroups: { labelKey: string; items: SimpleLink[] }[] = [
   {
@@ -57,6 +65,15 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false)
   const [solutionsOpen, setSolutionsOpen] = useState(false)
   const [mobileSolutions, setMobileSolutions] = useState(false)
+  const [slideIndex, setSlideIndex] = useState(0)
+
+  useEffect(() => {
+    if (!solutionsOpen) return
+    const id = window.setInterval(() => {
+      setSlideIndex((prev) => (prev + 1) % menuSlides.length)
+    }, 3200)
+    return () => window.clearInterval(id)
+  }, [solutionsOpen])
 
   const switchLocale = () => {
     const next = locale === 'ar' ? 'en' : 'ar'
@@ -96,9 +113,43 @@ export function SiteHeader() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 8 }}
                   transition={{ duration: 0.15 }}
-                  className="absolute start-1/2 top-full z-50 w-[640px] -translate-x-1/2 pt-3 rtl:translate-x-1/2"
+                  className="absolute start-1/2 top-full z-50 w-[min(920px,92vw)] -translate-x-1/2 pt-3 rtl:translate-x-1/2"
                 >
-                  <div className="grid grid-cols-3 gap-2 rounded-2xl border border-border bg-background p-4 shadow-xl">
+                  <div className="grid grid-cols-[1.1fr_1fr_1fr_1fr] gap-3 rounded-2xl border border-border bg-background p-4 shadow-xl">
+                    <div className="relative min-h-[220px] overflow-hidden rounded-xl bg-muted">
+                      <AnimatePresence mode="wait">
+                        <motion.div
+                          key={menuSlides[slideIndex]}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.35 }}
+                          className="absolute inset-0"
+                        >
+                          <Image
+                            src={menuSlides[slideIndex]}
+                            alt=""
+                            fill
+                            sizes="240px"
+                            className="object-cover"
+                            priority={false}
+                          />
+                        </motion.div>
+                      </AnimatePresence>
+                      <div className="absolute inset-x-0 bottom-2 z-10 flex items-center justify-center gap-1.5">
+                        {menuSlides.map((src, i) => (
+                          <button
+                            key={src}
+                            type="button"
+                            aria-label={`Slide ${i + 1}`}
+                            onClick={() => setSlideIndex(i)}
+                            className={`h-1.5 rounded-full transition-all ${
+                              i === slideIndex ? 'w-4 bg-primary' : 'w-1.5 bg-white/70'
+                            }`}
+                          />
+                        ))}
+                      </div>
+                    </div>
                     {solutionGroups.map((group) => (
                       <div key={group.labelKey}>
                         <p className="mb-2 text-xs font-bold uppercase tracking-wide text-primary">

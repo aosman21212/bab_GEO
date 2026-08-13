@@ -220,7 +220,12 @@
     "info": "Contact Information",
     "address": "Address",
     "phone": "Phone",
-    "email": "Email"
+    "email": "Email",
+    "hours": "Hours",
+    "whatsapp": "WhatsApp",
+    "bookDemo": "Book a demo",
+    "callUs": "Call us",
+    "brand": "BAB"
   },
   "legal": {
     "privacyTitle": "Privacy Policy",

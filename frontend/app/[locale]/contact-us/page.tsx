@@ -1,9 +1,14 @@
 ﻿'use client'
 
+import Image from 'next/image'
 import { useLocale, useTranslations } from 'next-intl'
-import { MapPin, Phone, Mail, Clock } from 'lucide-react'
+import { MapPin, Phone, Mail, Clock, MessageCircle } from 'lucide-react'
 import { ContactForm } from '@/components/contact-form'
+import { BabLogo } from '@/components/bab-logo'
 import { Reveal } from '@/components/reveal'
+
+const BOOK_DEMO_WHATSAPP =
+  'https://api.whatsapp.com/send?phone=966920035161&text=Book+a+demo'
 
 export default function ContactPage() {
   const t = useTranslations('contactPage')
@@ -18,65 +23,132 @@ export default function ContactPage() {
 
   return (
     <div className="flex flex-col">
-      <section className="bg-secondary">
-        <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
+      <section className="relative isolate min-h-[52vh] overflow-hidden md:min-h-[58vh]">
+        <Image
+          src="/images/bg-ss3.webp"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              'linear-gradient(105deg, rgba(26,26,61,0.92) 0%, rgba(26,26,61,0.72) 48%, rgba(230,126,34,0.35) 100%)',
+          }}
+        />
+        <div className="relative z-10 mx-auto flex min-h-[52vh] max-w-7xl flex-col justify-end px-6 pb-14 pt-28 md:min-h-[58vh] md:pb-20">
           <Reveal>
-            <h1 className="text-balance text-3xl font-extrabold leading-tight text-navy md:text-5xl">
-              {t('title')}
-            </h1>
-            <p className="mt-4 text-pretty leading-relaxed text-muted-foreground">{t('body')}</p>
+            <div className="max-w-2xl">
+              <div className="mb-5 inline-flex rounded-full bg-white/95 px-3 py-2 shadow-sm">
+                <BabLogo size="sm" />
+              </div>
+              <p className="text-[11px] font-bold tracking-[0.16em] text-primary">{t('brand')}</p>
+              <h1 className="mt-2 text-balance text-3xl font-extrabold leading-tight text-white md:text-5xl">
+                {t('title')}
+              </h1>
+              <p className="mt-4 max-w-xl text-pretty text-base leading-relaxed text-white/80 md:text-lg">
+                {t('body')}
+              </p>
+              <div className="mt-8 flex flex-wrap items-center gap-3">
+                <a
+                  href={BOOK_DEMO_WHATSAPP}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90"
+                >
+                  <MessageCircle className="h-4 w-4" />
+                  {t('bookDemo')}
+                </a>
+                <a
+                  href={phoneHref}
+                  className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-6 py-3 text-sm font-semibold text-white backdrop-blur transition hover:bg-white/20"
+                >
+                  <Phone className="h-4 w-4" />
+                  {t('callUs')}
+                </a>
+              </div>
+            </div>
           </Reveal>
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-7xl gap-12 px-6 py-16 md:grid-cols-[1.2fr_1fr] md:py-24">
-        <Reveal>
-          <ContactForm />
-        </Reveal>
+      <section className="relative bg-[linear-gradient(180deg,#f7f6fb_0%,#ffffff_55%)]">
+        <div className="mx-auto grid max-w-7xl gap-8 px-6 py-14 md:grid-cols-[1.15fr_0.85fr] md:gap-10 md:py-20">
+          <Reveal>
+            <ContactForm />
+          </Reveal>
 
-        <Reveal delay={0.1}>
-          <div className="flex flex-col gap-6 bg-navy p-8">
-            <h2 className="text-xl font-bold text-white">{t('info')}</h2>
-            <div className="flex items-start gap-3">
-              <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
+          <Reveal delay={0.12}>
+            <aside className="flex h-full flex-col gap-6 rounded-2xl bg-[linear-gradient(165deg,#1a1a3d_0%,#2a2a5c_70%,#1f1f45_100%)] p-7 text-white shadow-lg md:p-8">
               <div>
-                <p className="font-semibold text-white">{t('address')}</p>
-                <p className="mt-1 text-sm leading-relaxed text-white/70">{address}</p>
+                <p className="text-[11px] font-bold tracking-[0.14em] text-primary">{t('whatsapp')}</p>
+                <h2 className="mt-2 text-xl font-extrabold">{t('info')}</h2>
               </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <Phone className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
-              <div>
-                <p className="font-semibold text-white">{t('phone')}</p>
-                <a
-                  href={phoneHref}
-                  className="mt-1 block text-sm text-white/70 transition-colors hover:text-primary"
-                >
-                  {phone}
-                </a>
+
+              <div className="flex flex-col gap-5">
+                <div className="flex items-start gap-3">
+                  <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-primary">
+                    <MapPin className="h-4 w-4" />
+                  </span>
+                  <div>
+                    <p className="text-sm font-semibold">{t('address')}</p>
+                    <p className="mt-1 text-sm leading-relaxed text-white/70">{address}</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-primary">
+                    <Phone className="h-4 w-4" />
+                  </span>
+                  <div>
+                    <p className="text-sm font-semibold">{t('phone')}</p>
+                    <a
+                      href={phoneHref}
+                      className="mt-1 block text-sm text-white/70 transition hover:text-primary"
+                    >
+                      {phone}
+                    </a>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-primary">
+                    <Mail className="h-4 w-4" />
+                  </span>
+                  <div>
+                    <p className="text-sm font-semibold">{t('email')}</p>
+                    <a
+                      href={`mailto:${email}`}
+                      className="mt-1 block text-sm text-white/70 transition hover:text-primary"
+                    >
+                      {email}
+                    </a>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-primary">
+                    <Clock className="h-4 w-4" />
+                  </span>
+                  <div>
+                    <p className="text-sm font-semibold">{t('hours')}</p>
+                    <p className="mt-1 text-sm leading-relaxed text-white/70">{hours}</p>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <Mail className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
-              <div>
-                <p className="font-semibold text-white">{t('email')}</p>
-                <a
-                  href={`mailto:${email}`}
-                  className="mt-1 block text-sm text-white/70 transition-colors hover:text-primary"
-                >
-                  {email}
-                </a>
-              </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <Clock className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
-              <div>
-                <p className="font-semibold text-white">Hours</p>
-                <p className="mt-1 text-sm leading-relaxed text-white/70">{hours}</p>
-              </div>
-            </div>
-          </div>
-        </Reveal>
+
+              <a
+                href={BOOK_DEMO_WHATSAPP}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-auto inline-flex items-center justify-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90"
+              >
+                <MessageCircle className="h-4 w-4" />
+                {t('bookDemo')}
+              </a>
+            </aside>
+          </Reveal>
+        </div>
       </section>
     </div>
   )

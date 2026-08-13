@@ -5,15 +5,17 @@ import Image from 'next/image'
 import { AnimatePresence, motion } from 'motion/react'
 import { ArrowRight } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import { Link } from '@/i18n/navigation'
 import { Reveal } from './reveal'
 
+const BOOK_DEMO_WHATSAPP =
+  'https://api.whatsapp.com/send?phone=966920035161&text=Book+a+demo'
+
 const industryMeta = [
-  { id: 'food', href: '/food-and-beverage', image: '/images/industries/food.png' },
-  { id: 'government', href: '/government-public-sector', image: '/images/industries/government.png' },
-  { id: 'healthcare', href: '/healthcare-solutions', image: '/images/industries/healthcare.png' },
-  { id: 'insurance', href: '/insurance-bpo-solutions', image: '/images/industries/insurance.png' },
-  { id: 'retail', href: '/retail-support-solutions', image: '/images/industries/retail.png' },
+  { id: 'food', image: '/images/industries/food.png' },
+  { id: 'government', image: '/images/industries/government.png' },
+  { id: 'healthcare', image: '/images/industries/healthcare.png' },
+  { id: 'insurance', image: '/images/industries/insurance.png' },
+  { id: 'retail', image: '/images/industries/retail.png' },
 ] as const
 
 export function IndustriesSection() {
@@ -64,12 +66,14 @@ export function IndustriesSection() {
               <div>
                 <h3 className="text-2xl font-extrabold text-navy">{t(`${current.id}.title`)}</h3>
                 <p className="mt-4 leading-relaxed text-muted-foreground">{t(`${current.id}.body`)}</p>
-                <Link
-                  href={current.href}
+                <a
+                  href={BOOK_DEMO_WHATSAPP}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
                 >
                   {t('bookDemo')} <ArrowRight className="h-4 w-4 rtl:rotate-180" />
-                </Link>
+                </a>
               </div>
               <div className="flex justify-center lg:justify-end">
                 <div className="relative h-64 w-64 overflow-hidden rounded-full grayscale md:h-80 md:w-80">
