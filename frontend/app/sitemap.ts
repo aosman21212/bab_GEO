@@ -12,7 +12,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${site}/llms.txt`, lastModified: now, changeFrequency: 'weekly', priority: 0.6 },
   ]
 
-  const staticPaths = ['', 'about-us', 'contact-us', 'privacy-policy', 'terms-conditions']
+  const staticPaths = ['', 'about-us', 'contact-us', 'privacy-policy', 'terms-conditions', 'sitemap']
   for (const locale of ['en', 'ar'] as const) {
     for (const path of staticPaths) {
       entries.push({

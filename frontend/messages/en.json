@@ -176,7 +176,8 @@
     "about": "About Us",
     "privacy": "Privacy Policy",
     "terms": "Terms & Conditions",
-    "contact": "Contact Us"
+    "contact": "Contact Us",
+    "sitemap": "Sitemap"
   },
   "about": {
     "title": "Pioneering Change",
@@ -226,6 +227,13 @@
     "bookDemo": "Book a demo",
     "callUs": "Call us",
     "brand": "BAB"
+  },
+  "sitemapPage": {
+    "title": "Sitemap",
+    "body": "Browse every public page on bab.com.sa in one place.",
+    "root": "BAB",
+    "company": "Company",
+    "solutions": "Solutions"
   },
   "legal": {
     "privacyTitle": "Privacy Policy",

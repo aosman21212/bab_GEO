@@ -54,6 +54,7 @@ export function SiteFooter() {
     { label: t('privacy'), href: '/privacy-policy' },
     { label: t('terms'), href: '/terms-conditions' },
     { label: t('contact'), href: '/contact-us' },
+    { label: t('sitemap'), href: '/sitemap' },
   ]
 
   const submit = (e: React.FormEvent) => {

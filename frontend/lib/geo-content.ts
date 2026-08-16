@@ -293,7 +293,7 @@ export async function buildAiTxt(): Promise<string> {
 export async function collectSitemapUrls(): Promise<string[]> {
   const pages = await loadPublishedPages()
   const site = getSiteUrl()
-  const staticPaths = ['', 'about-us', 'contact-us', 'privacy-policy', 'terms-conditions']
+  const staticPaths = ['', 'about-us', 'contact-us', 'privacy-policy', 'terms-conditions', 'sitemap']
   const urls: string[] = [site, `${site}/llms.txt`]
 
   for (const locale of ['en', 'ar'] as const) {

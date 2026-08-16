@@ -6,9 +6,8 @@ import { useLocale, useTranslations } from 'next-intl'
 import { AnimatePresence, motion } from 'motion/react'
 import { ChevronDown, Menu, X, ArrowRight } from 'lucide-react'
 import { Link, usePathname, useRouter } from '@/i18n/navigation'
+import { solutionGroups } from '@/lib/nav-tree'
 import { BabLogo } from './bab-logo'
-
-type SimpleLink = { labelKey: string; href: string }
 
 const menuSlides = [
   '/images/bab-technology.png',
@@ -16,37 +15,6 @@ const menuSlides = [
   '/images/network-sphere.png',
   '/images/bab-telecom.png',
 ] as const
-
-const solutionGroups: { labelKey: string; items: SimpleLink[] }[] = [
-  {
-    labelKey: 'omnichannelGroup',
-    items: [
-      { labelKey: 'omnichannel', href: '/omnichannel' },
-      { labelKey: 'liveEngagement', href: '/live-engagement-platform' },
-      { labelKey: 'rcs', href: '/rich-communication-services' },
-      { labelKey: 'socialMessaging', href: '/social-media-messaging-integration' },
-    ],
-  },
-  {
-    labelKey: 'solutionsGroup',
-    items: [
-      { labelKey: 'digitalTransform', href: '/digital-transformation' },
-      { labelKey: 'voiceBot', href: '/voice-bot' },
-      { labelKey: 'aiSolution', href: '/ai-solution' },
-      { labelKey: 'callCenter', href: '/call-center' },
-    ],
-  },
-  {
-    labelKey: 'callCenterGroup',
-    items: [
-      { labelKey: 'foodBeverage', href: '/food-and-beverage' },
-      { labelKey: 'government', href: '/government-public-sector' },
-      { labelKey: 'healthcare', href: '/healthcare-solutions' },
-      { labelKey: 'insurance', href: '/insurance-bpo-solutions' },
-      { labelKey: 'retail', href: '/retail-support-solutions' },
-    ],
-  },
-]
 
 const SPAM_PDF = 'https://bab.com.sa/wp-content/uploads/2025/07/ar_spam_policy.pdf'
 

@@ -4,7 +4,6 @@ import Image from 'next/image'
 import { useLocale, useTranslations } from 'next-intl'
 import { MapPin, Phone, Mail, Clock, MessageCircle } from 'lucide-react'
 import { ContactForm } from '@/components/contact-form'
-import { BabLogo } from '@/components/bab-logo'
 import { Reveal } from '@/components/reveal'
 
 const BOOK_DEMO_WHATSAPP =
@@ -42,11 +41,8 @@ export default function ContactPage() {
         <div className="relative z-10 mx-auto flex min-h-[52vh] max-w-7xl flex-col justify-end px-6 pb-14 pt-28 md:min-h-[58vh] md:pb-20">
           <Reveal>
             <div className="max-w-2xl">
-              <div className="mb-5 inline-flex rounded-full bg-white/95 px-3 py-2 shadow-sm">
-                <BabLogo size="sm" />
-              </div>
               <p className="text-[11px] font-bold tracking-[0.16em] text-primary">{t('brand')}</p>
-              <h1 className="mt-2 text-balance text-3xl font-extrabold leading-tight text-white md:text-5xl">
+              <h1 className="mt-3 text-balance text-3xl font-extrabold leading-tight text-white md:text-5xl">
                 {t('title')}
               </h1>
               <p className="mt-4 max-w-xl text-pretty text-base leading-relaxed text-white/80 md:text-lg">
