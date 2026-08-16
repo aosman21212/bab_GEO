@@ -3,6 +3,41 @@
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 import { Reveal, StaggerGroup, StaggerItem } from './reveal'
+import { usePrefersReducedMotion } from './motion-utils'
+
+function LogosMarquee() {
+  const reduced = usePrefersReducedMotion()
+
+  if (reduced) {
+    return (
+      <Image
+        src="/images/bab-partners-logos.png"
+        alt=""
+        width={1400}
+        height={180}
+        className="h-auto w-full object-contain opacity-80"
+      />
+    )
+  }
+
+  return (
+    <div className="group/marquee max-w-full overflow-hidden" dir="ltr">
+      <div className="bab-marquee flex w-max items-center gap-8 group-hover/marquee:[animation-play-state:paused] sm:gap-10">
+        {[0, 1].map((copy) => (
+          <Image
+            key={copy}
+            src="/images/bab-partners-logos.png"
+            alt=""
+            width={1400}
+            height={180}
+            className="h-auto w-[min(1400px,90vw)] shrink-0 object-contain opacity-80"
+            priority={copy === 0}
+          />
+        ))}
+      </div>
+    </div>
+  )
+}
 
 export function OurWorksSection() {
   const t = useTranslations('works')
@@ -46,13 +81,7 @@ export function OurWorksSection() {
         </div>
 
         <Reveal className="mt-14 overflow-hidden rounded-2xl border border-border bg-background p-6">
-          <Image
-            src="/images/bab-partners-logos.png"
-            alt=""
-            width={1400}
-            height={180}
-            className="h-auto w-full object-contain opacity-80"
-          />
+          <LogosMarquee />
         </Reveal>
       </div>
     </section>
