@@ -42,7 +42,7 @@ uploadsRouter.post('/', requireAuth, (req, res) => {
       return res.status(400).json({ error: 'No file uploaded' })
     }
     return res.status(201).json({
-      url: `/uploads/${req.file.filename}`,
+      url: `/api/files/${req.file.filename}`,
       filename: req.file.filename,
     })
   })

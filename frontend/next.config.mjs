@@ -18,14 +18,20 @@ const nextConfig = {
   },
   output: 'standalone',
   async rewrites() {
-    const key = process.env.INDEXNOW_KEY
-    if (!key) return []
-    return [
+    const rules = [
       {
-        source: `/${key}.txt`,
-        destination: '/api/indexnow-key',
+        source: '/uploads/:path*',
+        destination: '/api/files/:path*',
       },
     ]
+    const key = process.env.INDEXNOW_KEY
+    if (key) {
+      rules.push({
+        source: `/${key}.txt`,
+        destination: '/api/indexnow-key',
+      })
+    }
+    return rules
   },
 }
 
