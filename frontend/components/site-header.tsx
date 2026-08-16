@@ -1,12 +1,18 @@
 'use client'
 
-import { useEffect, useState, useTransition } from 'react'
+import { useEffect, useMemo, useState, useTransition } from 'react'
 import Image from 'next/image'
 import { useLocale, useTranslations } from 'next-intl'
 import { AnimatePresence, motion } from 'motion/react'
 import { ChevronDown, Menu, X, ArrowRight } from 'lucide-react'
 import { Link, usePathname, useRouter } from '@/i18n/navigation'
 import { solutionGroups } from '@/lib/nav-tree'
+import {
+  emptyCmsNavExtras,
+  fetchCmsNavExtras,
+  type CmsNavExtras,
+  type CmsNavLink,
+} from '@/lib/cms-nav'
 import { BabLogo } from './bab-logo'
 
 const menuSlides = [
@@ -34,6 +40,17 @@ export function SiteHeader() {
   const [solutionsOpen, setSolutionsOpen] = useState(false)
   const [mobileSolutions, setMobileSolutions] = useState(false)
   const [slideIndex, setSlideIndex] = useState(0)
+  const [cmsExtras, setCmsExtras] = useState<CmsNavExtras>(emptyCmsNavExtras)
+
+  useEffect(() => {
+    let cancelled = false
+    fetchCmsNavExtras(locale).then((extras) => {
+      if (!cancelled) setCmsExtras(extras)
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [locale])
 
   useEffect(() => {
     if (!solutionsOpen) return
@@ -42,6 +59,26 @@ export function SiteHeader() {
     }, 3200)
     return () => window.clearInterval(id)
   }, [solutionsOpen])
+
+  const menuGroups = useMemo(() => {
+    return solutionGroups.map((group) => {
+      let extras: CmsNavLink[] = []
+      if (group.labelKey === 'solutionsGroup') extras = cmsExtras.solutions
+      if (group.labelKey === 'callCenterGroup') extras = cmsExtras.industries
+      return { ...group, extras }
+    })
+  }, [cmsExtras])
+
+  const mobileLinks = useMemo(() => {
+    const staticItems = solutionGroups.flatMap((g) =>
+      g.items.map((item) => ({ href: item.href, label: t(item.labelKey as 'omnichannel') })),
+    )
+    const dynamicItems = [...cmsExtras.solutions, ...cmsExtras.industries].map((item) => ({
+      href: item.href,
+      label: item.label,
+    }))
+    return [...staticItems, ...dynamicItems]
+  }, [cmsExtras, t])
 
   const switchLocale = () => {
     const next = locale === 'ar' ? 'en' : 'ar'
@@ -81,7 +118,7 @@ export function SiteHeader() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 8 }}
                   transition={{ duration: 0.15 }}
-                  className="absolute start-1/2 top-full z-50 w-[min(920px,92vw)] -translate-x-1/2 pt-3 rtl:translate-x-1/2"
+                  className="absolute left-1/2 top-full z-50 w-[min(920px,92vw)] -translate-x-1/2 pt-3"
                 >
                   <div className="grid grid-cols-[1.1fr_1fr_1fr_1fr] gap-3 rounded-2xl border border-border bg-background p-4 shadow-xl">
                     <div className="relative min-h-[220px] overflow-hidden rounded-xl bg-muted">
@@ -118,7 +155,7 @@ export function SiteHeader() {
                         ))}
                       </div>
                     </div>
-                    {solutionGroups.map((group) => (
+                    {menuGroups.map((group) => (
                       <div key={group.labelKey}>
                         <p className="mb-2 text-xs font-bold uppercase tracking-wide text-primary">
                           {t(group.labelKey)}
@@ -131,6 +168,16 @@ export function SiteHeader() {
                                 className="block rounded-xl px-2 py-1.5 text-sm text-navy/80 transition-colors hover:bg-muted hover:text-primary"
                               >
                                 {t(item.labelKey)}
+                              </Link>
+                            </li>
+                          ))}
+                          {group.extras.map((item) => (
+                            <li key={item.href}>
+                              <Link
+                                href={item.href}
+                                className="block rounded-xl px-2 py-1.5 text-sm text-navy/80 transition-colors hover:bg-muted hover:text-primary"
+                              >
+                                {item.label}
                               </Link>
                             </li>
                           ))}
@@ -213,14 +260,14 @@ export function SiteHeader() {
               </button>
               {mobileSolutions && (
                 <div className="border-b border-border/60 bg-muted/50 py-2 ps-3">
-                  {solutionGroups.flatMap((g) => g.items).map((item) => (
+                  {mobileLinks.map((item) => (
                     <Link
                       key={item.href}
                       href={item.href}
                       onClick={() => setOpen(false)}
                       className="block py-2 text-sm text-navy/70 hover:text-primary"
                     >
-                      {t(item.labelKey)}
+                      {item.label}
                     </Link>
                   ))}
                 </div>

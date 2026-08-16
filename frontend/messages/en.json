@@ -170,6 +170,7 @@
     "newsletterBody": "Stay updated with our latest news",
     "emailPlaceholder": "Enter your email",
     "agree": "I agree to the Terms, Privacy Policy.",
+    "agreeRequired": "Please agree to the Terms and Privacy Policy to continue.",
     "subscribed": "Thanks for subscribing!",
     "copyright": "© 2024 BAB International Corp. All rights reserved.",
     "home": "Home",

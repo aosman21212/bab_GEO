@@ -42,6 +42,7 @@ export function SiteFooter() {
   const [email, setEmail] = useState('')
   const [agreed, setAgreed] = useState(false)
   const [sent, setSent] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const address = locale === 'ar' ? s('addressAr') : s('addressEn')
   const phone = s('phone')
@@ -59,7 +60,12 @@ export function SiteFooter() {
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault()
-    if (!email || !agreed) return
+    if (!agreed) {
+      setError(t('agreeRequired'))
+      return
+    }
+    if (!email) return
+    setError(null)
     setSent(true)
     setEmail('')
     setAgreed(false)
@@ -135,7 +141,10 @@ export function SiteFooter() {
                     type="email"
                     required
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={(e) => {
+                      setEmail(e.target.value)
+                      if (error) setError(null)
+                    }}
                     placeholder={t('emailPlaceholder')}
                     className="w-full bg-transparent text-sm text-navy outline-none placeholder:text-muted-foreground"
                   />
@@ -151,11 +160,19 @@ export function SiteFooter() {
                   <input
                     type="checkbox"
                     checked={agreed}
-                    onChange={(e) => setAgreed(e.target.checked)}
+                    onChange={(e) => {
+                      setAgreed(e.target.checked)
+                      if (e.target.checked) setError(null)
+                    }}
                     className="mt-0.5 accent-[var(--primary)]"
                   />
                   {t('agree')}
                 </label>
+                {error ? (
+                  <p role="alert" className="text-xs font-medium text-red-600">
+                    {error}
+                  </p>
+                ) : null}
               </form>
             )}
 

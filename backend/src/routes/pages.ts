@@ -49,20 +49,27 @@ pagesRouter.get('/by-id/:slug', requireAuth, async (req, res) => {
   return res.json(page)
 })
 
-/** Public catalog of published pages for sitemap / GEO llms.txt */
+/** Public catalog of published pages for sitemap / GEO llms.txt / nav */
 pagesRouter.get('/meta/published', async (_req, res) => {
   const pages = await Page.find({ status: 'published' })
-    .select('slug category locales.en.metaTitle locales.en.heroHeading updatedAt')
+    .select(
+      'slug category locales.en.metaTitle locales.en.heroHeading locales.ar.metaTitle locales.ar.heroHeading updatedAt',
+    )
     .sort({ updatedAt: -1 })
     .lean()
 
   return res.json(
     pages.map((page) => {
       const en = (page.locales?.en ?? {}) as { metaTitle?: string; heroHeading?: string }
+      const ar = (page.locales?.ar ?? {}) as { metaTitle?: string; heroHeading?: string }
+      const titleEn = String(en.metaTitle || en.heroHeading || page.slug)
+      const titleAr = String(ar.metaTitle || ar.heroHeading || titleEn)
       return {
         slug: page.slug,
         category: page.category,
-        title: String(en.metaTitle || en.heroHeading || page.slug),
+        title: titleEn,
+        titleEn,
+        titleAr,
         updatedAt: page.updatedAt,
       }
     }),
