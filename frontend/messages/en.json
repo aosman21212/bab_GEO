@@ -386,6 +386,14 @@
       "createFailed": "Create failed",
       "pageNotFound": "Page not found"
     },
+    "imagePicker": {
+      "title": "Adjust image",
+      "hint": "Cropping is optional. Upload the original, or adjust the crop and upload the cropped image.",
+      "cropHint": "Zoom",
+      "uploadOriginal": "Upload original",
+      "uploadCropped": "Upload cropped",
+      "cancel": "Cancel"
+    },
     "login": {
       "title": "CMS Admin",
       "subtitle": "Sign in to manage website content, partners, and inquiries.",

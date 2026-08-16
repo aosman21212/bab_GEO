@@ -4,6 +4,7 @@ import { useState, type ReactNode } from 'react'
 import Image from 'next/image'
 import { Plus, Trash2, Upload } from 'lucide-react'
 import { useAdminLocale } from '@/components/admin-locale-provider'
+import { AdminImagePicker } from '@/components/admin-image-picker'
 
 export type FeatureCardForm = {
   accent: string
@@ -224,27 +225,6 @@ export function AdminPageForm({
     onChange({ ...value, [key]: v })
   }
 
-  const onPickImage = async (file: File | undefined) => {
-    if (!file) return
-    setUploading(true)
-    setUploadError(null)
-    const body = new FormData()
-    body.append('file', file)
-    try {
-      const res = await fetch('/api/admin/upload', { method: 'POST', body })
-      const data = await res.json().catch(() => ({}))
-      if (!res.ok) {
-        setUploadError(data.error || t('common.uploadFailed'))
-        return
-      }
-      set('image', data.url as string)
-    } catch {
-      setUploadError(t('common.uploadFailed'))
-    } finally {
-      setUploading(false)
-    }
-  }
-
   return (
     <div className="space-y-6">
       <Card title={t('pageForm.page')} subtitle={t('pageForm.pageSubtitle')}>
@@ -362,17 +342,19 @@ export function AdminPageForm({
               )}
             </div>
             <div className="flex min-w-0 flex-1 flex-col gap-2">
-              <label className="inline-flex w-fit cursor-pointer items-center gap-2 rounded-full border border-border bg-white px-4 py-2 text-sm font-semibold text-navy hover:border-primary">
+              <AdminImagePicker
+                disabled={uploading}
+                onUploadingChange={setUploading}
+                onError={setUploadError}
+                onUploaded={(url) => {
+                  setUploadError(null)
+                  set('image', url)
+                }}
+                className="inline-flex w-fit cursor-pointer items-center gap-2 rounded-full border border-border bg-white px-4 py-2 text-sm font-semibold text-navy hover:border-primary"
+              >
                 <Upload className="h-4 w-4 text-primary" />
                 {uploading ? t('common.uploading') : t('pageForm.uploadImage')}
-                <input
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  disabled={uploading}
-                  onChange={(e) => onPickImage(e.target.files?.[0])}
-                />
-              </label>
+              </AdminImagePicker>
               <input
                 className={`${fieldClass()} font-mono`}
                 value={value.image}

@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { AdminShell } from '@/components/admin-shell'
 import { useAdminLocale } from '@/components/admin-locale-provider'
+import { AdminImagePicker } from '@/components/admin-image-picker'
 import { ImagePlus, Pencil, Trash2, Upload } from 'lucide-react'
 
 type Partner = {
@@ -116,33 +117,11 @@ export default function AdminPartnersPage() {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
-  const onPickImage = async (file: File | undefined) => {
-    if (!file) return
-    if (!file.type.startsWith('image/')) {
-      setUploadError(t('partners.imageOnly'))
-      return
-    }
-    setUploading(true)
+  const onImageUploaded = (url: string, name: string) => {
+    setField('logoUrl', url)
+    setFileName(name)
     setUploadError(null)
-    setFileName(file.name)
-    const body = new FormData()
-    body.append('file', file)
-    try {
-      const res = await fetch('/api/admin/upload', { method: 'POST', body })
-      const data = await res.json().catch(() => ({}))
-      if (!res.ok) {
-        setUploadError((data as { error?: string }).error || t('common.uploadFailed'))
-        setFileName(null)
-        return
-      }
-      setField('logoUrl', (data as { url: string }).url)
-      setStatus(t('partners.logoUploaded'))
-    } catch {
-      setUploadError(t('common.uploadFailed'))
-      setFileName(null)
-    } finally {
-      setUploading(false)
-    }
+    setStatus(t('partners.logoUploaded'))
   }
 
   const save = async (e: React.FormEvent) => {
@@ -260,7 +239,11 @@ export default function AdminPartnersPage() {
         <div className="flex flex-col gap-3">
           <p className="text-sm font-semibold text-navy">{t('partners.logo')}</p>
           <p className="text-xs text-muted-foreground">{t('partners.logoHint')}</p>
-          <label
+          <AdminImagePicker
+            disabled={uploading}
+            onUploadingChange={setUploading}
+            onError={setUploadError}
+            onUploaded={onImageUploaded}
             className={`flex min-h-[160px] cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed px-4 py-6 text-center transition ${
               form.logoUrl
                 ? 'border-primary/40 bg-primary/5'
@@ -290,32 +273,18 @@ export default function AdminPartnersPage() {
                 <span className="text-xs text-muted-foreground">{t('partners.formats')}</span>
               </>
             )}
-            <input
-              type="file"
-              accept="image/*"
-              className="hidden"
-              disabled={uploading}
-              onChange={(e) => {
-                onPickImage(e.target.files?.[0])
-                e.target.value = ''
-              }}
-            />
-          </label>
+          </AdminImagePicker>
           {!form.logoUrl ? (
-            <label className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-full bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground">
+            <AdminImagePicker
+              disabled={uploading}
+              onUploadingChange={setUploading}
+              onError={setUploadError}
+              onUploaded={onImageUploaded}
+              className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-full bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground"
+            >
               <Upload className="h-4 w-4" />
               {uploading ? t('common.uploading') : t('partners.chooseFile')}
-              <input
-                type="file"
-                accept="image/*"
-                className="hidden"
-                disabled={uploading}
-                onChange={(e) => {
-                  onPickImage(e.target.files?.[0])
-                  e.target.value = ''
-                }}
-              />
-            </label>
+            </AdminImagePicker>
           ) : null}
           {uploadError ? <p className="text-xs font-medium text-red-600">{uploadError}</p> : null}
         </div>
