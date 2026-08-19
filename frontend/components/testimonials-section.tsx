@@ -111,44 +111,44 @@ export function TestimonialsSection() {
           </h2>
         </Reveal>
 
-        <Reveal className="mx-auto max-w-3xl">
-          <div className="relative rounded-3xl border border-border bg-background px-8 py-12 text-center shadow-sm md:px-14 md:py-14">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={active._id || active.name + index}
-                initial={reduced ? false : { opacity: 0, y: 12, filter: 'blur(4px)' }}
-                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                exit={reduced ? { opacity: 0 } : { opacity: 0, y: -12, filter: 'blur(4px)' }}
-                transition={{ duration: reduced ? 0.15 : 0.35, ease: [0.22, 1, 0.36, 1] }}
-                className="flex flex-col items-center"
-              >
-                <div className="relative h-16 w-16 overflow-hidden rounded-full border border-border bg-muted">
-                  <Image src={active.logoUrl} alt={active.name} fill className="object-cover" />
-                </div>
-                <p className="mt-5 text-lg font-bold text-navy">{active.name}</p>
-                {active.role ? <p className="mt-1 text-sm text-muted-foreground">{active.role}</p> : null}
-                <p className="mt-5 max-w-xl leading-relaxed text-muted-foreground">{active.quote}</p>
-              </motion.div>
-            </AnimatePresence>
+        <Reveal className="mx-auto max-w-3xl text-center">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={active._id || active.name + index}
+              initial={reduced ? false : { opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={reduced ? { opacity: 0 } : { opacity: 0, y: -10 }}
+              transition={{ duration: reduced ? 0.15 : 0.35, ease: [0.22, 1, 0.36, 1] }}
+              className="flex flex-col items-center"
+            >
+              <div className="relative h-16 w-16 overflow-hidden rounded-full border border-border bg-muted">
+                <Image src={active.logoUrl} alt={active.name} fill className="object-cover" />
+              </div>
+              <p className="mt-8 max-w-2xl text-lg italic leading-relaxed text-navy/80 md:text-xl">
+                “{active.quote}”
+              </p>
+              <p className="mt-6 text-base font-bold text-navy">{active.name}</p>
+              {active.role ? <p className="mt-1 text-sm text-muted-foreground">{active.role}</p> : null}
+            </motion.div>
+          </AnimatePresence>
 
-            <div className="mt-8 flex items-center justify-center gap-3">
-              <button
-                type="button"
-                aria-label="Previous"
-                onClick={() => go(-1)}
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border text-navy hover:bg-muted"
-              >
-                <ArrowLeft className="h-4 w-4 rtl:rotate-180" />
-              </button>
-              <button
-                type="button"
-                aria-label="Next"
-                onClick={() => go(1)}
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border text-navy hover:bg-muted"
-              >
-                <ArrowRight className="h-4 w-4 rtl:rotate-180" />
-              </button>
-            </div>
+          <div className="mt-8 flex items-center justify-center gap-3">
+            <button
+              type="button"
+              aria-label="Previous"
+              onClick={() => go(-1)}
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border text-navy hover:bg-muted"
+            >
+              <ArrowLeft className="h-4 w-4 rtl:rotate-180" />
+            </button>
+            <button
+              type="button"
+              aria-label="Next"
+              onClick={() => go(1)}
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border text-navy hover:bg-muted"
+            >
+              <ArrowRight className="h-4 w-4 rtl:rotate-180" />
+            </button>
           </div>
         </Reveal>
       </div>

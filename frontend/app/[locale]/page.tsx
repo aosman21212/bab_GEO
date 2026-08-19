@@ -3,7 +3,6 @@ import { HeroSection } from '@/components/hero-section'
 import { OurWorksSection } from '@/components/our-works-section'
 import { ExperienceSection } from '@/components/experience-section'
 import { IndustriesSection } from '@/components/industries-section'
-import { StatsSection } from '@/components/stats-section'
 import { TransformationSection } from '@/components/transformation-section'
 import { ChannelsSection } from '@/components/channels-section'
 import { PartnersSection } from '@/components/partners-section'
@@ -21,7 +20,6 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
       <OurWorksSection />
       <ExperienceSection />
       <IndustriesSection />
-      <StatsSection />
       <TransformationSection />
       <ChannelsSection />
       <PartnersSection />

@@ -1,9 +1,16 @@
 'use client'
 
-import { useTranslations } from 'next-intl'
+import { useEffect, useMemo, useState } from 'react'
+import { useLocale, useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import { Reveal } from '@/components/reveal'
 import { companySitemapLinks, solutionGroups } from '@/lib/nav-tree'
+import {
+  emptyCmsNavExtras,
+  fetchCmsNavExtras,
+  type CmsNavExtras,
+  type CmsNavLink,
+} from '@/lib/cms-nav'
 
 function TreeBranch({ children }: { children: React.ReactNode }) {
   return (
@@ -29,10 +36,53 @@ function TreeNode({
   )
 }
 
+function CmsLinks({ links }: { links: CmsNavLink[] }) {
+  if (!links.length) return null
+  return (
+    <>
+      {links.map((item) => (
+        <TreeNode key={item.href}>
+          <Link
+            href={item.href}
+            className="text-sm font-medium text-navy transition hover:text-primary"
+          >
+            {item.label}
+          </Link>
+        </TreeNode>
+      ))}
+    </>
+  )
+}
+
 export default function SitemapPage() {
   const t = useTranslations('sitemapPage')
   const nav = useTranslations('nav')
   const footer = useTranslations('footer')
+  const locale = useLocale()
+  const [cmsExtras, setCmsExtras] = useState<CmsNavExtras>(emptyCmsNavExtras)
+
+  useEffect(() => {
+    let cancelled = false
+    fetchCmsNavExtras(locale).then((extras) => {
+      if (!cancelled) setCmsExtras(extras)
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [locale])
+
+  const groups = useMemo(() => {
+    return solutionGroups
+      .map((group) => {
+        let extras: CmsNavLink[] = []
+        if (group.labelKey === 'solutionsGroup') extras = cmsExtras.solutions
+        if (group.labelKey === 'callCenterGroup') extras = cmsExtras.industries
+        if (group.labelKey === 'productsGroup') extras = cmsExtras.products
+        if (group.labelKey === 'caseStudiesGroup') extras = cmsExtras.caseStudies
+        return { ...group, extras }
+      })
+      .filter((group) => group.items.length > 0 || group.extras.length > 0)
+  }, [cmsExtras])
 
   return (
     <div className="flex flex-col bg-[linear-gradient(180deg,#f7f6fb_0%,#ffffff_45%)]">
@@ -76,7 +126,7 @@ export default function SitemapPage() {
                   {t('solutions')}
                 </p>
                 <TreeBranch>
-                  {solutionGroups.map((group) => (
+                  {groups.map((group) => (
                     <TreeNode key={group.labelKey}>
                       <p className="text-xs font-bold tracking-[0.12em] text-primary">
                         {nav(group.labelKey as 'omnichannelGroup')}
@@ -92,6 +142,7 @@ export default function SitemapPage() {
                             </Link>
                           </TreeNode>
                         ))}
+                        <CmsLinks links={group.extras} />
                       </TreeBranch>
                     </TreeNode>
                   ))}

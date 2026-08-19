@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { Plus, Trash2, Upload } from 'lucide-react'
 import { useAdminLocale } from '@/components/admin-locale-provider'
 import { AdminImagePicker } from '@/components/admin-image-picker'
+import type { PageCategory } from '@/lib/page-categories'
 
 export type FeatureCardForm = {
   accent: string
@@ -41,7 +42,7 @@ export type LocaleFormData = {
 
 export type PageMetaForm = {
   slug: string
-  category: 'solution' | 'industry'
+  category: PageCategory
   status: 'published' | 'draft'
 }
 
@@ -251,11 +252,13 @@ export function AdminPageForm({
               className={fieldClass()}
               value={meta.category}
               onChange={(e) =>
-                onMetaChange({ ...meta, category: e.target.value as 'solution' | 'industry' })
+                onMetaChange({ ...meta, category: e.target.value as PageCategory })
               }
             >
               <option value="solution">{t('common.solution')}</option>
               <option value="industry">{t('common.industry')}</option>
+              <option value="product">{t('common.product')}</option>
+              <option value="case-study">{t('common.caseStudy')}</option>
             </select>
           </Label>
           <Label label={t('common.status')}>

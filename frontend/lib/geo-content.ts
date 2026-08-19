@@ -168,20 +168,22 @@ function contactBlock(settings: GeoSiteSettings) {
 function pageLinks(pages: GeoPageRef[], site: string) {
   const solutions = pages.filter((p) => p.category === 'solution')
   const industries = pages.filter((p) => p.category === 'industry')
+  const products = pages.filter((p) => p.category === 'product')
+  const caseStudies = pages.filter((p) => p.category === 'case-study')
   const lines: string[] = []
 
-  if (solutions.length) {
-    lines.push('Solutions:')
-    for (const p of solutions) {
+  const pushGroup = (label: string, list: GeoPageRef[]) => {
+    if (!list.length) return
+    lines.push(`${label}:`)
+    for (const p of list) {
       lines.push(`- ${p.title}: ${site}/en/${p.slug}`)
     }
   }
-  if (industries.length) {
-    lines.push('Industries:')
-    for (const p of industries) {
-      lines.push(`- ${p.title}: ${site}/en/${p.slug}`)
-    }
-  }
+
+  pushGroup('Solutions', solutions)
+  pushGroup('Industries', industries)
+  pushGroup('Products', products)
+  pushGroup('Case studies', caseStudies)
   return lines.join('\n')
 }
 

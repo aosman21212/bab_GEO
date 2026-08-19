@@ -18,7 +18,7 @@ pagesRouter.post('/', requireAuth, async (req, res) => {
         .string()
         .min(1)
         .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
-      category: z.enum(['solution', 'industry']),
+      category: z.enum(['solution', 'industry', 'product', 'case-study']),
       status: z.enum(['published', 'draft']).optional(),
       locales: z.object({
         en: z.record(z.unknown()),
@@ -105,7 +105,7 @@ pagesRouter.get('/:slug', async (req, res) => {
 pagesRouter.put('/:slug', requireAuth, async (req, res) => {
   const parsed = z
     .object({
-      category: z.enum(['solution', 'industry']).optional(),
+      category: z.enum(['solution', 'industry', 'product', 'case-study']).optional(),
       status: z.enum(['published', 'draft']).optional(),
       locales: z
         .object({

@@ -6,11 +6,16 @@ import { useRouter } from 'next/navigation'
 import { Pencil, Plus, Search } from 'lucide-react'
 import { AdminShell } from '@/components/admin-shell'
 import { useAdminLocale } from '@/components/admin-locale-provider'
+import {
+  categoryCommonKey,
+  PAGE_CATEGORIES,
+  type PageCategory,
+} from '@/lib/page-categories'
 
 type PageDoc = {
   _id: string
   slug: string
-  category: 'solution' | 'industry'
+  category: PageCategory
   status?: 'published' | 'draft'
   locales: {
     en?: { metaTitle?: string; heroHeading?: string; eyebrow?: string }
@@ -18,7 +23,7 @@ type PageDoc = {
   }
 }
 
-type Filter = 'all' | 'solution' | 'industry'
+type Filter = 'all' | PageCategory
 
 export default function AdminLibraryPage() {
   const router = useRouter()
@@ -41,11 +46,11 @@ export default function AdminLibraryPage() {
   }, [])
 
   const counts = useMemo(() => {
-    return {
-      all: pages.length,
-      solution: pages.filter((p) => p.category === 'solution').length,
-      industry: pages.filter((p) => p.category === 'industry').length,
+    const next: Record<string, number> = { all: pages.length }
+    for (const cat of PAGE_CATEGORIES) {
+      next[cat] = pages.filter((p) => p.category === cat).length
     }
+    return next
   }, [pages])
 
   const filtered = useMemo(() => {
@@ -67,6 +72,8 @@ export default function AdminLibraryPage() {
     { id: 'all', label: t('common.all'), count: counts.all },
     { id: 'solution', label: t('library.solutions'), count: counts.solution },
     { id: 'industry', label: t('library.industries'), count: counts.industry },
+    { id: 'product', label: t('library.products'), count: counts.product },
+    { id: 'case-study', label: t('library.caseStudies'), count: counts['case-study'] },
   ]
 
   return (
@@ -140,7 +147,7 @@ export default function AdminLibraryPage() {
                   </td>
                   <td className="px-5 py-4">
                     <span className="inline-flex rounded-full bg-[#e8ecf4] px-2.5 py-1 text-xs font-semibold text-navy">
-                      {p.category === 'industry' ? t('common.industry') : t('common.solution')}
+                      {t(`common.${categoryCommonKey(p.category)}`)}
                     </span>
                   </td>
                   <td className="px-5 py-4">

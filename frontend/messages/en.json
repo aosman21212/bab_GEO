@@ -9,6 +9,8 @@
     "omnichannelGroup": "OMNICHANNEL",
     "solutionsGroup": "SOLUTIONS",
     "callCenterGroup": "CALL CENTER",
+    "productsGroup": "PRODUCTS",
+    "caseStudiesGroup": "CASE STUDIES",
     "liveEngagement": "Live Engagement Platform",
     "rcs": "Rich Communication Services",
     "socialMessaging": "Social Media Messaging Integration",
@@ -31,9 +33,7 @@
   "hero": {
     "title": "Empower your business with seamless connectivity and intelligent solutions.",
     "body": "Engage customers across channels, unlock new revenue streams, and enhance experiences with data-driven insights — all supported by AI.",
-    "cta": "Contact Us",
-    "productivityTitle": "Increased Productivity:",
-    "productivityBody": "Simplify complex workflows and enhance operational efficiency."
+    "cta": "Contact Us"
   },
   "works": {
     "title": "Our Works",
@@ -234,7 +234,9 @@
     "body": "Browse every public page on bab.com.sa in one place.",
     "root": "BAB",
     "company": "Company",
-    "solutions": "Solutions"
+    "solutions": "Solutions & content",
+    "products": "Products",
+    "caseStudies": "Case studies"
   },
   "legal": {
     "privacyTitle": "Privacy Policy",
@@ -380,6 +382,8 @@
       "draft": "Draft",
       "solution": "Solution",
       "industry": "Industry",
+      "product": "Product",
+      "caseStudy": "Case study",
       "all": "All",
       "updated": "Updated",
       "added": "Added",
@@ -470,10 +474,12 @@
     },
     "library": {
       "title": "Content Library",
-      "description": "Manage solutions and industry pages displayed on your public website.",
+      "description": "Manage solutions, industries, products, and case study pages displayed on your public website.",
       "addContent": "Add content",
       "solutions": "Solutions",
       "industries": "Industries",
+      "products": "Products",
+      "caseStudies": "Case studies",
       "searchPlaceholder": "Search by title or slug...",
       "empty": "No content matches your filters.",
       "newTitle": "New Content",
@@ -520,7 +526,7 @@
     },
     "geo": {
       "title": "GEO — AI visibility",
-      "description": "GEO helps ChatGPT, Gemini, Copilot, Claude, and Perplexity find and describe BAB as a Saudi connectivity and intelligent solutions company. Files update when you save Site Settings and Content.",
+      "description": "GEO helps ChatGPT, Gemini, Copilot, Claude, Perplexity, DeepSeek, and other AI platforms find and describe BAB as a Saudi connectivity and intelligent solutions company. Files update when you save Site Settings and Content.",
       "checkAll": "Check all links",
       "allOk": "All 6 GEO crawler files are online. AI tools can read your public summary pages.",
       "partialOk": "{ok}/6 crawler files OK. Recheck failed rows or ensure the site is running.",
@@ -552,7 +558,7 @@
       "whatIsBody": "Simple explanation — no extra setup required",
       "seoVsGeo": "SEO vs GEO",
       "seoPoint": "SEO — Google and normal search engines",
-      "geoPoint": "GEO — AI chatbots and AI search (ChatGPT, Gemini, Copilot, Claude, Perplexity)",
+      "geoPoint": "GEO — AI chatbots and AI search (ChatGPT, Gemini, Copilot, Claude, Perplexity, DeepSeek, and more)",
       "howWorks": "How it works",
       "how1": "You update FAQ, SEO, and content in this dashboard",
       "how2": "The website publishes plain-text files for AI bots",

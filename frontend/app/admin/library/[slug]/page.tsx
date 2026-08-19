@@ -12,10 +12,11 @@ import {
   type LocaleFormData,
   type PageMetaForm,
 } from '@/components/admin-page-form'
+import type { PageCategory } from '@/lib/page-categories'
 
 type PageDoc = {
   slug: string
-  category: 'solution' | 'industry'
+  category: PageCategory
   status?: 'published' | 'draft'
   locales: {
     en?: Record<string, unknown>

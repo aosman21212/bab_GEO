@@ -5,7 +5,8 @@ import Image from 'next/image'
 import { AnimatePresence, motion } from 'motion/react'
 import { ArrowRight } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import { Reveal } from './reveal'
+import { Reveal, StaggerGroup, StaggerItem } from './reveal'
+import { CountUp } from './motion-utils'
 
 const BOOK_DEMO_WHATSAPP =
   'https://api.whatsapp.com/send?phone=966920035161&text=Book+a+demo'
@@ -18,13 +19,23 @@ const industryMeta = [
   { id: 'retail', image: '/images/industries/retail.png' },
 ] as const
 
+const milestones = [
+  { key: 'sms', year: 1999 },
+  { key: 'vas', year: 2004 },
+  { key: 'language', year: 2006 },
+  { key: 'ott', year: 2015 },
+  { key: 'nlu', year: 2018 },
+  { key: 'genai', year: 2021 },
+] as const
+
 export function IndustriesSection() {
   const t = useTranslations('industries')
+  const ts = useTranslations('stats')
   const [active, setActive] = useState<(typeof industryMeta)[number]['id']>('food')
   const current = industryMeta.find((i) => i.id === active) ?? industryMeta[0]
 
   return (
-    <section className="py-10 md:py-16">
+    <section className="py-12 md:py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <Reveal className="mx-auto max-w-2xl text-center">
           <span className="text-sm font-bold text-primary">{t('eyebrow')}</span>
@@ -32,7 +43,7 @@ export function IndustriesSection() {
         </Reveal>
 
         <Reveal className="mt-8">
-          <div className="flex flex-wrap justify-center gap-2 border-b border-border pb-1">
+          <div className="flex flex-wrap justify-center gap-1 border-b border-border sm:gap-2">
             {industryMeta.map((item) => {
               const isActive = item.id === active
               return (
@@ -89,6 +100,23 @@ export function IndustriesSection() {
             </motion.div>
           </AnimatePresence>
         </div>
+
+        <Reveal className="mt-12 md:mt-14">
+          <StaggerGroup className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {milestones.map((m) => (
+              <StaggerItem
+                key={m.key}
+                hoverLift
+                className="rounded-2xl border border-border bg-white px-5 py-6 text-center shadow-sm"
+              >
+                <h3 className="text-sm font-semibold text-navy md:text-base">{ts(m.key)}</h3>
+                <p className="mt-2 text-3xl font-extrabold text-primary md:text-4xl">
+                  <CountUp to={m.year} />
+                </p>
+              </StaggerItem>
+            ))}
+          </StaggerGroup>
+        </Reveal>
       </div>
     </section>
   )

@@ -1,4 +1,6 @@
-﻿export type FeatureCard = {
+import type { PageCategory } from '@/lib/page-categories'
+
+export type FeatureCard = {
   accent: string
   title: string
   points: string[]
@@ -11,7 +13,7 @@ export type Benefit = {
 
 export type PageContent = {
   slug: string
-  category: 'solution' | 'industry'
+  category: PageCategory
   metaTitle: string
   metaDescription: string
   eyebrow: string

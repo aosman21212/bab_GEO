@@ -1,14 +1,17 @@
 import { solutionGroups } from '@/lib/nav-tree'
+import { normalizePageCategory, type PageCategory } from '@/lib/page-categories'
 
 export type CmsNavLink = {
   href: string
   label: string
-  category: 'solution' | 'industry'
+  category: PageCategory
 }
 
 export type CmsNavExtras = {
   solutions: CmsNavLink[]
   industries: CmsNavLink[]
+  products: CmsNavLink[]
+  caseStudies: CmsNavLink[]
 }
 
 type PublishedMeta = {
@@ -24,7 +27,7 @@ const staticSlugs = new Set(
 )
 
 export function emptyCmsNavExtras(): CmsNavExtras {
-  return { solutions: [], industries: [] }
+  return { solutions: [], industries: [], products: [], caseStudies: [] }
 }
 
 export function partitionCmsNavExtras(
@@ -38,12 +41,15 @@ export function partitionCmsNavExtras(
       locale === 'ar'
         ? String(page.titleAr || page.titleEn || page.title || page.slug)
         : String(page.titleEn || page.title || page.slug)
+    const category = normalizePageCategory(page.category)
     const link: CmsNavLink = {
       href: `/${page.slug}`,
       label,
-      category: page.category === 'industry' ? 'industry' : 'solution',
+      category,
     }
-    if (link.category === 'industry') extras.industries.push(link)
+    if (category === 'industry') extras.industries.push(link)
+    else if (category === 'product') extras.products.push(link)
+    else if (category === 'case-study') extras.caseStudies.push(link)
     else extras.solutions.push(link)
   }
   return extras

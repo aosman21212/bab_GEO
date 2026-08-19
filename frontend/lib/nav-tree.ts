@@ -32,6 +32,14 @@ export const solutionGroups: NavGroup[] = [
       { labelKey: 'retail', href: '/retail-support-solutions' },
     ],
   },
+  {
+    labelKey: 'productsGroup',
+    items: [],
+  },
+  {
+    labelKey: 'caseStudiesGroup',
+    items: [],
+  },
 ]
 
 /** Company links for HTML sitemap (footer keys for labels) */

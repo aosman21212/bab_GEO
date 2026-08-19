@@ -55,7 +55,11 @@ export const Testimonial = mongoose.model('Testimonial', testimonialSchema)
 const pageSchema = new Schema(
   {
     slug: { type: String, required: true, unique: true, trim: true },
-    category: { type: String, enum: ['solution', 'industry'], required: true },
+    category: {
+      type: String,
+      enum: ['solution', 'industry', 'product', 'case-study'],
+      required: true,
+    },
     status: { type: String, enum: ['published', 'draft'], default: 'published' },
     locales: {
       en: { type: Schema.Types.Mixed, required: true },

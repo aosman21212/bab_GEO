@@ -61,19 +61,28 @@ export function SiteHeader() {
   }, [solutionsOpen])
 
   const menuGroups = useMemo(() => {
-    return solutionGroups.map((group) => {
-      let extras: CmsNavLink[] = []
-      if (group.labelKey === 'solutionsGroup') extras = cmsExtras.solutions
-      if (group.labelKey === 'callCenterGroup') extras = cmsExtras.industries
-      return { ...group, extras }
-    })
+    return solutionGroups
+      .map((group) => {
+        let extras: CmsNavLink[] = []
+        if (group.labelKey === 'solutionsGroup') extras = cmsExtras.solutions
+        if (group.labelKey === 'callCenterGroup') extras = cmsExtras.industries
+        if (group.labelKey === 'productsGroup') extras = cmsExtras.products
+        if (group.labelKey === 'caseStudiesGroup') extras = cmsExtras.caseStudies
+        return { ...group, extras }
+      })
+      .filter((group) => group.items.length > 0 || group.extras.length > 0)
   }, [cmsExtras])
 
   const mobileLinks = useMemo(() => {
     const staticItems = solutionGroups.flatMap((g) =>
       g.items.map((item) => ({ href: item.href, label: t(item.labelKey as 'omnichannel') })),
     )
-    const dynamicItems = [...cmsExtras.solutions, ...cmsExtras.industries].map((item) => ({
+    const dynamicItems = [
+      ...cmsExtras.solutions,
+      ...cmsExtras.industries,
+      ...cmsExtras.products,
+      ...cmsExtras.caseStudies,
+    ].map((item) => ({
       href: item.href,
       label: item.label,
     }))
@@ -120,7 +129,12 @@ export function SiteHeader() {
                   transition={{ duration: 0.15 }}
                   className="absolute left-1/2 top-full z-50 w-[min(920px,92vw)] -translate-x-1/2 pt-3"
                 >
-                  <div className="grid grid-cols-[1.1fr_1fr_1fr_1fr] gap-3 rounded-2xl border border-border bg-background p-4 shadow-xl">
+                  <div
+                    className="grid gap-3 rounded-2xl border border-border bg-background p-4 shadow-xl"
+                    style={{
+                      gridTemplateColumns: `minmax(160px,1.1fr) repeat(${menuGroups.length}, minmax(120px,1fr))`,
+                    }}
+                  >
                     <div className="relative min-h-[220px] overflow-hidden rounded-xl bg-muted">
                       <AnimatePresence mode="wait">
                         <motion.div

@@ -1,10 +1,14 @@
 import Image from 'next/image'
 import { ArrowRight, Check } from 'lucide-react'
+import { getTranslations } from 'next-intl/server'
 import type { PageContent } from '@/lib/site-content'
 import { Link } from '@/i18n/navigation'
 import { Reveal, StaggerGroup, StaggerItem } from './reveal'
 
-export function InnerPage({ page }: { page: PageContent }) {
+export async function InnerPage({ page }: { page: PageContent }) {
+  const t = await getTranslations('common')
+  const cta = page.ctaLabel?.trim() || t('contactUs')
+
   return (
     <div className="flex flex-col">
       <section className="bg-secondary">
@@ -21,7 +25,7 @@ export function InnerPage({ page }: { page: PageContent }) {
               href="/contact-us"
               className="mt-8 inline-flex items-center gap-2 bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
             >
-              {page.ctaLabel}
+              {cta}
               <ArrowRight className="h-4 w-4" />
             </Link>
           </Reveal>
@@ -147,7 +151,7 @@ export function InnerPage({ page }: { page: PageContent }) {
           <div className="relative max-w-2xl px-6 py-14 md:px-12 md:py-20">
             <Reveal>
               <p className="text-sm font-bold uppercase tracking-wider text-primary">
-                Real-World Impact
+                {t('realWorldImpact')}
               </p>
               <h2 className="mt-4 text-balance text-2xl font-extrabold text-white md:text-4xl">
                 {page.impact.heading}
@@ -157,7 +161,7 @@ export function InnerPage({ page }: { page: PageContent }) {
                 href="/contact-us"
                 className="mt-8 inline-flex items-center gap-2 bg-primary px-8 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
               >
-                Contact Us
+                {t('contactUs')}
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </Reveal>

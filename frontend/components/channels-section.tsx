@@ -25,32 +25,30 @@ export function ChannelsSection() {
   return (
     <section id="solutions" className="py-16 md:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="grid gap-6 lg:grid-cols-2 lg:items-end">
-          <Reveal>
-            <h2 className="text-3xl font-extrabold leading-tight text-navy md:text-4xl">
-              {t.rich('headline', {
-                accent: (chunks) => <span className="text-primary">{chunks}</span>,
-                muted: (chunks) => <span className="text-muted-foreground">{chunks}</span>,
-                br: () => <br />,
-              })}
-            </h2>
-          </Reveal>
-          <Reveal delay={0.1}>
-            <p className="leading-relaxed text-muted-foreground">{t('body')}</p>
-          </Reveal>
-        </div>
+        <Reveal className="mx-auto max-w-3xl text-center">
+          <h2 className="text-3xl font-extrabold leading-tight text-navy md:text-4xl lg:text-5xl">
+            {t.rich('headline', {
+              accent: (chunks) => <span className="text-primary">{chunks}</span>,
+              muted: (chunks) => <span className="text-navy">{chunks}</span>,
+              br: () => <br />,
+            })}
+          </h2>
+          <p className="mt-4 text-base leading-relaxed text-muted-foreground">{t('body')}</p>
+        </Reveal>
 
-        <StaggerGroup className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+        <StaggerGroup className="mt-12 grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-6 md:gap-4">
           {channelKeys.map((c) => (
             <StaggerItem
               key={c.key}
               hoverLift
-              className="flex flex-col items-center justify-center gap-3 rounded-2xl bg-muted/70 px-4 py-6"
+              className="flex flex-col items-center justify-center gap-2.5 rounded-2xl bg-muted/50 px-3 py-5 transition-colors hover:bg-muted"
             >
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-background shadow-sm">
-                <Image src={c.icon} alt="" width={32} height={32} className="h-8 w-8 object-contain" />
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-background shadow-sm md:h-14 md:w-14">
+                <Image src={c.icon} alt="" width={28} height={28} className="h-7 w-7 object-contain" />
               </div>
-              <span className="text-center text-xs font-semibold text-navy md:text-sm">{t(c.key)}</span>
+              <span className="text-center text-[11px] font-semibold text-navy sm:text-xs md:text-sm">
+                {t(c.key)}
+              </span>
             </StaggerItem>
           ))}
         </StaggerGroup>
