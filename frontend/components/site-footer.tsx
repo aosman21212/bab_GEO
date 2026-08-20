@@ -12,25 +12,14 @@ import {
   XIcon,
   YoutubeIcon,
 } from './social-icons'
+import { BAB_SOCIAL_URLS } from '@/lib/social-profiles'
 
 const socials = [
-  {
-    icon: FacebookIcon,
-    label: 'Facebook',
-    href: 'https://www.facebook.com/profile.php?id=100086215290185',
-  },
-  {
-    icon: YoutubeIcon,
-    label: 'YouTube',
-    href: 'https://www.youtube.com/channel/UCUMxO0j0IZdnLLRd1QUa6Zw',
-  },
-  {
-    icon: LinkedinIcon,
-    label: 'LinkedIn',
-    href: 'https://www.linkedin.com/company/bab-international-corp-for-specialized-services',
-  },
-  { icon: XIcon, label: 'X', href: 'https://x.com/babportal' },
-  { icon: InstagramIcon, label: 'Instagram', href: 'https://www.instagram.com/bab.portal/' },
+  { icon: FacebookIcon, label: 'Facebook', href: BAB_SOCIAL_URLS[0] },
+  { icon: YoutubeIcon, label: 'YouTube', href: BAB_SOCIAL_URLS[1] },
+  { icon: LinkedinIcon, label: 'LinkedIn', href: BAB_SOCIAL_URLS[2] },
+  { icon: XIcon, label: 'X', href: BAB_SOCIAL_URLS[3] },
+  { icon: InstagramIcon, label: 'Instagram', href: BAB_SOCIAL_URLS[4] },
 ]
 
 const MAPS_URL = 'https://maps.app.goo.gl/s4Lvq93xyFv5QEpW7?g_st=awb'

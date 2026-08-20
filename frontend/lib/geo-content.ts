@@ -1,5 +1,7 @@
+import type { Metadata } from 'next'
 import { allPages } from '@/lib/site-content'
 import { fetchSiteContent, getApiUrl } from '@/lib/api'
+import { BAB_SOCIAL_URLS } from '@/lib/social-profiles'
 
 export type GeoFaq = { question: string; answer: string }
 
@@ -23,7 +25,12 @@ export type GeoPageRef = {
   slug: string
   category: string
   title: string
+  titleEn?: string
+  titleAr?: string
 }
+
+export const GEO_OG_IMAGE = '/images/bab-hero.png'
+export const GEO_LOGO_PATH = '/images/logo-bab.png'
 
 
 
@@ -114,10 +121,24 @@ const fallbackSettings: GeoSiteSettings = {
   ],
 }
 
+export function mergeGeoSettings(partial?: Partial<GeoSiteSettings> | null): GeoSiteSettings {
+  const settings = partial || {}
+  return {
+    ...fallbackSettings,
+    ...settings,
+    homepageFaqsEn: settings.homepageFaqsEn?.length
+      ? settings.homepageFaqsEn
+      : fallbackSettings.homepageFaqsEn,
+    homepageFaqsAr: settings.homepageFaqsAr?.length
+      ? settings.homepageFaqsAr
+      : fallbackSettings.homepageFaqsAr,
+  }
+}
+
 export async function loadGeoSettings(): Promise<GeoSiteSettings> {
   const remote = await fetchSiteContent('en')
   const settings = (remote?.siteSettings as GeoSiteSettings | undefined) || {}
-  return { ...fallbackSettings, ...settings }
+  return mergeGeoSettings(settings)
 }
 
 export async function loadPublishedPages(): Promise<GeoPageRef[]> {
@@ -137,6 +158,8 @@ export async function loadPublishedPages(): Promise<GeoPageRef[]> {
     slug: page.slug,
     category: page.category,
     title: page.metaTitle || page.heroHeading,
+    titleEn: page.metaTitle || page.heroHeading,
+    titleAr: page.metaTitle || page.heroHeading,
   }))
 }
 
@@ -158,11 +181,25 @@ function contactBlock(settings: GeoSiteSettings) {
   return [
     `Email: ${settings.email || ''}`.trim(),
     `Phone: ${settings.phone || ''}`.trim(),
-    `Address: ${settings.addressEn || ''}`.trim(),
-    `Hours: ${settings.hoursEn || ''}`.trim(),
+    `Address (EN): ${settings.addressEn || ''}`.trim(),
+    `Address (AR): ${settings.addressAr || ''}`.trim(),
+    `Hours (EN): ${settings.hoursEn || ''}`.trim(),
+    `Hours (AR): ${settings.hoursAr || ''}`.trim(),
   ]
-    .filter((line) => !line.endsWith(':'))
+    .filter((line) => !/:\s*$/.test(line))
     .join('\n')
+}
+
+function seoBlock(settings: GeoSiteSettings) {
+  return [
+    '## SEO (English)',
+    settings.seoTitleEn || 'BAB International Corp',
+    settings.seoDescriptionEn || '',
+    '',
+    '## SEO (Arabic)',
+    settings.seoTitleAr || 'باب الدولية',
+    settings.seoDescriptionAr || '',
+  ].join('\n')
 }
 
 function pageLinks(pages: GeoPageRef[], site: string) {
@@ -176,7 +213,10 @@ function pageLinks(pages: GeoPageRef[], site: string) {
     if (!list.length) return
     lines.push(`${label}:`)
     for (const p of list) {
-      lines.push(`- ${p.title}: ${site}/en/${p.slug}`)
+      const titleEn = p.titleEn || p.title
+      const titleAr = p.titleAr || titleEn
+      lines.push(`- EN — ${titleEn}: ${site}/en/${p.slug}`)
+      lines.push(`- AR — ${titleAr}: ${site}/ar/${p.slug}`)
     }
   }
 
@@ -194,9 +234,7 @@ export async function buildLlmsTxt(): Promise<string> {
   return [
     '# BAB International Corp',
     '',
-    settings.seoTitleEn || 'BAB International Corp',
-    '',
-    settings.seoDescriptionEn || '',
+    seoBlock(settings),
     '',
     '## About',
     'BAB International Corp is a Riyadh-based enterprise technology company delivering seamless connectivity and intelligent customer-experience solutions across Saudi Arabia and the MENA region.',
@@ -210,8 +248,10 @@ export async function buildLlmsTxt(): Promise<string> {
     `- Home: ${site}`,
     `- English: ${site}/en`,
     `- Arabic: ${site}/ar`,
-    `- About: ${site}/en/about-us`,
-    `- Contact: ${site}/en/contact-us`,
+    `- About (EN): ${site}/en/about-us`,
+    `- About (AR): ${site}/ar/about-us`,
+    `- Contact (EN): ${site}/en/contact-us`,
+    `- Contact (AR): ${site}/ar/contact-us`,
     '',
     pageLinks(pages, site),
     '',
@@ -241,9 +281,7 @@ export async function buildLlmsFullTxt(): Promise<string> {
   return [
     '# BAB International Corp — Full summary for AI tools',
     '',
-    settings.seoTitleEn || 'BAB International Corp',
-    '',
-    settings.seoDescriptionEn || '',
+    seoBlock(settings),
     '',
     '## Contact',
     contactBlock(settings),
@@ -263,10 +301,11 @@ export async function buildLlmsFullTxt(): Promise<string> {
 export async function buildLlmsSmallTxt(): Promise<string> {
   const settings = await loadGeoSettings()
   const site = getSiteUrl()
-  const summary =
+  const summaryEn =
     settings.seoDescriptionEn ||
     'BAB International Corp provides seamless connectivity and intelligent solutions in Saudi Arabia.'
-  return `BAB International Corp — ${summary} Site: ${site} Contact: ${settings.email || ''} · ${settings.phone || ''}\n`
+  const summaryAr = settings.seoDescriptionAr || summaryEn
+  return `BAB International Corp — EN: ${summaryEn} AR: ${summaryAr} Sites: ${site}/en · ${site}/ar Contact: ${settings.email || ''} · ${settings.phone || ''}\n`
 }
 
 export async function buildAiTxt(): Promise<string> {
@@ -279,7 +318,8 @@ export async function buildAiTxt(): Promise<string> {
     'Allow: /',
     '',
     `# Preferred citation name: BAB International Corp`,
-    `# Description: ${settings.seoDescriptionEn || ''}`,
+    `# Description (EN): ${settings.seoDescriptionEn || ''}`,
+    `# Description (AR): ${settings.seoDescriptionAr || ''}`,
     '',
     `llms: ${site}/llms.txt`,
     `llms-full: ${site}/llms-full.txt`,
@@ -292,11 +332,21 @@ export async function buildAiTxt(): Promise<string> {
   ].join('\n')
 }
 
+export function geoCrawlerUrls(): string[] {
+  const site = getSiteUrl()
+  return [
+    `${site}/llms.txt`,
+    `${site}/llms-full.txt`,
+    `${site}/llms-small.txt`,
+    `${site}/.well-known/ai.txt`,
+  ]
+}
+
 export async function collectSitemapUrls(): Promise<string[]> {
   const pages = await loadPublishedPages()
   const site = getSiteUrl()
   const staticPaths = ['', 'about-us', 'contact-us', 'privacy-policy', 'terms-conditions', 'sitemap']
-  const urls: string[] = [site, `${site}/llms.txt`]
+  const urls: string[] = [site, ...geoCrawlerUrls()]
 
   for (const locale of ['en', 'ar'] as const) {
     for (const path of staticPaths) {
@@ -310,22 +360,55 @@ export async function collectSitemapUrls(): Promise<string[]> {
   return Array.from(new Set(urls))
 }
 
-export function buildOrganizationJsonLd(settings: GeoSiteSettings) {
+export function buildOrganizationJsonLd(
+  settings: GeoSiteSettings,
+  locale: 'en' | 'ar' = 'en',
+) {
   const site = getSiteUrl()
+  const description =
+    locale === 'ar'
+      ? settings.seoDescriptionAr || settings.seoDescriptionEn
+      : settings.seoDescriptionEn || settings.seoDescriptionAr
+  const street =
+    locale === 'ar'
+      ? settings.addressAr || settings.addressEn
+      : settings.addressEn || settings.addressAr
+
   return {
     '@context': 'https://schema.org',
     '@type': 'Organization',
+    '@id': `${site}/#organization`,
     name: 'BAB International Corp',
     url: site,
+    logo: `${site}${GEO_LOGO_PATH}`,
     email: settings.email,
     telephone: settings.phone,
+    sameAs: [...BAB_SOCIAL_URLS],
     address: {
       '@type': 'PostalAddress',
-      streetAddress: settings.addressEn,
+      streetAddress: street,
       addressLocality: 'Riyadh',
       addressCountry: 'SA',
     },
-    description: settings.seoDescriptionEn,
+    description,
+  }
+}
+
+export function buildWebSiteJsonLd(settings: GeoSiteSettings, locale: 'en' | 'ar') {
+  const site = getSiteUrl()
+  const name =
+    locale === 'ar'
+      ? settings.seoTitleAr || 'باب الدولية'
+      : settings.seoTitleEn || 'BAB International Corp'
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': `${site}/#website`,
+    name,
+    url: localePath(locale, ''),
+    inLanguage: locale === 'ar' ? 'ar-SA' : 'en-US',
+    publisher: { '@id': `${site}/#organization` },
   }
 }
 
@@ -342,6 +425,51 @@ export function buildFaqPageJsonLd(faqs: GeoFaq[]) {
         text: f.answer,
       },
     })),
+  }
+}
+
+export function buildPageMetadata(opts: {
+  locale: string
+  title: string
+  description: string
+  path?: string
+}): Metadata {
+  const locale = opts.locale === 'ar' ? 'ar' : 'en'
+  const site = getSiteUrl()
+  const path = (opts.path || '').replace(/^\//, '')
+  const canonical = path ? `${site}/${locale}/${path}` : `${site}/${locale}`
+  const enUrl = path ? `${site}/en/${path}` : `${site}/en`
+  const arUrl = path ? `${site}/ar/${path}` : `${site}/ar`
+  const ogImage = `${site}${GEO_OG_IMAGE}`
+
+  return {
+    metadataBase: new URL(site),
+    title: opts.title,
+    description: opts.description,
+    alternates: {
+      canonical,
+      languages: {
+        en: enUrl,
+        ar: arUrl,
+        'x-default': enUrl,
+      },
+    },
+    openGraph: {
+      title: opts.title,
+      description: opts.description,
+      url: canonical,
+      siteName: 'BAB International Corp',
+      locale: locale === 'ar' ? 'ar_SA' : 'en_US',
+      alternateLocale: locale === 'ar' ? ['en_US'] : ['ar_SA'],
+      type: 'website',
+      images: [{ url: ogImage, width: 1200, height: 630, alt: 'BAB International Corp' }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: opts.title,
+      description: opts.description,
+      images: [ogImage],
+    },
   }
 }
 

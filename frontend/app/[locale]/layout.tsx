@@ -10,9 +10,10 @@ import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
 import { MaintenanceScreen } from '@/components/maintenance-screen'
 import {
-  buildFaqPageJsonLd,
   buildOrganizationJsonLd,
-  faqsForLocale,
+  buildPageMetadata,
+  buildWebSiteJsonLd,
+  mergeGeoSettings,
   type GeoSiteSettings,
 } from '@/lib/geo-content'
 import '../globals.css'
@@ -52,23 +53,17 @@ export async function generateMetadata({
   }
   setRequestLocale(locale)
   const messages = await getMessages()
-  const siteSettings = (messages as { siteSettings?: GeoSiteSettings }).siteSettings || {}
+  const siteSettings = mergeGeoSettings(
+    (messages as { siteSettings?: GeoSiteSettings }).siteSettings,
+  )
   const title =
-    locale === 'ar'
-      ? siteSettings.seoTitleAr
-      : siteSettings.seoTitleEn
+    (locale === 'ar' ? siteSettings.seoTitleAr : siteSettings.seoTitleEn) ||
+    'BAB International Corp — Seamless Connectivity & Intelligent Solutions'
   const description =
-    locale === 'ar'
-      ? siteSettings.seoDescriptionAr
-      : siteSettings.seoDescriptionEn
+    (locale === 'ar' ? siteSettings.seoDescriptionAr : siteSettings.seoDescriptionEn) ||
+    'Empower your business with seamless connectivity and intelligent solutions.'
 
-  return {
-    title:
-      title || 'BAB International Corp — Seamless Connectivity & Intelligent Solutions',
-    description:
-      description ||
-      'Empower your business with seamless connectivity and intelligent solutions.',
-  }
+  return buildPageMetadata({ locale, title, description })
 }
 
 export default async function LocaleLayout({
@@ -84,12 +79,14 @@ export default async function LocaleLayout({
   setRequestLocale(locale)
   const messages = await getMessages()
   const dir = locale === 'ar' ? 'rtl' : 'ltr'
-  const siteSettings = (messages as { siteSettings?: GeoSiteSettings }).siteSettings || {}
+  const siteSettings = mergeGeoSettings(
+    (messages as { siteSettings?: GeoSiteSettings }).siteSettings,
+  )
   const maintenance = Boolean(siteSettings.maintenanceMode)
+  const loc = locale === 'ar' ? 'ar' : 'en'
 
-  const orgLd = buildOrganizationJsonLd(siteSettings)
-  const faqs = faqsForLocale(siteSettings, locale === 'ar' ? 'ar' : 'en')
-  const faqLd = buildFaqPageJsonLd(faqs)
+  const orgLd = buildOrganizationJsonLd(siteSettings, loc)
+  const webLd = buildWebSiteJsonLd(siteSettings, loc)
 
   return (
     <html
@@ -108,12 +105,10 @@ export default async function LocaleLayout({
               type="application/ld+json"
               dangerouslySetInnerHTML={{ __html: JSON.stringify(orgLd) }}
             />
-            {faqLd ? (
-              <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }}
-              />
-            ) : null}
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{ __html: JSON.stringify(webLd) }}
+            />
           </>
         ) : null}
         <NextIntlClientProvider messages={messages}>

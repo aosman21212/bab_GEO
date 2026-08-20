@@ -4,6 +4,7 @@ import { setRequestLocale } from 'next-intl/server'
 import { InnerPage } from '@/components/inner-page'
 import { allPages } from '@/lib/site-content'
 import { fetchCmsPage } from '@/lib/cms-pages'
+import { buildPageMetadata } from '@/lib/geo-content'
 import { routing, type Locale } from '@/i18n/routing'
 
 export const revalidate = 60
@@ -22,10 +23,12 @@ export async function generateMetadata({
   const { slug, locale } = await params
   const page = await fetchCmsPage(slug, locale as Locale)
   if (!page) return {}
-  return {
+  return buildPageMetadata({
+    locale,
     title: `${page.metaTitle} — BAB International Corp`,
     description: page.metaDescription,
-  }
+    path: slug,
+  })
 }
 
 export default async function SlugPage({

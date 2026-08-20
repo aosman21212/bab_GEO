@@ -140,6 +140,10 @@
   "testimonials": {
     "title": "What Our <accent>Clients</accent> Say"
   },
+  "faq": {
+    "eyebrow": "Got questions?",
+    "title": "Frequently asked questions"
+  },
   "impact": {
     "eyebrow": "Real-World Impact",
     "title": "Ignite Possibility Through Connection & Intelligence Transform how you engage, grow, and thrive.",
