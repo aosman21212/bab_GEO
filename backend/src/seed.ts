@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url'
 import bcrypt from 'bcryptjs'
 import { connectMongo } from './db.js'
 import { env } from './config.js'
-import { User, SiteContent, Partner, Testimonial, Page } from './models.js'
+import { User, SiteContent, Partner, Testimonial, Page, Job } from './models.js'
 import { cacheDel } from './cache.js'
 import { ensureRedis } from './cache.js'
 
@@ -177,6 +177,66 @@ async function seedPages() {
   console.log(`[seed] pages: ${pages.length}`)
 }
 
+const jobsSeed = [
+  {
+    slug: 'senior-customer-success-manager',
+    titleEn: 'Senior Customer Success Manager',
+    titleAr: 'مدير نجاح العملاء الأول',
+    departmentEn: 'Customer Success',
+    departmentAr: 'نجاح العملاء',
+    locationEn: 'Riyadh, Saudi Arabia',
+    locationAr: 'الرياض، المملكة العربية السعودية',
+    employmentType: 'full-time' as const,
+    descriptionEn:
+      'Own enterprise customer relationships for BAB omnichannel and contact center platforms. Drive adoption, renewals, and measurable CX outcomes across Saudi and MENA accounts.',
+    descriptionAr:
+      'إدارة علاقات عملاء المؤسسات لمنصات باب للقنوات المتعددة ومراكز الاتصال. دفع التبني والتجديد وتحقيق نتائج ملموسة في تجربة العملاء عبر حسابات السعودية ومنطقة الشرق الأوسط وشمال أفريقيا.',
+    order: 0,
+  },
+  {
+    slug: 'solutions-engineer',
+    titleEn: 'Solutions Engineer',
+    titleAr: 'مهندس حلول',
+    departmentEn: 'Pre-Sales',
+    departmentAr: 'ما قبل البيع',
+    locationEn: 'Riyadh, Saudi Arabia',
+    locationAr: 'الرياض، المملكة العربية السعودية',
+    employmentType: 'full-time' as const,
+    descriptionEn:
+      'Design and demo BAB communication solutions for enterprise prospects. Partner with sales on technical discovery, PoCs, and solution architecture.',
+    descriptionAr:
+      'تصميم وعرض حلول باب للاتصالات للمؤسسات. التعاون مع المبيعات في الاكتشاف التقني وإثبات المفهوم وهندسة الحلول.',
+    order: 1,
+  },
+  {
+    slug: 'frontend-developer-internship',
+    titleEn: 'Frontend Developer (Internship)',
+    titleAr: 'مطور واجهات أمامية (تدريب)',
+    departmentEn: 'Engineering',
+    departmentAr: 'الهندسة',
+    locationEn: 'Riyadh, Saudi Arabia',
+    locationAr: 'الرياض، المملكة العربية السعودية',
+    employmentType: 'internship' as const,
+    descriptionEn:
+      'Join the product team to build bilingual web experiences for BAB platforms. Learn modern React/Next.js practices in a production environment.',
+    descriptionAr:
+      'انضم إلى فريق المنتج لبناء تجارب ويب ثنائية اللغة لمنصات باب. تعلّم ممارسات React/Next.js الحديثة في بيئة إنتاج.',
+    order: 2,
+  },
+]
+
+async function seedJobs() {
+  for (const job of jobsSeed) {
+    await Job.findOneAndUpdate(
+      { slug: job.slug },
+      { ...job, status: 'open' },
+      { upsert: true, new: true },
+    )
+  }
+  await cacheDel('jobs:open')
+  console.log(`[seed] jobs: ${jobsSeed.length}`)
+}
+
 async function seedAdmin() {
   const passwordHash = await bcrypt.hash(env.adminPassword, 10)
   await User.findOneAndUpdate(
@@ -195,6 +255,7 @@ async function main() {
   await seedPartners()
   await seedTestimonials()
   await seedPages()
+  await seedJobs()
   console.log('[seed] done')
   process.exit(0)
 }

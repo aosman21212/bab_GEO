@@ -47,6 +47,7 @@ export const companySitemapLinks: { footerKey: string; href: string }[] = [
   { footerKey: 'home', href: '/' },
   { footerKey: 'about', href: '/about-us' },
   { footerKey: 'successStories', href: '/success-stories' },
+  { footerKey: 'careers', href: '/careers' },
   { footerKey: 'contact', href: '/contact-us' },
   { footerKey: 'privacy', href: '/privacy-policy' },
   { footerKey: 'terms', href: '/terms-conditions' },

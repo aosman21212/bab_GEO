@@ -19,3 +19,5 @@ frontend/.next/
 backend/dist/
 frontend/public/uploads/*
 !frontend/public/uploads/.gitkeep
+backend/uploads/cvs/*
+!backend/uploads/cvs/.gitkeep

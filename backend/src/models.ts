@@ -85,3 +85,45 @@ const inquirySchema = new Schema(
 )
 
 export const Inquiry = mongoose.model('Inquiry', inquirySchema)
+
+const jobSchema = new Schema(
+  {
+    slug: { type: String, required: true, unique: true, trim: true },
+    titleEn: { type: String, required: true, trim: true },
+    titleAr: { type: String, required: true, trim: true },
+    departmentEn: { type: String, trim: true, default: '' },
+    departmentAr: { type: String, trim: true, default: '' },
+    locationEn: { type: String, trim: true, default: '' },
+    locationAr: { type: String, trim: true, default: '' },
+    employmentType: {
+      type: String,
+      enum: ['full-time', 'part-time', 'contract', 'internship'],
+      default: 'full-time',
+    },
+    descriptionEn: { type: String, default: '' },
+    descriptionAr: { type: String, default: '' },
+    status: { type: String, enum: ['open', 'closed'], default: 'open' },
+    order: { type: Number, default: 0 },
+  },
+  { timestamps: true }
+)
+
+export const Job = mongoose.model('Job', jobSchema)
+
+const jobApplicationSchema = new Schema(
+  {
+    jobId: { type: Schema.Types.ObjectId, ref: 'Job', default: null },
+    jobTitleSnapshot: { type: String, default: '' },
+    name: { type: String, required: true, trim: true },
+    email: { type: String, required: true, trim: true, lowercase: true },
+    phone: { type: String, required: true, trim: true },
+    coverLetter: { type: String, default: '' },
+    cvFilename: { type: String, required: true },
+    cvOriginalName: { type: String, required: true },
+    locale: { type: String, enum: ['en', 'ar'], default: 'en' },
+    status: { type: String, enum: ['new', 'read', 'archived'], default: 'new' },
+  },
+  { timestamps: true }
+)
+
+export const JobApplication = mongoose.model('JobApplication', jobApplicationSchema)

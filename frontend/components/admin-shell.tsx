@@ -14,6 +14,8 @@ import {
   LogOut,
   Plus,
   Sparkles,
+  Briefcase,
+  UserRound,
 } from 'lucide-react'
 import { useAdminLocale } from '@/components/admin-locale-provider'
 
@@ -23,6 +25,8 @@ const navItems = [
   { href: '/admin/geo', key: 'nav.geo', icon: Sparkles },
   { href: '/admin/library', key: 'nav.content', icon: FileText },
   { href: '/admin/partners', key: 'nav.partners', icon: Handshake },
+  { href: '/admin/jobs', key: 'nav.jobs', icon: Briefcase },
+  { href: '/admin/applications', key: 'nav.applications', icon: UserRound },
   { href: '/admin/inquiries', key: 'nav.contactUs', icon: Mail },
 ] as const
 

@@ -23,7 +23,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })),
   ]
 
-  const staticPaths = ['', 'about-us', 'success-stories', 'contact-us', 'privacy-policy', 'terms-conditions', 'sitemap']
+  const staticPaths = ['', 'about-us', 'success-stories', 'careers', 'contact-us', 'privacy-policy', 'terms-conditions', 'sitemap']
   for (const locale of ['en', 'ar'] as const) {
     for (const path of staticPaths) {
       entries.push({

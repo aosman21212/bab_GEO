@@ -20,6 +20,6 @@ COPY backend/src ./src
 COPY backend/seed-data ./seed-data
 COPY backend/tsconfig.json ./tsconfig.json
 COPY frontend/messages /app/frontend/messages
-RUN mkdir -p /app/frontend/public/uploads
+RUN mkdir -p /app/frontend/public/uploads /app/backend/uploads/cvs
 EXPOSE 4001
 CMD ["node", "dist/index.js"]

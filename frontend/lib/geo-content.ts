@@ -295,6 +295,8 @@ export async function buildLlmsTxt(): Promise<string> {
     `- About (AR): ${site}/ar/about-us`,
     `- Success Stories (EN): ${site}/en/success-stories`,
     `- Success Stories (AR): ${site}/ar/success-stories`,
+    `- Careers (EN): ${site}/en/careers`,
+    `- Careers (AR): ${site}/ar/careers`,
     `- Contact (EN): ${site}/en/contact-us`,
     `- Contact (AR): ${site}/ar/contact-us`,
     '',
@@ -393,7 +395,7 @@ export function geoCrawlerUrls(): string[] {
 export async function collectSitemapUrls(): Promise<string[]> {
   const pages = await loadPublishedPages()
   const site = getSiteUrl()
-  const staticPaths = ['', 'about-us', 'success-stories', 'contact-us', 'privacy-policy', 'terms-conditions', 'sitemap']
+  const staticPaths = ['', 'about-us', 'success-stories', 'careers', 'contact-us', 'privacy-policy', 'terms-conditions', 'sitemap']
   const urls: string[] = [site, ...geoCrawlerUrls()]
 
   for (const locale of ['en', 'ar'] as const) {

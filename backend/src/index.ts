@@ -12,6 +12,8 @@ import { testimonialsRouter } from './routes/testimonials.js'
 import { pagesRouter } from './routes/pages.js'
 import { inquiriesRouter } from './routes/inquiries.js'
 import { uploadsRouter } from './routes/uploads.js'
+import { jobsRouter } from './routes/jobs.js'
+import { jobApplicationsRouter } from './routes/job-applications.js'
 
 async function main() {
   await connectMongo()
@@ -39,6 +41,8 @@ async function main() {
   app.use('/api/testimonials', testimonialsRouter)
   app.use('/api/pages', pagesRouter)
   app.use('/api/inquiries', inquiriesRouter)
+  app.use('/api/jobs', jobsRouter)
+  app.use('/api/job-applications', jobApplicationsRouter)
   app.use('/api/uploads', uploadsRouter)
 
   app.use((err: unknown, _req: express.Request, res: express.Response, _next: express.NextFunction) => {

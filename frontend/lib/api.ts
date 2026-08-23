@@ -89,3 +89,44 @@ export async function submitInquiry(body: {
     clearTimeout(timer)
   }
 }
+
+export type ApiJob = {
+  _id: string
+  slug: string
+  titleEn: string
+  titleAr: string
+  departmentEn?: string
+  departmentAr?: string
+  locationEn?: string
+  locationAr?: string
+  employmentType: 'full-time' | 'part-time' | 'contract' | 'internship'
+  descriptionEn?: string
+  descriptionAr?: string
+  status: 'open' | 'closed'
+  order: number
+}
+
+export async function fetchOpenJobs() {
+  return apiFetch<ApiJob[]>('/api/jobs', { cache: 'no-store' })
+}
+
+export async function submitJobApplication(formData: FormData) {
+  const controller = new AbortController()
+  const timer = setTimeout(() => controller.abort(), 20000)
+  try {
+    const res = await fetch(`${getApiUrl()}/api/job-applications`, {
+      method: 'POST',
+      body: formData,
+      signal: controller.signal,
+    })
+    const data = await res.json().catch(() => ({}))
+    if (!res.ok) {
+      return { ok: false as const, error: (data as { error?: string }).error || 'Request failed' }
+    }
+    return { ok: true as const, id: (data as { id?: string }).id }
+  } catch {
+    return { ok: false as const, error: 'Network error' }
+  } finally {
+    clearTimeout(timer)
+  }
+}

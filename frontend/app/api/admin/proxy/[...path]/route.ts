@@ -22,6 +22,20 @@ export async function DELETE(req: Request, ctx: Ctx) {
   return proxy(req, ctx, 'DELETE')
 }
 
+function isBinaryContentType(contentType: string | null) {
+  if (!contentType) return false
+  const ct = contentType.toLowerCase()
+  return (
+    ct.includes('application/pdf') ||
+    ct.includes('application/msword') ||
+    ct.includes('application/vnd.openxmlformats') ||
+    ct.includes('application/octet-stream') ||
+    ct.startsWith('image/') ||
+    ct.startsWith('audio/') ||
+    ct.startsWith('video/')
+  )
+}
+
 async function proxy(req: Request, ctx: Ctx, method: string) {
   const { path } = await ctx.params
   const jar = await cookies()
@@ -41,9 +55,19 @@ async function proxy(req: Request, ctx: Ctx, method: string) {
   }
 
   const res = await fetch(target, { method, headers, body })
+  const contentType = res.headers.get('Content-Type') || 'application/json'
+  const disposition = res.headers.get('Content-Disposition')
+
+  if (isBinaryContentType(contentType) || disposition?.includes('attachment')) {
+    const buf = await res.arrayBuffer()
+    const outHeaders: HeadersInit = { 'Content-Type': contentType }
+    if (disposition) outHeaders['Content-Disposition'] = disposition
+    return new NextResponse(buf, { status: res.status, headers: outHeaders })
+  }
+
   const text = await res.text()
   return new NextResponse(text, {
     status: res.status,
-    headers: { 'Content-Type': res.headers.get('Content-Type') || 'application/json' },
+    headers: { 'Content-Type': contentType },
   })
 }
