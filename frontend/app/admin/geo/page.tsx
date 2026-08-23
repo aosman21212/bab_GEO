@@ -234,11 +234,14 @@ export default function AdminGeoPage() {
             </p>
             <p className="mt-1 break-all text-sm text-muted-foreground">{siteUrl}</p>
           </div>
-          <div className="rounded-2xl border border-border bg-white p-5 shadow-sm">
+          <Link
+            href="/admin/settings#geo"
+            className="rounded-2xl border border-border bg-white p-5 shadow-sm transition hover:border-primary"
+          >
             <p className="text-xs font-bold tracking-wide text-primary">{t('geo.yourRole')}</p>
             <p className="mt-2 text-lg font-extrabold text-navy">{t('geo.updateContent')}</p>
             <p className="mt-1 text-sm text-muted-foreground">{t('geo.roleBody')}</p>
-          </div>
+          </Link>
         </div>
 
         {/* IndexNow */}
@@ -453,6 +456,16 @@ export default function AdminGeoPage() {
               <div>
                 <p className="font-semibold text-navy">{t('geo.feedSeo')}</p>
                 <p className="mt-1 text-sm text-muted-foreground">{t('geo.feedSeoBody')}</p>
+              </div>
+            </Link>
+            <Link
+              href="/admin/settings#geo"
+              className="flex items-start gap-3 rounded-xl border border-border p-4 transition hover:border-primary"
+            >
+              <FileText className="mt-0.5 h-5 w-5 text-primary" />
+              <div>
+                <p className="font-semibold text-navy">{t('geo.feedGeo')}</p>
+                <p className="mt-1 text-sm text-muted-foreground">{t('geo.feedGeoBody')}</p>
               </div>
             </Link>
             <Link

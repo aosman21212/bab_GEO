@@ -5,6 +5,11 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { AdminShell } from '@/components/admin-shell'
 import { useAdminLocale } from '@/components/admin-locale-provider'
+import {
+  DEFAULT_GEO_ABOUT_AR,
+  DEFAULT_GEO_ABOUT_EN,
+  DEFAULT_GEO_CITATION_NOTE,
+} from '@/lib/geo-content'
 import { Mail, Plus, Trash2 } from 'lucide-react'
 
 type FaqItem = { question: string; answer: string }
@@ -24,6 +29,9 @@ type SiteSettings = {
   seoDescriptionAr: string
   homepageFaqsEn: FaqItem[]
   homepageFaqsAr: FaqItem[]
+  geoAboutEn: string
+  geoAboutAr: string
+  geoCitationNote: string
 }
 
 const defaults: SiteSettings = {
@@ -43,6 +51,9 @@ const defaults: SiteSettings = {
     'Saudi enterprise partner for seamless connectivity and intelligent CX: omnichannel engagement, AI and voice bots, and contact-center platforms across Saudi Arabia and the MENA region.',
   seoDescriptionAr:
     'شريك مؤسسي سعودي للاتصال السلس وتجربة العملاء الذكية: تفاعل متعدد القنوات، وروبوتات صوتية وذكاء اصطناعي، ومنصات مراكز اتصال في المملكة ومنطقة الشرق الأوسط وشمال أفريقيا.',
+  geoAboutEn: DEFAULT_GEO_ABOUT_EN,
+  geoAboutAr: DEFAULT_GEO_ABOUT_AR,
+  geoCitationNote: DEFAULT_GEO_CITATION_NOTE,
   homepageFaqsEn: [
     {
       question: 'What does BAB International Corp offer?',
@@ -135,6 +146,15 @@ export default function AdminSettingsPage() {
           ...doc.data,
           homepageFaqsEn: doc.data.homepageFaqsEn ?? defaults.homepageFaqsEn,
           homepageFaqsAr: doc.data.homepageFaqsAr ?? defaults.homepageFaqsAr,
+          geoAboutEn: doc.data.geoAboutEn?.trim()
+            ? doc.data.geoAboutEn
+            : defaults.geoAboutEn,
+          geoAboutAr: doc.data.geoAboutAr?.trim()
+            ? doc.data.geoAboutAr
+            : defaults.geoAboutAr,
+          geoCitationNote: doc.data.geoCitationNote?.trim()
+            ? doc.data.geoCitationNote
+            : defaults.geoCitationNote,
         })
       }
     }
@@ -366,6 +386,43 @@ export default function AdminSettingsPage() {
                 value={settings.addressEn}
                 onChange={(e) => set('addressEn', e.target.value)}
               />
+            </label>
+          </div>
+        </section>
+
+        {/* GEO / AI summary */}
+        <section id="geo" className="scroll-mt-24 rounded-2xl border border-border bg-white p-6 shadow-sm">
+          <h2 className="text-lg font-extrabold text-navy">{t('settings.geo')}</h2>
+          <p className="mt-1 text-sm text-muted-foreground">{t('settings.geoBody')}</p>
+
+          <div className="mt-6 grid gap-4">
+            <label className="flex flex-col gap-2 text-sm font-semibold text-navy">
+              {t('settings.geoAboutEn')}
+              <textarea
+                className={`${fieldClass()} min-h-[120px] resize-y`}
+                value={settings.geoAboutEn}
+                onChange={(e) => set('geoAboutEn', e.target.value)}
+              />
+            </label>
+            <label className="flex flex-col gap-2 text-sm font-semibold text-navy">
+              {t('settings.geoAboutAr')}
+              <textarea
+                className={`${fieldClass()} min-h-[120px] resize-y`}
+                dir="rtl"
+                value={settings.geoAboutAr}
+                onChange={(e) => set('geoAboutAr', e.target.value)}
+              />
+            </label>
+            <label className="flex flex-col gap-2 text-sm font-semibold text-navy">
+              {t('settings.geoCitationNote')}
+              <input
+                className={fieldClass()}
+                value={settings.geoCitationNote}
+                onChange={(e) => set('geoCitationNote', e.target.value)}
+              />
+              <span className="text-xs font-normal text-muted-foreground">
+                {t('settings.geoCitationHint')}
+              </span>
             </label>
           </div>
         </section>
