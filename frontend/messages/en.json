@@ -11,6 +11,7 @@
     "callCenterGroup": "CALL CENTER",
     "productsGroup": "PRODUCTS",
     "caseStudiesGroup": "CASE STUDIES",
+    "successStories": "Success Stories",
     "liveEngagement": "Live Engagement Platform",
     "rcs": "Rich Communication Services",
     "socialMessaging": "Social Media Messaging Integration",
@@ -51,6 +52,15 @@
         "body": "Advanced analytical tools to improve visibility and enable smart decision-making."
       }
     }
+  },
+  "successStories": {
+    "metaTitle": "Success Stories",
+    "metaDescription": "Real customer outcomes powered by BAB omnichannel, contact center, and AI solutions across Saudi Arabia and the MENA region.",
+    "eyebrow": "Case studies",
+    "title": "Success Stories",
+    "body": "See how enterprises use BAB platforms to unify channels, elevate service quality, and deliver measurable customer experience results.",
+    "readMore": "Read story",
+    "empty": "Success stories will appear here once case study pages are published in the CMS."
   },
   "experience": {
     "eyebrow": "Experience Elevating",
@@ -179,6 +189,7 @@
     "copyright": "© 2024 BAB International Corp. All rights reserved.",
     "home": "Home",
     "about": "About Us",
+    "successStories": "Success Stories",
     "privacy": "Privacy Policy",
     "terms": "Terms & Conditions",
     "contact": "Contact Us",

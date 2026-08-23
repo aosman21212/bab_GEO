@@ -1885,5 +1885,249 @@
         }
       }
     }
+  },
+  {
+    "slug": "calo-contact-center-unification",
+    "category": "case-study",
+    "locales": {
+      "en": {
+        "metaTitle": "Calo: Unified Contact Center",
+        "metaDescription": "How Calo unified customer support channels with BAB to improve call quality and agent productivity.",
+        "eyebrow": "Success story",
+        "heroHeading": "Fewer tabs, better calls: unifying Calo's contact center",
+        "heroDescription": "Calo partnered with BAB to consolidate support operations into one platform—cutting tool sprawl, improving call quality scores, and giving agents a workspace they prefer.",
+        "ctaLabel": "Talk to BAB",
+        "image": "/images/support-headset.png",
+        "features": {
+          "eyebrow": "Outcomes",
+          "heading": "What changed for Calo",
+          "cards": [
+            {
+              "accent": "Unify",
+              "title": "One workspace",
+              "points": [
+                "Agents handle voice and digital conversations without switching between disconnected tools.",
+                "Supervisors gain a single view of queues, quality, and performance."
+              ]
+            },
+            {
+              "accent": "Quality",
+              "title": "Higher call quality",
+              "points": [
+                "Structured coaching and visibility helped lift customer call-quality satisfaction.",
+                "Consistent scripts and routing reduced repeat contacts."
+              ]
+            },
+            {
+              "accent": "Scale",
+              "title": "Ready for growth",
+              "points": [
+                "The platform scales with volume peaks without adding operational complexity.",
+                "Local delivery kept the rollout aligned with regional CX expectations."
+              ]
+            }
+          ]
+        },
+        "impact": {
+          "heading": "Ready to unify your contact center?",
+          "text": "Contact BAB to design a contact-center and omnichannel stack that improves quality and cost-to-serve."
+        }
+      },
+      "ar": {
+        "metaTitle": "كالو: توحيد مركز الاتصال",
+        "metaDescription": "كيف وحّدت كالو قنوات دعم العملاء مع باب لتحسين جودة المكالمات وإنتاجية الوكلاء.",
+        "eyebrow": "قصة نجاح",
+        "heroHeading": "تبويبات أقل ومكالمات أفضل: توحيد مركز اتصال كالو",
+        "heroDescription": "تعاونت كالو مع باب لدمج عمليات الدعم في منصة واحدة—مما قلّل تشتت الأدوات ورفع جودة المكالمات ومنح الوكلاء بيئة عمل يفضّلونها.",
+        "ctaLabel": "تواصل مع باب",
+        "image": "/images/support-headset.png",
+        "features": {
+          "eyebrow": "النتائج",
+          "heading": "ما الذي تغيّر لدى كالو",
+          "cards": [
+            {
+              "accent": "توحيد",
+              "title": "مساحة عمل واحدة",
+              "points": [
+                "يدير الوكلاء المكالمات والمحادثات الرقمية دون التنقل بين أدوات منفصلة.",
+                "يحصل المشرفون على رؤية موحّدة للطوابير والجودة والأداء."
+              ]
+            },
+            {
+              "accent": "جودة",
+              "title": "جودة مكالمات أعلى",
+              "points": [
+                "ساعد التدريب المنظم والرؤية الواضحة على رفع رضا جودة المكالمات.",
+                "قلّلت التوجيهات والمسارات المتسقة تكرار التواصل."
+              ]
+            },
+            {
+              "accent": "نمو",
+              "title": "جاهزية للتوسع",
+              "points": [
+                "تتوسع المنصة مع ذروات الحجم دون تعقيد تشغيلي إضافي.",
+                "حافظ التنفيذ المحلي على توافق الإطلاق مع توقعات تجربة العملاء في المنطقة."
+              ]
+            }
+          ]
+        },
+        "impact": {
+          "heading": "هل أنت مستعد لتوحيد مركز الاتصال؟",
+          "text": "تواصل مع باب لتصميم منصة مراكز اتصال وقنوات متعددة تحسّن الجودة وتكلفة الخدمة."
+        }
+      }
+    }
+  },
+  {
+    "slug": "retail-omnichannel-growth",
+    "category": "case-study",
+    "locales": {
+      "en": {
+        "metaTitle": "Retail Omnichannel Growth",
+        "metaDescription": "A regional retailer used BAB omnichannel messaging to lift response rates and convert conversations into sales.",
+        "eyebrow": "Success story",
+        "heroHeading": "Turning retail conversations into measurable growth",
+        "heroDescription": "A multi-brand retailer deployed BAB omnichannel engagement across WhatsApp, SMS, and social inbox—helping teams respond faster and keep campaigns consistent across every channel.",
+        "ctaLabel": "Explore omnichannel",
+        "image": "/images/hero-man-phone.png",
+        "features": {
+          "eyebrow": "Impact",
+          "heading": "Business results",
+          "cards": [
+            {
+              "accent": "Speed",
+              "title": "Faster replies",
+              "points": [
+                "Centralized inbox reduced response times during promotions.",
+                "Smart routing sent VIP and order issues to the right queue."
+              ]
+            },
+            {
+              "accent": "Reach",
+              "title": "Campaign reach",
+              "points": [
+                "Coordinated SMS and WhatsApp journeys improved open and reply rates.",
+                "Brand-safe templates kept messaging compliant and on-voice."
+              ]
+            }
+          ]
+        },
+        "impact": {
+          "heading": "Grow retail CX with BAB",
+          "text": "See how omnichannel messaging can lift conversion and loyalty for your stores and e-commerce."
+        }
+      },
+      "ar": {
+        "metaTitle": "نمو التجزئة عبر القنوات المتعددة",
+        "metaDescription": "استخدم تاجر تجزئة إقليمي رسائل باب متعددة القنوات لرفع معدلات الاستجابة وتحويل المحادثات إلى مبيعات.",
+        "eyebrow": "قصة نجاح",
+        "heroHeading": "تحويل محادثات التجزئة إلى نمو قابل للقياس",
+        "heroDescription": "نشر تاجر متعدد العلامات منصة باب للتفاعل متعدد القنوات عبر واتساب والرسائل القصيرة وصندوق الوارد الاجتماعي—مما ساعد الفرق على الرد بسرعة أكبر والحفاظ على اتساق الحملات.",
+        "ctaLabel": "استكشف القنوات المتعددة",
+        "image": "/images/hero-man-phone.png",
+        "features": {
+          "eyebrow": "الأثر",
+          "heading": "نتائج الأعمال",
+          "cards": [
+            {
+              "accent": "سرعة",
+              "title": "ردود أسرع",
+              "points": [
+                "قلّل صندوق الوارد الموحّد أوقات الاستجابة أثناء العروض.",
+                "وجّه التوجيه الذكي قضايا كبار العملاء والطلبات إلى الطابور المناسب."
+              ]
+            },
+            {
+              "accent": "وصول",
+              "title": "وصول الحملات",
+              "points": [
+                "حسّنت رحلات واتساب والرسائل القصيرة المنسّقة معدلات الفتح والرد.",
+                "حافظت القوالب الآمنة للعلامة على الامتثال ونبرة التواصل."
+              ]
+            }
+          ]
+        },
+        "impact": {
+          "heading": "نمِّ تجربة تجزئة العملاء مع باب",
+          "text": "اكتشف كيف يمكن للرسائل متعددة القنوات رفع التحويل والولاء لمتاجرك وتجارتك الإلكترونية."
+        }
+      }
+    }
+  },
+  {
+    "slug": "government-citizen-service",
+    "category": "case-study",
+    "locales": {
+      "en": {
+        "metaTitle": "Government Citizen Service",
+        "metaDescription": "A public-sector entity modernized citizen contact channels with BAB AI and contact-center platforms.",
+        "eyebrow": "Success story",
+        "heroHeading": "Modernizing citizen service for a digital government",
+        "heroDescription": "BAB helped a government organization introduce AI-assisted voice and digital channels so citizens get answers faster while sensitive cases escalate smoothly to human agents.",
+        "ctaLabel": "Book a consultation",
+        "image": "/images/riyadh-skyline.png",
+        "features": {
+          "eyebrow": "Capabilities",
+          "heading": "Delivered with BAB",
+          "cards": [
+            {
+              "accent": "AI",
+              "title": "Assisted containment",
+              "points": [
+                "Routine inquiries are handled automatically with clear escalation paths.",
+                "Arabic-ready experiences matched citizen language preferences."
+              ]
+            },
+            {
+              "accent": "Trust",
+              "title": "Secure operations",
+              "points": [
+                "Governance-friendly deployment suited regulated public-sector needs.",
+                "Supervisors retained full oversight of queues and outcomes."
+              ]
+            }
+          ]
+        },
+        "impact": {
+          "heading": "Serve citizens with confidence",
+          "text": "Partner with BAB to modernize government contact centers and digital engagement."
+        }
+      },
+      "ar": {
+        "metaTitle": "خدمة المواطنين الحكومية",
+        "metaDescription": "حدّثت جهة حكومية قنوات التواصل مع المواطنين عبر منصات باب للذكاء الاصطناعي ومراكز الاتصال.",
+        "eyebrow": "قصة نجاح",
+        "heroHeading": "تحديث خدمة المواطنين لحكومة رقمية",
+        "heroDescription": "ساعدت باب جهة حكومية على إدخال قنوات صوتية ورقمية مدعومة بالذكاء الاصطناعي ليحصل المواطنون على إجابات أسرع مع تصعيد سلس للحالات الحساسة إلى وكلاء بشريين.",
+        "ctaLabel": "احجز استشارة",
+        "image": "/images/riyadh-skyline.png",
+        "features": {
+          "eyebrow": "القدرات",
+          "heading": "ما قدّمته باب",
+          "cards": [
+            {
+              "accent": "ذكاء",
+              "title": "احتواء مدعوم",
+              "points": [
+                "تُعالج الاستفسارات الروتينية تلقائياً مع مسارات تصعيد واضحة.",
+                "تجارب جاهزة للعربية توافق تفضيلات لغة المواطنين."
+              ]
+            },
+            {
+              "accent": "ثقة",
+              "title": "عمليات آمنة",
+              "points": [
+                "نشر يراعي الحوكمة ويتناسب مع احتياجات القطاع العام المنظّم.",
+                "يحتفظ المشرفون برؤية كاملة للطوابير والنتائج."
+              ]
+            }
+          ]
+        },
+        "impact": {
+          "heading": "اخدم المواطنين بثقة",
+          "text": "شارك باب لتحديث مراكز الاتصال الحكومية والتفاعل الرقمي."
+        }
+      }
+    }
   }
 ]

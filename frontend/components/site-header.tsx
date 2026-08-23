@@ -22,7 +22,7 @@ const menuSlides = [
   '/images/bab-telecom.png',
 ] as const
 
-const SPAM_PDF = 'https://bab.com.sa/wp-content/uploads/2025/07/ar_spam_policy.pdf'
+const SPAM_PDF = '/docs/ar_spam_policy.pdf'
 
 function navLinkClass(active: boolean) {
   return `text-[13px] font-medium tracking-wide transition-colors hover:text-primary md:text-sm ${
@@ -207,6 +207,12 @@ export function SiteHeader() {
           <Link href="/about-us" className={navLinkClass(pathname === '/about-us')}>
             {t('about')}
           </Link>
+          <Link
+            href="/success-stories"
+            className={navLinkClass(pathname === '/success-stories')}
+          >
+            {t('successStories')}
+          </Link>
           <a
             href={SPAM_PDF}
             target="_blank"
@@ -292,6 +298,13 @@ export function SiteHeader() {
                 className="border-b border-border/60 py-3 text-sm font-semibold text-navy/80"
               >
                 {t('about')}
+              </Link>
+              <Link
+                href="/success-stories"
+                onClick={() => setOpen(false)}
+                className="border-b border-border/60 py-3 text-sm font-semibold text-navy/80"
+              >
+                {t('successStories')}
               </Link>
               <a
                 href={SPAM_PDF}

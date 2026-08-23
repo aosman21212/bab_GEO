@@ -85,7 +85,9 @@ export async function fetchCmsPage(
       next: { revalidate: 60 },
     })
 
-    if (res.status === 404) return undefined
+    // Missing CMS doc → use static catalog (empty DB / unpublished slug).
+    // Intentional drafts still stay private when the API returns draft JSON.
+    if (res.status === 404) return fallback
     if (!res.ok) return fallback
 
     const raw = (await res.json()) as Record<string, unknown>

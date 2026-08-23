@@ -38,7 +38,7 @@ services:
       MONGODB_URI: mongodb://mongo:27017/bab_cms
       REDIS_URL: redis://redis:6379
       JWT_SECRET: ${JWT_SECRET:-change-me-in-production-bab-cms}
-      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:3000}
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:3003}
       ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@bab.com.sa}
       ADMIN_PASSWORD: ${ADMIN_PASSWORD:-Admin123!}
     volumes:
@@ -59,7 +59,7 @@ services:
         INDEXNOW_KEY: ${INDEXNOW_KEY:-}
     restart: unless-stopped
     ports:
-      - '3000:3000'
+      - '3003:3000'
     environment:
       API_URL: http://backend:4001
       NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:4001}
@@ -79,7 +79,7 @@ services:
       MONGODB_URI: mongodb://mongo:27017/bab_cms
       REDIS_URL: redis://redis:6379
       JWT_SECRET: ${JWT_SECRET:-change-me-in-production-bab-cms}
-      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:3000}
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:3003}
       ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@bab.com.sa}
       ADMIN_PASSWORD: ${ADMIN_PASSWORD:-Admin123!}
     volumes:

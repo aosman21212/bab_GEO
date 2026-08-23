@@ -345,7 +345,7 @@ export function geoCrawlerUrls(): string[] {
 export async function collectSitemapUrls(): Promise<string[]> {
   const pages = await loadPublishedPages()
   const site = getSiteUrl()
-  const staticPaths = ['', 'about-us', 'contact-us', 'privacy-policy', 'terms-conditions', 'sitemap']
+  const staticPaths = ['', 'about-us', 'success-stories', 'contact-us', 'privacy-policy', 'terms-conditions', 'sitemap']
   const urls: string[] = [site, ...geoCrawlerUrls()]
 
   for (const locale of ['en', 'ar'] as const) {

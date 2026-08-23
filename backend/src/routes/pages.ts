@@ -49,27 +49,49 @@ pagesRouter.get('/by-id/:slug', requireAuth, async (req, res) => {
   return res.json(page)
 })
 
-/** Public catalog of published pages for sitemap / GEO llms.txt / nav */
+/** Public catalog of published pages for sitemap / GEO llms.txt / nav / Success Stories */
 pagesRouter.get('/meta/published', async (_req, res) => {
   const pages = await Page.find({ status: 'published' })
     .select(
-      'slug category locales.en.metaTitle locales.en.heroHeading locales.ar.metaTitle locales.ar.heroHeading updatedAt',
+      'slug category locales.en.metaTitle locales.en.heroHeading locales.en.heroDescription locales.en.eyebrow locales.en.image locales.en.metaDescription locales.ar.metaTitle locales.ar.heroHeading locales.ar.heroDescription locales.ar.eyebrow locales.ar.image locales.ar.metaDescription updatedAt',
     )
     .sort({ updatedAt: -1 })
     .lean()
 
   return res.json(
     pages.map((page) => {
-      const en = (page.locales?.en ?? {}) as { metaTitle?: string; heroHeading?: string }
-      const ar = (page.locales?.ar ?? {}) as { metaTitle?: string; heroHeading?: string }
+      const en = (page.locales?.en ?? {}) as {
+        metaTitle?: string
+        heroHeading?: string
+        heroDescription?: string
+        eyebrow?: string
+        image?: string
+        metaDescription?: string
+      }
+      const ar = (page.locales?.ar ?? {}) as {
+        metaTitle?: string
+        heroHeading?: string
+        heroDescription?: string
+        eyebrow?: string
+        image?: string
+        metaDescription?: string
+      }
       const titleEn = String(en.metaTitle || en.heroHeading || page.slug)
       const titleAr = String(ar.metaTitle || ar.heroHeading || titleEn)
+      const image = String(en.image || ar.image || '/images/bab-hero.png')
       return {
         slug: page.slug,
         category: page.category,
         title: titleEn,
         titleEn,
         titleAr,
+        image,
+        imageEn: String(en.image || image),
+        imageAr: String(ar.image || en.image || image),
+        eyebrowEn: String(en.eyebrow || ''),
+        eyebrowAr: String(ar.eyebrow || en.eyebrow || ''),
+        summaryEn: String(en.heroDescription || en.metaDescription || ''),
+        summaryAr: String(ar.heroDescription || ar.metaDescription || en.heroDescription || en.metaDescription || ''),
         updatedAt: page.updatedAt,
       }
     }),

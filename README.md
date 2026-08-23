@@ -15,7 +15,7 @@ npm run docker:up
 npm run docker:seed
 ```
 
-- Web: http://localhost:3000
+- Web: http://localhost:3003
 - API: http://localhost:4001/api/health
 
 Stop: `npm run docker:down`

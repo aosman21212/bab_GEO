@@ -38,7 +38,7 @@ export const solutionGroups: NavGroup[] = [
   },
   {
     labelKey: 'caseStudiesGroup',
-    items: [],
+    items: [{ labelKey: 'successStories', href: '/success-stories' }],
   },
 ]
 
@@ -46,6 +46,7 @@ export const solutionGroups: NavGroup[] = [
 export const companySitemapLinks: { footerKey: string; href: string }[] = [
   { footerKey: 'home', href: '/' },
   { footerKey: 'about', href: '/about-us' },
+  { footerKey: 'successStories', href: '/success-stories' },
   { footerKey: 'contact', href: '/contact-us' },
   { footerKey: 'privacy', href: '/privacy-policy' },
   { footerKey: 'terms', href: '/terms-conditions' },
