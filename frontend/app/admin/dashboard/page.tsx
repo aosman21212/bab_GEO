@@ -5,19 +5,26 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { AdminShell } from '@/components/admin-shell'
 import { useAdminLocale } from '@/components/admin-locale-provider'
-import { FileText, Handshake, Mail, Plus } from 'lucide-react'
+import { FileText, Handshake, Mail, Plus, Users } from 'lucide-react'
 
 export default function AdminDashboardPage() {
   const router = useRouter()
   const { t } = useAdminLocale()
-  const [stats, setStats] = useState({ pages: 0, partners: 0, inquiries: 0, newInquiries: 0 })
+  const [stats, setStats] = useState({
+    pages: 0,
+    partners: 0,
+    inquiries: 0,
+    newInquiries: 0,
+    users: 0,
+  })
 
   useEffect(() => {
     const load = async () => {
-      const [pagesRes, partnersRes, inquiriesRes] = await Promise.all([
+      const [pagesRes, partnersRes, inquiriesRes, usersRes] = await Promise.all([
         fetch('/api/admin/proxy/pages'),
         fetch('/api/admin/proxy/partners/admin/all'),
         fetch('/api/admin/proxy/inquiries'),
+        fetch('/api/admin/proxy/users'),
       ])
       if (pagesRes.status === 401) {
         router.push('/admin')
@@ -26,11 +33,13 @@ export default function AdminDashboardPage() {
       const pages = pagesRes.ok ? await pagesRes.json() : []
       const partners = partnersRes.ok ? await partnersRes.json() : []
       const inquiries = inquiriesRes.ok ? await inquiriesRes.json() : []
+      const users = usersRes.ok ? await usersRes.json() : []
       setStats({
         pages: pages.length,
         partners: partners.length,
         inquiries: inquiries.length,
         newInquiries: inquiries.filter((i: { status: string }) => i.status === 'new').length,
+        users: users.length,
       })
     }
     load()
@@ -55,6 +64,12 @@ export default function AdminDashboardPage() {
       href: '/admin/inquiries',
       icon: Mail,
     },
+    {
+      label: t('overview.adminUsers'),
+      value: stats.users,
+      href: '/admin/users',
+      icon: Users,
+    },
   ]
 
   return (
@@ -70,7 +85,7 @@ export default function AdminDashboardPage() {
         </Link>
       }
     >
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {cards.map((card) => {
           const Icon = card.icon
           return (
@@ -91,13 +106,20 @@ export default function AdminDashboardPage() {
         })}
       </div>
 
-      <div className="mt-8 grid gap-4 lg:grid-cols-2">
+      <div className="mt-8 grid gap-4 lg:grid-cols-3">
         <Link
           href="/admin/settings"
           className="rounded-2xl border border-border bg-white p-6 shadow-sm hover:border-primary/40"
         >
           <h2 className="font-bold text-navy">{t('overview.siteSettings')}</h2>
           <p className="mt-2 text-sm text-muted-foreground">{t('overview.siteSettingsBody')}</p>
+        </Link>
+        <Link
+          href="/admin/users"
+          className="rounded-2xl border border-border bg-white p-6 shadow-sm hover:border-primary/40"
+        >
+          <h2 className="font-bold text-navy">{t('overview.usersTitle')}</h2>
+          <p className="mt-2 text-sm text-muted-foreground">{t('overview.usersBody')}</p>
         </Link>
         <Link
           href="/admin/library"

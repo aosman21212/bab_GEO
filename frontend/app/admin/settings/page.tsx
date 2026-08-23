@@ -34,6 +34,10 @@ type SiteSettings = {
   geoCitationNote: string
 }
 
+type SettingsTab = 'general' | 'seo' | 'geo' | 'contact' | 'faq'
+
+const TAB_IDS: SettingsTab[] = ['general', 'seo', 'geo', 'contact', 'faq']
+
 const defaults: SiteSettings = {
   maintenanceMode: false,
   defaultLanguage: 'en',
@@ -122,13 +126,28 @@ function fieldClass() {
   return 'w-full rounded-xl border border-border bg-muted px-3 py-2.5 text-sm text-navy outline-none transition focus:border-primary focus:bg-white'
 }
 
+function tabFromHash(): SettingsTab {
+  if (typeof window === 'undefined') return 'general'
+  const hash = window.location.hash.replace(/^#/, '').toLowerCase()
+  if (TAB_IDS.includes(hash as SettingsTab)) return hash as SettingsTab
+  return 'general'
+}
+
 export default function AdminSettingsPage() {
   const router = useRouter()
   const { t } = useAdminLocale()
   const [settings, setSettings] = useState<SiteSettings>(defaults)
   const [faqLocale, setFaqLocale] = useState<'en' | 'ar'>('en')
+  const [tab, setTab] = useState<SettingsTab>('general')
   const [status, setStatus] = useState<string | null>(null)
   const [pending, setPending] = useState(false)
+
+  useEffect(() => {
+    setTab(tabFromHash())
+    const onHash = () => setTab(tabFromHash())
+    window.addEventListener('hashchange', onHash)
+    return () => window.removeEventListener('hashchange', onHash)
+  }, [])
 
   useEffect(() => {
     const load = async () => {
@@ -160,6 +179,13 @@ export default function AdminSettingsPage() {
     }
     load()
   }, [router])
+
+  const selectTab = (next: SettingsTab) => {
+    setTab(next)
+    if (typeof window !== 'undefined') {
+      window.history.replaceState(null, '', `#${next}`)
+    }
+  }
 
   const save = async () => {
     setPending(true)
@@ -208,6 +234,14 @@ export default function AdminSettingsPage() {
     )
   }
 
+  const tabs: { id: SettingsTab; label: string }[] = [
+    { id: 'general', label: t('settings.general') },
+    { id: 'seo', label: t('settings.seo') },
+    { id: 'geo', label: t('settings.geo') },
+    { id: 'contact', label: t('settings.contact') },
+    { id: 'faq', label: t('settings.faq') },
+  ]
+
   return (
     <AdminShell
       title={t('settings.title')}
@@ -226,9 +260,35 @@ export default function AdminSettingsPage() {
         </div>
       }
     >
-      <div className="grid gap-6">
-        <div className="grid gap-6 xl:grid-cols-2">
-          {/* General */}
+      <div
+        className="mb-6 flex flex-wrap gap-2 border-b border-border pb-4"
+        role="tablist"
+        aria-label={t('settings.title')}
+      >
+        {tabs.map((item) => {
+          const active = tab === item.id
+          return (
+            <button
+              key={item.id}
+              type="button"
+              role="tab"
+              aria-selected={active}
+              id={`settings-tab-${item.id}`}
+              onClick={() => selectTab(item.id)}
+              className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
+                active
+                  ? 'bg-primary text-primary-foreground'
+                  : 'border border-border bg-white text-navy hover:border-primary hover:text-primary'
+              }`}
+            >
+              {item.label}
+            </button>
+          )
+        })}
+      </div>
+
+      <div role="tabpanel" aria-labelledby={`settings-tab-${tab}`}>
+        {tab === 'general' ? (
           <section className="rounded-2xl border border-border bg-white p-6 shadow-sm">
             <h2 className="text-lg font-extrabold text-navy">{t('settings.general')}</h2>
             <p className="mt-1 text-sm text-muted-foreground">{t('settings.generalBody')}</p>
@@ -267,9 +327,10 @@ export default function AdminSettingsPage() {
               </select>
             </label>
           </section>
+        ) : null}
 
-          {/* SEO */}
-          <section id="seo" className="scroll-mt-24 rounded-2xl border border-border bg-white p-6 shadow-sm">
+        {tab === 'seo' ? (
+          <section className="rounded-2xl border border-border bg-white p-6 shadow-sm">
             <h2 className="text-lg font-extrabold text-navy">{t('settings.seo')}</h2>
             <p className="mt-1 text-sm text-muted-foreground">{t('settings.seoBody')}</p>
 
@@ -310,191 +371,191 @@ export default function AdminSettingsPage() {
               </label>
             </div>
           </section>
-        </div>
+        ) : null}
 
-        {/* Contact */}
-        <section
-          id="contact"
-          className="scroll-mt-24 rounded-2xl border border-border bg-white p-6 shadow-sm"
-        >
-          <h2 className="text-lg font-extrabold text-navy">{t('settings.contact')}</h2>
-          <p className="mt-1 text-sm text-muted-foreground">{t('settings.contactBody')}</p>
+        {tab === 'geo' ? (
+          <section className="rounded-2xl border border-border bg-white p-6 shadow-sm">
+            <h2 className="text-lg font-extrabold text-navy">{t('settings.geo')}</h2>
+            <p className="mt-1 text-sm text-muted-foreground">{t('settings.geoBody')}</p>
 
-          <Link
-            href="/admin/inquiries"
-            className="mt-5 inline-flex items-center gap-2 rounded-full bg-navy/5 px-4 py-2 text-sm font-semibold text-navy transition hover:bg-navy/10"
-          >
-            <Mail className="h-4 w-4 text-primary" />
-            {t('settings.openInbox')}
-          </Link>
-
-          <div className="mt-6 grid gap-4 sm:grid-cols-2">
-            <label className="flex flex-col gap-2 text-sm font-semibold text-navy">
-              {t('common.email')}
-              <input
-                className={fieldClass()}
-                type="email"
-                value={settings.email}
-                onChange={(e) => set('email', e.target.value)}
-              />
-            </label>
-            <label className="flex flex-col gap-2 text-sm font-semibold text-navy">
-              {t('common.phone')}
-              <input
-                className={fieldClass()}
-                type="tel"
-                value={settings.phone}
-                onChange={(e) => set('phone', e.target.value)}
-              />
-            </label>
-          </div>
-
-          <div className="mt-4 grid gap-4 sm:grid-cols-2">
-            <label className="flex flex-col gap-2 text-sm font-semibold text-navy">
-              {t('settings.hoursAr')}
-              <input
-                className={fieldClass()}
-                dir="rtl"
-                value={settings.hoursAr}
-                onChange={(e) => set('hoursAr', e.target.value)}
-              />
-            </label>
-            <label className="flex flex-col gap-2 text-sm font-semibold text-navy">
-              {t('settings.hoursEn')}
-              <input
-                className={fieldClass()}
-                value={settings.hoursEn}
-                onChange={(e) => set('hoursEn', e.target.value)}
-              />
-            </label>
-          </div>
-
-          <div className="mt-4 grid gap-4 sm:grid-cols-2">
-            <label className="flex flex-col gap-2 text-sm font-semibold text-navy">
-              {t('settings.addressAr')}
-              <textarea
-                className={`${fieldClass()} min-h-[88px] resize-none`}
-                dir="rtl"
-                value={settings.addressAr}
-                onChange={(e) => set('addressAr', e.target.value)}
-              />
-            </label>
-            <label className="flex flex-col gap-2 text-sm font-semibold text-navy">
-              {t('settings.addressEn')}
-              <textarea
-                className={`${fieldClass()} min-h-[88px] resize-none`}
-                value={settings.addressEn}
-                onChange={(e) => set('addressEn', e.target.value)}
-              />
-            </label>
-          </div>
-        </section>
-
-        {/* GEO / AI summary */}
-        <section id="geo" className="scroll-mt-24 rounded-2xl border border-border bg-white p-6 shadow-sm">
-          <h2 className="text-lg font-extrabold text-navy">{t('settings.geo')}</h2>
-          <p className="mt-1 text-sm text-muted-foreground">{t('settings.geoBody')}</p>
-
-          <div className="mt-6 grid gap-4">
-            <label className="flex flex-col gap-2 text-sm font-semibold text-navy">
-              {t('settings.geoAboutEn')}
-              <textarea
-                className={`${fieldClass()} min-h-[120px] resize-y`}
-                value={settings.geoAboutEn}
-                onChange={(e) => set('geoAboutEn', e.target.value)}
-              />
-            </label>
-            <label className="flex flex-col gap-2 text-sm font-semibold text-navy">
-              {t('settings.geoAboutAr')}
-              <textarea
-                className={`${fieldClass()} min-h-[120px] resize-y`}
-                dir="rtl"
-                value={settings.geoAboutAr}
-                onChange={(e) => set('geoAboutAr', e.target.value)}
-              />
-            </label>
-            <label className="flex flex-col gap-2 text-sm font-semibold text-navy">
-              {t('settings.geoCitationNote')}
-              <input
-                className={fieldClass()}
-                value={settings.geoCitationNote}
-                onChange={(e) => set('geoCitationNote', e.target.value)}
-              />
-              <span className="text-xs font-normal text-muted-foreground">
-                {t('settings.geoCitationHint')}
-              </span>
-            </label>
-          </div>
-        </section>
-
-        {/* Homepage FAQ */}
-        <section id="faq" className="scroll-mt-24 rounded-2xl border border-border bg-white p-6 shadow-sm">
-          <div className="flex flex-wrap items-start justify-between gap-4">
-            <div>
-              <h2 className="text-lg font-extrabold text-navy">{t('settings.faq')}</h2>
-              <p className="mt-1 text-sm text-muted-foreground">{t('settings.faqBody')}</p>
+            <div className="mt-6 grid gap-4">
+              <label className="flex flex-col gap-2 text-sm font-semibold text-navy">
+                {t('settings.geoAboutEn')}
+                <textarea
+                  className={`${fieldClass()} min-h-[120px] resize-y`}
+                  value={settings.geoAboutEn}
+                  onChange={(e) => set('geoAboutEn', e.target.value)}
+                />
+              </label>
+              <label className="flex flex-col gap-2 text-sm font-semibold text-navy">
+                {t('settings.geoAboutAr')}
+                <textarea
+                  className={`${fieldClass()} min-h-[120px] resize-y`}
+                  dir="rtl"
+                  value={settings.geoAboutAr}
+                  onChange={(e) => set('geoAboutAr', e.target.value)}
+                />
+              </label>
+              <label className="flex flex-col gap-2 text-sm font-semibold text-navy">
+                {t('settings.geoCitationNote')}
+                <input
+                  className={fieldClass()}
+                  value={settings.geoCitationNote}
+                  onChange={(e) => set('geoCitationNote', e.target.value)}
+                />
+                <span className="text-xs font-normal text-muted-foreground">
+                  {t('settings.geoCitationHint')}
+                </span>
+              </label>
             </div>
-            <div className="flex items-center gap-2">
-              <select
-                className="rounded-full border border-border bg-white px-3 py-2 text-sm font-medium text-navy outline-none focus:border-primary"
-                value={faqLocale}
-                onChange={(e) => setFaqLocale(e.target.value as 'en' | 'ar')}
-              >
-                <option value="en">{t('settings.faqsEn')}</option>
-                <option value="ar">{t('settings.faqsAr')}</option>
-              </select>
-              <button
-                type="button"
-                onClick={addFaq}
-                className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-2 text-sm font-semibold text-navy hover:border-primary hover:text-primary"
-              >
-                <Plus className="h-4 w-4" /> {t('common.add')}
-              </button>
-            </div>
-          </div>
+          </section>
+        ) : null}
 
-          <div className="mt-6 space-y-4">
-            {faqs.length === 0 ? (
-              <p className="text-sm text-muted-foreground">{t('settings.faqEmpty')}</p>
-            ) : (
-              faqs.map((item, index) => (
-                <div
-                  key={`${faqLocale}-${index}`}
-                  className="rounded-xl border border-border bg-muted/50 p-4"
+        {tab === 'contact' ? (
+          <section className="rounded-2xl border border-border bg-white p-6 shadow-sm">
+            <h2 className="text-lg font-extrabold text-navy">{t('settings.contact')}</h2>
+            <p className="mt-1 text-sm text-muted-foreground">{t('settings.contactBody')}</p>
+
+            <Link
+              href="/admin/inquiries"
+              className="mt-5 inline-flex items-center gap-2 rounded-full bg-navy/5 px-4 py-2 text-sm font-semibold text-navy transition hover:bg-navy/10"
+            >
+              <Mail className="h-4 w-4 text-primary" />
+              {t('settings.openInbox')}
+            </Link>
+
+            <div className="mt-6 grid gap-4 sm:grid-cols-2">
+              <label className="flex flex-col gap-2 text-sm font-semibold text-navy">
+                {t('common.email')}
+                <input
+                  className={fieldClass()}
+                  type="email"
+                  value={settings.email}
+                  onChange={(e) => set('email', e.target.value)}
+                />
+              </label>
+              <label className="flex flex-col gap-2 text-sm font-semibold text-navy">
+                {t('common.phone')}
+                <input
+                  className={fieldClass()}
+                  type="tel"
+                  value={settings.phone}
+                  onChange={(e) => set('phone', e.target.value)}
+                />
+              </label>
+            </div>
+
+            <div className="mt-4 grid gap-4 sm:grid-cols-2">
+              <label className="flex flex-col gap-2 text-sm font-semibold text-navy">
+                {t('settings.hoursAr')}
+                <input
+                  className={fieldClass()}
+                  dir="rtl"
+                  value={settings.hoursAr}
+                  onChange={(e) => set('hoursAr', e.target.value)}
+                />
+              </label>
+              <label className="flex flex-col gap-2 text-sm font-semibold text-navy">
+                {t('settings.hoursEn')}
+                <input
+                  className={fieldClass()}
+                  value={settings.hoursEn}
+                  onChange={(e) => set('hoursEn', e.target.value)}
+                />
+              </label>
+            </div>
+
+            <div className="mt-4 grid gap-4 sm:grid-cols-2">
+              <label className="flex flex-col gap-2 text-sm font-semibold text-navy">
+                {t('settings.addressAr')}
+                <textarea
+                  className={`${fieldClass()} min-h-[88px] resize-none`}
+                  dir="rtl"
+                  value={settings.addressAr}
+                  onChange={(e) => set('addressAr', e.target.value)}
+                />
+              </label>
+              <label className="flex flex-col gap-2 text-sm font-semibold text-navy">
+                {t('settings.addressEn')}
+                <textarea
+                  className={`${fieldClass()} min-h-[88px] resize-none`}
+                  value={settings.addressEn}
+                  onChange={(e) => set('addressEn', e.target.value)}
+                />
+              </label>
+            </div>
+          </section>
+        ) : null}
+
+        {tab === 'faq' ? (
+          <section className="rounded-2xl border border-border bg-white p-6 shadow-sm">
+            <div className="flex flex-wrap items-start justify-between gap-4">
+              <div>
+                <h2 className="text-lg font-extrabold text-navy">{t('settings.faq')}</h2>
+                <p className="mt-1 text-sm text-muted-foreground">{t('settings.faqBody')}</p>
+              </div>
+              <div className="flex items-center gap-2">
+                <select
+                  className="rounded-full border border-border bg-white px-3 py-2 text-sm font-medium text-navy outline-none focus:border-primary"
+                  value={faqLocale}
+                  onChange={(e) => setFaqLocale(e.target.value as 'en' | 'ar')}
                 >
-                  <div className="mb-3 flex items-center justify-between gap-2">
-                    <p className="text-xs font-bold tracking-wide text-primary">Q{index + 1}</p>
-                    <button
-                      type="button"
-                      onClick={() => removeFaq(index)}
-                      className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-red-600"
-                    >
-                      <Trash2 className="h-3.5 w-3.5" /> {t('common.remove')}
-                    </button>
+                  <option value="en">{t('settings.faqsEn')}</option>
+                  <option value="ar">{t('settings.faqsAr')}</option>
+                </select>
+                <button
+                  type="button"
+                  onClick={addFaq}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-2 text-sm font-semibold text-navy hover:border-primary hover:text-primary"
+                >
+                  <Plus className="h-4 w-4" /> {t('common.add')}
+                </button>
+              </div>
+            </div>
+
+            <div className="mt-6 space-y-4">
+              {faqs.length === 0 ? (
+                <p className="text-sm text-muted-foreground">{t('settings.faqEmpty')}</p>
+              ) : (
+                faqs.map((item, index) => (
+                  <div
+                    key={`${faqLocale}-${index}`}
+                    className="rounded-xl border border-border bg-muted/50 p-4"
+                  >
+                    <div className="mb-3 flex items-center justify-between gap-2">
+                      <p className="text-xs font-bold tracking-wide text-primary">Q{index + 1}</p>
+                      <button
+                        type="button"
+                        onClick={() => removeFaq(index)}
+                        className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-red-600"
+                      >
+                        <Trash2 className="h-3.5 w-3.5" /> {t('common.remove')}
+                      </button>
+                    </div>
+                    <label className="flex flex-col gap-2 text-sm font-semibold text-navy">
+                      {t('settings.question')}
+                      <input
+                        className={fieldClass()}
+                        dir={faqLocale === 'ar' ? 'rtl' : 'ltr'}
+                        value={item.question}
+                        onChange={(e) => updateFaq(index, 'question', e.target.value)}
+                      />
+                    </label>
+                    <label className="mt-3 flex flex-col gap-2 text-sm font-semibold text-navy">
+                      {t('settings.answer')}
+                      <textarea
+                        className={`${fieldClass()} min-h-[88px] resize-none`}
+                        dir={faqLocale === 'ar' ? 'rtl' : 'ltr'}
+                        value={item.answer}
+                        onChange={(e) => updateFaq(index, 'answer', e.target.value)}
+                      />
+                    </label>
                   </div>
-                  <label className="flex flex-col gap-2 text-sm font-semibold text-navy">
-                    {t('settings.question')}
-                    <input
-                      className={fieldClass()}
-                      dir={faqLocale === 'ar' ? 'rtl' : 'ltr'}
-                      value={item.question}
-                      onChange={(e) => updateFaq(index, 'question', e.target.value)}
-                    />
-                  </label>
-                  <label className="mt-3 flex flex-col gap-2 text-sm font-semibold text-navy">
-                    {t('settings.answer')}
-                    <textarea
-                      className={`${fieldClass()} min-h-[88px] resize-none`}
-                      dir={faqLocale === 'ar' ? 'rtl' : 'ltr'}
-                      value={item.answer}
-                      onChange={(e) => updateFaq(index, 'answer', e.target.value)}
-                    />
-                  </label>
-                </div>
-              ))
-            )}
-          </div>
-        </section>
+                ))
+              )}
+            </div>
+          </section>
+        ) : null}
       </div>
     </AdminShell>
   )

@@ -16,12 +16,14 @@ import {
   Sparkles,
   Briefcase,
   UserRound,
+  Users,
 } from 'lucide-react'
 import { useAdminLocale } from '@/components/admin-locale-provider'
 
 const navItems = [
   { href: '/admin/dashboard', key: 'nav.overview', icon: LayoutDashboard },
   { href: '/admin/settings', key: 'nav.settings', icon: Settings },
+  { href: '/admin/users', key: 'nav.users', icon: Users },
   { href: '/admin/geo', key: 'nav.geo', icon: Sparkles },
   { href: '/admin/library', key: 'nav.content', icon: FileText },
   { href: '/admin/partners', key: 'nav.partners', icon: Handshake },

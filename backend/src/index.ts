@@ -14,6 +14,7 @@ import { inquiriesRouter } from './routes/inquiries.js'
 import { uploadsRouter } from './routes/uploads.js'
 import { jobsRouter } from './routes/jobs.js'
 import { jobApplicationsRouter } from './routes/job-applications.js'
+import { usersRouter } from './routes/users.js'
 
 async function main() {
   await connectMongo()
@@ -36,6 +37,7 @@ async function main() {
   })
 
   app.use('/api/auth', authRouter)
+  app.use('/api/users', usersRouter)
   app.use('/api/content', contentRouter)
   app.use('/api/partners', partnersRouter)
   app.use('/api/testimonials', testimonialsRouter)

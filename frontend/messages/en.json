@@ -370,6 +370,7 @@
     "nav": {
       "overview": "Overview",
       "settings": "Site Settings",
+      "users": "Users",
       "geo": "GEO",
       "content": "Content",
       "partners": "Partners",
@@ -392,8 +393,11 @@
       "contentPages": "Content pages",
       "partners": "Partners",
       "newInquiries": "New inquiries",
+      "adminUsers": "Admin users",
       "siteSettings": "Site Settings",
       "siteSettingsBody": "Edit homepage sections (hero, partners copy, footer) for English and Arabic.",
+      "usersTitle": "Users",
+      "usersBody": "Create and manage CMS admin accounts, reset passwords, and remove access.",
       "contentLibrary": "Content Library",
       "contentLibraryBody": "Manage solutions and industry pages shown on the public website."
     },
@@ -508,6 +512,24 @@
       "archive": "Archive",
       "modalEyebrow": "CONTACT US",
       "modalTitle": "Inquiry details"
+    },
+    "users": {
+      "title": "Users",
+      "description": "Manage CMS admin accounts. Every user can sign in to the dashboard.",
+      "addUser": "Add user",
+      "updateUser": "Update user",
+      "newPassword": "New password",
+      "passwordOptional": "Leave blank to keep current password",
+      "passwordMin": "Password must be at least 8 characters",
+      "emailRequired": "Email is required",
+      "emailInUse": "That email is already in use",
+      "cannotDeleteSelf": "You cannot delete your own account",
+      "cannotDeleteLast": "Cannot delete the last admin",
+      "deleteConfirm": "Delete this admin user?",
+      "deleted": "User deleted",
+      "empty": "No admin users found.",
+      "role": "Role",
+      "you": "You"
     },
     "partners": {
       "title": "Partners",
