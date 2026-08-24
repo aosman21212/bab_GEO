@@ -216,6 +216,9 @@ export function SiteHeader() {
           <Link href="/careers" className={navLinkClass(pathname === '/careers')}>
             {t('careers')}
           </Link>
+          <Link href="/articles" className={navLinkClass(pathname === '/articles')}>
+            {t('articles')}
+          </Link>
           <a
             href={SPAM_PDF}
             target="_blank"
@@ -315,6 +318,13 @@ export function SiteHeader() {
                 className="border-b border-border/60 py-3 text-sm font-semibold text-navy/80"
               >
                 {t('careers')}
+              </Link>
+              <Link
+                href="/articles"
+                onClick={() => setOpen(false)}
+                className="border-b border-border/60 py-3 text-sm font-semibold text-navy/80"
+              >
+                {t('articles')}
               </Link>
               <a
                 href={SPAM_PDF}

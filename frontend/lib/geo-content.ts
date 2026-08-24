@@ -238,6 +238,7 @@ function pageLinks(pages: GeoPageRef[], site: string) {
   const industries = pages.filter((p) => p.category === 'industry')
   const products = pages.filter((p) => p.category === 'product')
   const caseStudies = pages.filter((p) => p.category === 'case-study')
+  const articles = pages.filter((p) => p.category === 'article')
   const lines: string[] = []
 
   const pushGroup = (label: string, list: GeoPageRef[]) => {
@@ -255,6 +256,7 @@ function pageLinks(pages: GeoPageRef[], site: string) {
   pushGroup('Industries', industries)
   pushGroup('Products', products)
   pushGroup('Case studies', caseStudies)
+  pushGroup('Articles', articles)
   return lines.join('\n')
 }
 
@@ -295,6 +297,8 @@ export async function buildLlmsTxt(): Promise<string> {
     `- About (AR): ${site}/ar/about-us`,
     `- Success Stories (EN): ${site}/en/success-stories`,
     `- Success Stories (AR): ${site}/ar/success-stories`,
+    `- Articles (EN): ${site}/en/articles`,
+    `- Articles (AR): ${site}/ar/articles`,
     `- Careers (EN): ${site}/en/careers`,
     `- Careers (AR): ${site}/ar/careers`,
     `- Contact (EN): ${site}/en/contact-us`,
@@ -395,7 +399,7 @@ export function geoCrawlerUrls(): string[] {
 export async function collectSitemapUrls(): Promise<string[]> {
   const pages = await loadPublishedPages()
   const site = getSiteUrl()
-  const staticPaths = ['', 'about-us', 'success-stories', 'careers', 'contact-us', 'privacy-policy', 'terms-conditions', 'sitemap']
+  const staticPaths = ['', 'about-us', 'success-stories', 'articles', 'careers', 'contact-us', 'privacy-policy', 'terms-conditions', 'sitemap']
   const urls: string[] = [site, ...geoCrawlerUrls()]
 
   for (const locale of ['en', 'ar'] as const) {

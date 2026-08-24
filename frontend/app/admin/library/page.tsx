@@ -74,6 +74,7 @@ export default function AdminLibraryPage() {
     { id: 'industry', label: t('library.industries'), count: counts.industry },
     { id: 'product', label: t('library.products'), count: counts.product },
     { id: 'case-study', label: t('library.caseStudies'), count: counts['case-study'] },
+    { id: 'article', label: t('library.articles'), count: counts.article },
   ]
 
   return (

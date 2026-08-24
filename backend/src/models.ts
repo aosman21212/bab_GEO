@@ -57,7 +57,7 @@ const pageSchema = new Schema(
     slug: { type: String, required: true, unique: true, trim: true },
     category: {
       type: String,
-      enum: ['solution', 'industry', 'product', 'case-study'],
+      enum: ['solution', 'industry', 'product', 'case-study', 'article'],
       required: true,
     },
     status: { type: String, enum: ['published', 'draft'], default: 'published' },

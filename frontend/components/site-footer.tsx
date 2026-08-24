@@ -41,6 +41,7 @@ export function SiteFooter() {
   const companyLinks = [
     { label: t('home'), href: '/' },
     { label: t('about'), href: '/about-us' },
+    { label: t('articles'), href: '/articles' },
     { label: t('careers'), href: '/careers' },
     { label: t('privacy'), href: '/privacy-policy' },
     { label: t('terms'), href: '/terms-conditions' },

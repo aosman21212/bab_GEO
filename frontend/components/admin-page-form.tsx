@@ -259,6 +259,7 @@ export function AdminPageForm({
               <option value="industry">{t('common.industry')}</option>
               <option value="product">{t('common.product')}</option>
               <option value="case-study">{t('common.caseStudy')}</option>
+              <option value="article">{t('common.article')}</option>
             </select>
           </Label>
           <Label label={t('common.status')}>

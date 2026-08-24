@@ -2129,5 +2129,233 @@
         }
       }
     }
+  },
+  {
+    "slug": "why-omnichannel-matters-saudi",
+    "category": "article",
+    "locales": {
+      "en": {
+        "metaTitle": "Why Omnichannel Matters for Saudi Enterprises",
+        "metaDescription": "How unified voice, digital, and social channels help Saudi businesses deliver consistent CX and measurable growth.",
+        "eyebrow": "Article",
+        "heroHeading": "Why omnichannel matters for Saudi enterprises",
+        "heroDescription": "Customers expect continuous conversations across WhatsApp, voice, and web. This article explains how BAB helps Saudi organizations unify those journeys without fragmenting operations.",
+        "ctaLabel": "Talk to BAB",
+        "image": "/images/bab-hero.png",
+        "features": {
+          "eyebrow": "Key takeaways",
+          "heading": "What leaders should prioritize",
+          "cards": [
+            {
+              "accent": "Unify",
+              "title": "One customer view",
+              "points": [
+                "Bring messaging, voice, and social into a shared engagement layer.",
+                "Reduce handoffs and lost context between teams and channels."
+              ]
+            },
+            {
+              "accent": "Local",
+              "title": "Arabic-first CX",
+              "points": [
+                "Design journeys that respect bilingual preferences across Saudi audiences.",
+                "Measure quality with supervisors who can coach in real time."
+              ]
+            }
+          ]
+        },
+        "impact": {
+          "heading": "Ready to unify your channels?",
+          "text": "Explore BAB omnichannel and contact-center platforms built for Saudi and MENA operations."
+        }
+      },
+      "ar": {
+        "metaTitle": "لماذا تهم القنوات المتعددة للمؤسسات السعودية",
+        "metaDescription": "كيف تساعد القنوات الصوتية والرقمية والاجتماعية الموحدة الشركات السعودية على تقديم تجربة عملاء متسقة ونمو قابل للقياس.",
+        "eyebrow": "مقال",
+        "heroHeading": "لماذا تهم القنوات المتعددة للمؤسسات السعودية",
+        "heroDescription": "يتوقع العملاء محادثات مستمرة عبر واتساب والصوت والويب. يشرح هذا المقال كيف تساعد باب المؤسسات السعودية على توحيد تلك الرحلات دون تفتيت العمليات.",
+        "ctaLabel": "تحدث مع باب",
+        "image": "/images/bab-hero.png",
+        "features": {
+          "eyebrow": "أبرز النقاط",
+          "heading": "ما ينبغي أن يركز عليه القادة",
+          "cards": [
+            {
+              "accent": "توحيد",
+              "title": "رؤية واحدة للعميل",
+              "points": [
+                "اجمع الرسائل والصوت ووسائل التواصل في طبقة تفاعل مشتركة.",
+                "قلّل التحويلات وفقدان السياق بين الفرق والقنوات."
+              ]
+            },
+            {
+              "accent": "محلي",
+              "title": "تجربة عربية أولاً",
+              "points": [
+                "صمّم رحلات تراعي التفضيلات ثنائية اللغة للجمهور السعودي.",
+                "قِس الجودة مع مشرفين يمكنهم التوجيه في الوقت الفعلي."
+              ]
+            }
+          ]
+        },
+        "impact": {
+          "heading": "هل أنت مستعد لتوحيد قنواتك؟",
+          "text": "استكشف منصات باب للقنوات المتعددة ومراكز الاتصال المصممة لعمليات السعودية ومنطقة الشرق الأوسط وشمال أفريقيا."
+        }
+      }
+    }
+  },
+  {
+    "slug": "ai-voice-bots-customer-service",
+    "category": "article",
+    "locales": {
+      "en": {
+        "metaTitle": "AI Voice Bots That Improve Customer Service",
+        "metaDescription": "Practical guidance on deploying AI voice bots for containment, escalation, and better agent productivity.",
+        "eyebrow": "Article",
+        "heroHeading": "AI voice bots that improve — not replace — customer service",
+        "heroDescription": "Done well, voice bots contain routine calls and free agents for complex work. Here’s how BAB approaches assisted automation for contact centers.",
+        "ctaLabel": "Book a demo",
+        "image": "/images/support-headset.png",
+        "features": {
+          "eyebrow": "Playbook",
+          "heading": "Build bots customers trust",
+          "cards": [
+            {
+              "accent": "Assist",
+              "title": "Clear escalation",
+              "points": [
+                "Define when bots hand off to humans with full conversation context.",
+                "Keep brand tone consistent across automated and live interactions."
+              ]
+            },
+            {
+              "accent": "Measure",
+              "title": "Operational KPIs",
+              "points": [
+                "Track containment, AHT, and CSAT together — not in isolation.",
+                "Use insights to refine intents and coach agent teams."
+              ]
+            }
+          ]
+        },
+        "impact": {
+          "heading": "See AI voice in action",
+          "text": "Partner with BAB to deploy voice bots aligned with your contact-center goals."
+        }
+      },
+      "ar": {
+        "metaTitle": "روبوتات صوتية بالذكاء الاصطناعي تحسّن خدمة العملاء",
+        "metaDescription": "إرشادات عملية لنشر روبوتات صوتية لاحتواء المكالمات والتصعيد وتحسين إنتاجية الوكلاء.",
+        "eyebrow": "مقال",
+        "heroHeading": "روبوتات صوتية تحسّن خدمة العملاء ولا تستبدلها",
+        "heroDescription": "عند تنفيذها جيداً، تحتوي الروبوتات الصوتية المكالمات الروتينية وتحرّر الوكلاء للعمل المعقّد. هكذا تقارب باب الأتمتة المدعومة لمراكز الاتصال.",
+        "ctaLabel": "احجز عرضاً تجريبياً",
+        "image": "/images/support-headset.png",
+        "features": {
+          "eyebrow": "دليل عمل",
+          "heading": "ابنِ روبوتات يثق بها العملاء",
+          "cards": [
+            {
+              "accent": "دعم",
+              "title": "تصعيد واضح",
+              "points": [
+                "حدّد متى تنتقل الروبوتات إلى البشر مع سياق المحادثة الكامل.",
+                "حافظ على نبرة العلامة عبر التفاعل الآلي والمباشر."
+              ]
+            },
+            {
+              "accent": "قياس",
+              "title": "مؤشرات تشغيلية",
+              "points": [
+                "تتبّع الاحتواء ومتوسط وقت المعالجة ورضا العملاء معاً.",
+                "استخدم الرؤى لتحسين النوايا وتدريب فرق الوكلاء."
+              ]
+            }
+          ]
+        },
+        "impact": {
+          "heading": "شاهد الذكاء الصوتي عملياً",
+          "text": "شارك باب لنشر روبوتات صوتية متوافقة مع أهداف مركز الاتصال لديك."
+        }
+      }
+    }
+  },
+  {
+    "slug": "contact-center-trends-mena",
+    "category": "article",
+    "locales": {
+      "en": {
+        "metaTitle": "Contact Center Trends Across MENA",
+        "metaDescription": "Trends shaping contact centers in Saudi Arabia and the MENA region: digital channels, AI assist, and workforce efficiency.",
+        "eyebrow": "Article",
+        "heroHeading": "Contact center trends shaping MENA CX",
+        "heroDescription": "From WhatsApp-led support to AI-assisted agents, MENA contact centers are evolving quickly. This overview highlights priorities for 2026 operators.",
+        "ctaLabel": "Explore solutions",
+        "image": "/images/hero-man-phone.png",
+        "features": {
+          "eyebrow": "Outlook",
+          "heading": "Where operators are investing",
+          "cards": [
+            {
+              "accent": "Digital",
+              "title": "Messaging-first queues",
+              "points": [
+                "Blend async messaging with voice without losing service levels.",
+                "Give agents one workspace across channels."
+              ]
+            },
+            {
+              "accent": "Talent",
+              "title": "Smarter workforce tools",
+              "points": [
+                "Use real-time coaching and quality insights to lift outcomes.",
+                "Scale bilingual staffing with better routing and automation."
+              ]
+            }
+          ]
+        },
+        "impact": {
+          "heading": "Modernize with BAB",
+          "text": "Build the next generation of MENA contact-center experiences with BAB platforms."
+        }
+      },
+      "ar": {
+        "metaTitle": "اتجاهات مراكز الاتصال في الشرق الأوسط وشمال أفريقيا",
+        "metaDescription": "اتجاهات تشكّل مراكز الاتصال في السعودية والمنطقة: القنوات الرقمية ومساعدة الذكاء الاصطناعي وكفاءة القوى العاملة.",
+        "eyebrow": "مقال",
+        "heroHeading": "اتجاهات مراكز الاتصال التي تشكّل تجربة العملاء في المنطقة",
+        "heroDescription": "من الدعم عبر واتساب إلى الوكلاء المدعومين بالذكاء الاصطناعي، تتطور مراكز الاتصال بسرعة. تبرز هذه النظرة أولويات المشغّلين لعام 2026.",
+        "ctaLabel": "استكشف الحلول",
+        "image": "/images/hero-man-phone.png",
+        "features": {
+          "eyebrow": "توقعات",
+          "heading": "أين يستثمر المشغّلون",
+          "cards": [
+            {
+              "accent": "رقمي",
+              "title": "طوابير الرسائل أولاً",
+              "points": [
+                "امزج الرسائل غير المتزامنة مع الصوت دون فقدان مستويات الخدمة.",
+                "امنح الوكلاء مساحة عمل واحدة عبر القنوات."
+              ]
+            },
+            {
+              "accent": "كفاءات",
+              "title": "أدوات قوى عاملة أذكى",
+              "points": [
+                "استخدم التوجيه اللحظي ورؤى الجودة لرفع النتائج.",
+                "وسّع التوظيف ثنائي اللغة بتوجيه وأتمتة أفضل."
+              ]
+            }
+          ]
+        },
+        "impact": {
+          "heading": "حدّث مع باب",
+          "text": "ابنِ الجيل التالي من تجارب مراكز الاتصال في المنطقة مع منصات باب."
+        }
+      }
+    }
   }
 ]

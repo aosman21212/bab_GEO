@@ -1,4 +1,10 @@
-export const PAGE_CATEGORIES = ['solution', 'industry', 'product', 'case-study'] as const
+export const PAGE_CATEGORIES = [
+  'solution',
+  'industry',
+  'product',
+  'case-study',
+  'article',
+] as const
 
 export type PageCategory = (typeof PAGE_CATEGORIES)[number]
 
@@ -11,7 +17,9 @@ export function normalizePageCategory(value: unknown): PageCategory {
 }
 
 /** Admin i18n key under `admin.common.*` */
-export function categoryCommonKey(category: PageCategory): 'solution' | 'industry' | 'product' | 'caseStudy' {
+export function categoryCommonKey(
+  category: PageCategory,
+): 'solution' | 'industry' | 'product' | 'caseStudy' | 'article' {
   if (category === 'case-study') return 'caseStudy'
   return category
 }

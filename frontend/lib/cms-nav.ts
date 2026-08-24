@@ -12,6 +12,7 @@ export type CmsNavExtras = {
   industries: CmsNavLink[]
   products: CmsNavLink[]
   caseStudies: CmsNavLink[]
+  articles: CmsNavLink[]
 }
 
 type PublishedMeta = {
@@ -27,7 +28,7 @@ const staticSlugs = new Set(
 )
 
 export function emptyCmsNavExtras(): CmsNavExtras {
-  return { solutions: [], industries: [], products: [], caseStudies: [] }
+  return { solutions: [], industries: [], products: [], caseStudies: [], articles: [] }
 }
 
 export function partitionCmsNavExtras(
@@ -50,6 +51,7 @@ export function partitionCmsNavExtras(
     if (category === 'industry') extras.industries.push(link)
     else if (category === 'product') extras.products.push(link)
     else if (category === 'case-study') extras.caseStudies.push(link)
+    else if (category === 'article') extras.articles.push(link)
     else extras.solutions.push(link)
   }
   return extras

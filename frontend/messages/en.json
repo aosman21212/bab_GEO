@@ -12,6 +12,7 @@
     "productsGroup": "PRODUCTS",
     "caseStudiesGroup": "CASE STUDIES",
     "successStories": "Success Stories",
+    "articles": "Articles",
     "careers": "Careers",
     "liveEngagement": "Live Engagement Platform",
     "rcs": "Rich Communication Services",
@@ -62,6 +63,15 @@
     "body": "See how enterprises use BAB platforms to unify channels, elevate service quality, and deliver measurable customer experience results.",
     "readMore": "Read story",
     "empty": "Success stories will appear here once case study pages are published in the CMS."
+  },
+  "articlesPage": {
+    "metaTitle": "Articles",
+    "metaDescription": "Insights on omnichannel CX, AI voice bots, and contact-center strategy for Saudi Arabia and the MENA region from BAB International Corp.",
+    "eyebrow": "Insights",
+    "title": "Articles",
+    "body": "Practical perspectives on connectivity, intelligent service, and customer experience — written for enterprise teams across Saudi Arabia and MENA.",
+    "readMore": "Read article",
+    "empty": "Articles will appear here once article pages are published in the CMS."
   },
   "careersPage": {
     "metaTitle": "Careers",
@@ -225,6 +235,7 @@
     "home": "Home",
     "about": "About Us",
     "successStories": "Success Stories",
+    "articles": "Articles",
     "careers": "Careers",
     "privacy": "Privacy Policy",
     "terms": "Terms & Conditions",
@@ -441,6 +452,7 @@
       "industry": "Industry",
       "product": "Product",
       "caseStudy": "Case study",
+      "article": "Article",
       "all": "All",
       "updated": "Updated",
       "added": "Added",
@@ -603,6 +615,7 @@
       "industries": "Industries",
       "products": "Products",
       "caseStudies": "Case studies",
+      "articles": "Articles",
       "searchPlaceholder": "Search by title or slug...",
       "empty": "No content matches your filters.",
       "newTitle": "New Content",
