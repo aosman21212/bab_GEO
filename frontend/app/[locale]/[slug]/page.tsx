@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { setRequestLocale } from 'next-intl/server'
 import { InnerPage } from '@/components/inner-page'
+import { LandingPage } from '@/components/landing-page'
 import { allPages } from '@/lib/site-content'
 import { fetchCmsPage } from '@/lib/cms-pages'
 import { buildPageMetadata } from '@/lib/geo-content'
@@ -40,5 +41,8 @@ export default async function SlugPage({
   setRequestLocale(locale)
   const page = await fetchCmsPage(slug, locale as Locale)
   if (!page) notFound()
+  if (page.category === 'landing' && page.landingType) {
+    return <LandingPage page={page} landingType={page.landingType} />
+  }
   return <InnerPage page={page} />
 }

@@ -18,7 +18,8 @@ pagesRouter.post('/', requireAuth, async (req, res) => {
         .string()
         .min(1)
         .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
-      category: z.enum(['solution', 'industry', 'product', 'case-study', 'article']),
+      category: z.enum(['solution', 'industry', 'product', 'case-study', 'article', 'landing']),
+      landingType: z.enum(['lead-form', 'whatsapp']).optional(),
       status: z.enum(['published', 'draft']).optional(),
       locales: z.object({
         en: z.record(z.unknown()),
@@ -31,11 +32,16 @@ pagesRouter.post('/', requireAuth, async (req, res) => {
     return res.status(400).json({ error: parsed.error.flatten() })
   }
 
+  if (parsed.data.category === 'landing' && !parsed.data.landingType) {
+    return res.status(400).json({ error: 'landingType is required for landing pages' })
+  }
+
   const exists = await Page.findOne({ slug: parsed.data.slug })
   if (exists) return res.status(409).json({ error: 'Slug already exists' })
 
   const page = await Page.create({
     ...parsed.data,
+    landingType: parsed.data.category === 'landing' ? parsed.data.landingType : undefined,
     status: parsed.data.status ?? 'published',
   })
 
@@ -117,8 +123,21 @@ pagesRouter.get('/:slug', async (req, res) => {
   const ar = (locales.ar ?? {}) as Record<string, unknown>
   const payload =
     locale === 'ar'
-      ? { slug: page.slug, category: page.category, status: page.status, ...en, ...ar }
-      : { slug: page.slug, category: page.category, status: page.status, ...en }
+      ? {
+          slug: page.slug,
+          category: page.category,
+          landingType: page.landingType,
+          status: page.status,
+          ...en,
+          ...ar,
+        }
+      : {
+          slug: page.slug,
+          category: page.category,
+          landingType: page.landingType,
+          status: page.status,
+          ...en,
+        }
 
   await cacheSet(cacheKey, payload)
   return res.json(payload)
@@ -127,7 +146,8 @@ pagesRouter.get('/:slug', async (req, res) => {
 pagesRouter.put('/:slug', requireAuth, async (req, res) => {
   const parsed = z
     .object({
-      category: z.enum(['solution', 'industry', 'product', 'case-study', 'article']).optional(),
+      category: z.enum(['solution', 'industry', 'product', 'case-study', 'article', 'landing']).optional(),
+      landingType: z.enum(['lead-form', 'whatsapp']).optional(),
       status: z.enum(['published', 'draft']).optional(),
       locales: z
         .object({
@@ -139,7 +159,18 @@ pagesRouter.put('/:slug', requireAuth, async (req, res) => {
     .safeParse(req.body)
   if (!parsed.success) return res.status(400).json({ error: parsed.error.flatten() })
 
-  const page = await Page.findOneAndUpdate({ slug: req.params.slug }, parsed.data, {
+  const update: Record<string, unknown> = { ...parsed.data }
+  if (update.category && update.category !== 'landing') {
+    update.landingType = undefined
+  }
+  if (update.category === 'landing' && !update.landingType) {
+    const existing = await Page.findOne({ slug: req.params.slug }).lean()
+    if (!existing?.landingType) {
+      return res.status(400).json({ error: 'landingType is required for landing pages' })
+    }
+  }
+
+  const page = await Page.findOneAndUpdate({ slug: req.params.slug }, update, {
     new: true,
     upsert: false,
   })

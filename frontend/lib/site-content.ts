@@ -1,4 +1,4 @@
-import type { PageCategory } from '@/lib/page-categories'
+import type { PageCategory, LandingType } from '@/lib/page-categories'
 
 export type FeatureCard = {
   accent: string
@@ -14,6 +14,7 @@ export type Benefit = {
 export type PageContent = {
   slug: string
   category: PageCategory
+  landingType?: LandingType
   metaTitle: string
   metaDescription: string
   eyebrow: string
@@ -21,6 +22,13 @@ export type PageContent = {
   heroDescription: string
   ctaLabel: string
   image: string
+  highlights?: string[]
+  formNote?: string
+  whatsappDisplayName?: string
+  whatsappPhone?: string
+  officialWebsite?: string
+  officialEmail?: string
+  profileDescription?: string
   features?: {
     eyebrow: string
     heading: string

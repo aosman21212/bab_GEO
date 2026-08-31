@@ -41,6 +41,13 @@ services:
       CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:3003}
       ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@bab.com.sa}
       ADMIN_PASSWORD: ${ADMIN_PASSWORD:-Admin123!}
+      INQUIRY_NOTIFY_TO: ${INQUIRY_NOTIFY_TO:-sales@bab.com.sa}
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_SECURE: ${SMTP_SECURE:-false}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASS: ${SMTP_PASS:-}
+      SMTP_FROM: ${SMTP_FROM:-noreply@bab.com.sa}
     volumes:
       - uploads:/app/frontend/public/uploads
       - cv_uploads:/app/backend/uploads/cvs

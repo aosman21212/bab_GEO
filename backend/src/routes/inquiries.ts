@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { Inquiry } from '../models.js'
 import { rateLimit } from '../cache.js'
 import { requireAuth } from '../middleware/auth.js'
+import { sendInquiryNotification } from '../mail.js'
 
 export const inquiriesRouter = Router()
 
@@ -21,6 +22,7 @@ inquiriesRouter.post('/', async (req, res) => {
       email: z.string().email(),
       project: z.string().min(1),
       locale: z.enum(['en', 'ar']).optional(),
+      sourceSlug: z.string().max(120).optional(),
     })
     .safeParse(req.body)
 
@@ -31,6 +33,19 @@ inquiriesRouter.post('/', async (req, res) => {
   const inquiry = await Inquiry.create({
     ...parsed.data,
     locale: parsed.data.locale ?? 'en',
+    sourceSlug: parsed.data.sourceSlug?.trim() || '',
+  })
+
+  void sendInquiryNotification({
+    name: inquiry.name,
+    company: inquiry.company ?? undefined,
+    phone: inquiry.phone,
+    email: inquiry.email,
+    project: inquiry.project,
+    locale: inquiry.locale,
+    sourceSlug: inquiry.sourceSlug || undefined,
+  }).catch((err) => {
+    console.error('[mail] Failed to notify sales inbox:', err)
   })
 
   return res.status(201).json({ ok: true, id: inquiry._id })

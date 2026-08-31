@@ -52,6 +52,7 @@ export function partitionCmsNavExtras(
     else if (category === 'product') extras.products.push(link)
     else if (category === 'case-study') extras.caseStudies.push(link)
     else if (category === 'article') extras.articles.push(link)
+    else if (category === 'landing') continue
     else extras.solutions.push(link)
   }
   return extras

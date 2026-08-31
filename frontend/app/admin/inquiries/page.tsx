@@ -14,6 +14,7 @@ type Inquiry = {
   email: string
   project: string
   locale: string
+  sourceSlug?: string
   status: string
   createdAt: string
 }
@@ -158,6 +159,7 @@ export default function AdminInquiriesPage() {
                 <th className="px-4 py-3 font-semibold">{t('common.email')}</th>
                 <th className="px-4 py-3 font-semibold">{t('common.phone')}</th>
                 <th className="px-4 py-3 font-semibold">{t('common.locale')}</th>
+                <th className="px-4 py-3 font-semibold">{t('inquiries.source')}</th>
                 <th className="px-4 py-3 font-semibold">{t('common.status')}</th>
                 <th className="px-4 py-3 font-semibold">{t('common.message')}</th>
                 <th className="px-4 py-3 text-end font-semibold">{t('common.actions')}</th>
@@ -166,7 +168,7 @@ export default function AdminInquiriesPage() {
             <tbody>
               {filtered.length === 0 ? (
                 <tr>
-                  <td colSpan={9} className="px-4 py-12 text-center text-muted-foreground">
+                  <td colSpan={10} className="px-4 py-12 text-center text-muted-foreground">
                     <Mail className="mx-auto mb-2 h-8 w-8 opacity-40" />
                     {filter === 'all'
                       ? t('inquiries.emptyAll')
@@ -196,6 +198,13 @@ export default function AdminInquiriesPage() {
                         {item.phone}
                       </td>
                       <td className="px-4 py-3 uppercase text-muted-foreground">{item.locale}</td>
+                      <td className="px-4 py-3 text-muted-foreground">
+                        {item.sourceSlug ? (
+                          <code className="rounded bg-muted px-1.5 py-0.5 text-xs">{item.sourceSlug}</code>
+                        ) : (
+                          '—'
+                        )}
+                      </td>
                       <td className="px-4 py-3">
                         <span
                           className={`inline-flex rounded-full px-2.5 py-1 text-xs font-bold ${statusPill(item.status)}`}
@@ -295,6 +304,10 @@ export default function AdminInquiriesPage() {
               <label className="flex flex-col gap-1.5 text-sm font-semibold text-navy">
                 {t('common.locale')}
                 <input className={fieldClass()} readOnly value={selected.locale.toUpperCase()} />
+              </label>
+              <label className="flex flex-col gap-1.5 text-sm font-semibold text-navy">
+                {t('inquiries.source')}
+                <input className={fieldClass()} readOnly value={selected.sourceSlug || '—'} />
               </label>
               <label className="flex flex-col gap-1.5 text-sm font-semibold text-navy">
                 {t('common.status')}

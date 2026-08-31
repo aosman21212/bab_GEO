@@ -2357,5 +2357,87 @@
         }
       }
     }
+  },
+  {
+    "slug": "book-demo",
+    "category": "landing",
+    "landingType": "lead-form",
+    "locales": {
+      "en": {
+        "metaTitle": "Book a Demo — BAB International",
+        "metaDescription": "Request a demo of BAB contact center, AI, and communication solutions for your business in Saudi Arabia.",
+        "eyebrow": "BAB International",
+        "heroHeading": "Transform your customer experience with BAB",
+        "heroDescription": "Omni-channel contact centers, AI voice bots, and smart CRM — built for Saudi enterprises.",
+        "ctaLabel": "Book a demo",
+        "image": "/images/hero-man-phone.png",
+        "highlights": [
+          "Omni-channel contact center platform",
+          "AI voice bots and intelligent routing",
+          "Local support across Saudi Arabia"
+        ],
+        "formNote": "We will contact you within 24 hours."
+      },
+      "ar": {
+        "metaTitle": "احجز عرضاً — باب الدولية",
+        "metaDescription": "اطلب عرضاً لحلول باب لمراكز الاتصال والذكاء الاصطناعي والاتصالات في المملكة.",
+        "eyebrow": "باب الدولية",
+        "heroHeading": "حوّل تجربة عملائك مع باب",
+        "heroDescription": "مراكز اتصال متعددة القنوات وروبوتات صوتية بالذكاء الاصطناعي وإدارة علاقات ذكية — للمؤسسات السعودية.",
+        "ctaLabel": "احجز عرضاً",
+        "image": "/images/hero-man-phone.png",
+        "highlights": [
+          "منصة مركز اتصال متعدد القنوات",
+          "روبوتات صوتية بالذكاء الاصطناعي وتوجيه ذكي",
+          "دعم محلي في المملكة العربية السعودية"
+        ],
+        "formNote": "سنتواصل معك خلال 24 ساعة."
+      }
+    }
+  },
+  {
+    "slug": "whatsapp-business",
+    "category": "landing",
+    "landingType": "whatsapp",
+    "locales": {
+      "en": {
+        "metaTitle": "Chat on WhatsApp — BAB International",
+        "metaDescription": "Connect with BAB International on WhatsApp Business for demos and sales inquiries.",
+        "eyebrow": "WhatsApp Business",
+        "heroHeading": "Talk to BAB on WhatsApp",
+        "heroDescription": "Get answers about contact center, AI, and digital communication solutions — message us directly.",
+        "ctaLabel": "Book a demo",
+        "image": "/images/hero-man-phone.png",
+        "highlights": [
+          "Fast response from our sales team",
+          "Demo scheduling via chat",
+          "Official BAB International account"
+        ],
+        "whatsappDisplayName": "BAB International Corp",
+        "whatsappPhone": "966920035161",
+        "officialWebsite": "https://bab.com.sa",
+        "officialEmail": "sales@bab.com.sa",
+        "profileDescription": "BAB International Corp delivers contact center, AI, and communication solutions across Saudi Arabia and the MENA region since 1999."
+      },
+      "ar": {
+        "metaTitle": "تواصل عبر واتساب — باب الدولية",
+        "metaDescription": "تواصل مع باب الدولية عبر واتساب للأعمال للعروض واستفسارات المبيعات.",
+        "eyebrow": "واتساب للأعمال",
+        "heroHeading": "تحدث مع باب عبر واتساب",
+        "heroDescription": "احصل على إجابات حول مراكز الاتصال والذكاء الاصطناعي وحلول الاتصالات — راسلنا مباشرة.",
+        "ctaLabel": "احجز عرضاً",
+        "image": "/images/hero-man-phone.png",
+        "highlights": [
+          "استجابة سريعة من فريق المبيعات",
+          "جدولة العروض عبر المحادثة",
+          "حساب باب الدولية الرسمي"
+        ],
+        "whatsappDisplayName": "BAB International Corp",
+        "whatsappPhone": "966920035161",
+        "officialWebsite": "https://bab.com.sa",
+        "officialEmail": "sales@bab.com.sa",
+        "profileDescription": "تقدّم باب الدولية حلول مراكز الاتصال والذكاء الاصطناعي والاتصالات في المملكة ومنطقة الشرق الأوسط وشمال أفريقيا منذ 1999."
+      }
+    }
   }
 ]

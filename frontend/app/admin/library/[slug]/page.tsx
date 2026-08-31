@@ -12,11 +12,12 @@ import {
   type LocaleFormData,
   type PageMetaForm,
 } from '@/components/admin-page-form'
-import type { PageCategory } from '@/lib/page-categories'
+import type { PageCategory, LandingType } from '@/lib/page-categories'
 
 type PageDoc = {
   slug: string
   category: PageCategory
+  landingType?: LandingType
   status?: 'published' | 'draft'
   locales: {
     en?: Record<string, unknown>
@@ -57,6 +58,7 @@ export default function AdminLibraryEditPage() {
       setMeta({
         slug: data.slug,
         category: data.category,
+        landingType: data.landingType || 'lead-form',
         status: data.status || 'published',
       })
       setEnForm(localeFromApi(data.locales?.en))
@@ -80,6 +82,7 @@ export default function AdminLibraryEditPage() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         category: meta.category,
+        landingType: meta.category === 'landing' ? meta.landingType || 'lead-form' : undefined,
         status: meta.status,
         locales,
       }),

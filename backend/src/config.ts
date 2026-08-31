@@ -14,4 +14,12 @@ export const env = {
   corsOrigin: required('CORS_ORIGIN', 'http://localhost:3003'),
   adminEmail: required('ADMIN_EMAIL', 'admin@bab.com.sa'),
   adminPassword: required('ADMIN_PASSWORD', 'Admin123!'),
+  /** Contact Us inquiry notifications */
+  inquiryNotifyTo: process.env.INQUIRY_NOTIFY_TO?.trim() || 'sales@bab.com.sa',
+  smtpHost: process.env.SMTP_HOST?.trim() || '',
+  smtpPort: Number(process.env.SMTP_PORT ?? 587),
+  smtpUser: process.env.SMTP_USER?.trim() || '',
+  smtpPass: process.env.SMTP_PASS?.trim() || '',
+  smtpFrom: process.env.SMTP_FROM?.trim() || 'noreply@bab.com.sa',
+  smtpSecure: process.env.SMTP_SECURE === 'true' || process.env.SMTP_SECURE === '1',
 }

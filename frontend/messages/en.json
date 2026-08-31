@@ -219,6 +219,17 @@
     "thanksTitle": "Thank you!",
     "thanksBody": "Your message has been received. Our team will get back to you shortly."
   },
+  "landingPage": {
+    "headerCta": "Contact us",
+    "whatsappBusiness": "WhatsApp Business",
+    "chatOnWhatsApp": "Chat on WhatsApp",
+    "whatsappPhone": "WhatsApp phone number",
+    "officialWebsite": "Official website",
+    "officialEmail": "Official email address",
+    "privacy": "Privacy policy",
+    "contact": "Contact",
+    "home": "Home"
+  },
   "footer": {
     "company": "Company",
     "address": "Address",
@@ -453,6 +464,7 @@
       "product": "Product",
       "caseStudy": "Case study",
       "article": "Article",
+      "landing": "Landing page",
       "all": "All",
       "updated": "Updated",
       "added": "Added",
@@ -523,7 +535,8 @@
       "markRead": "Mark read",
       "archive": "Archive",
       "modalEyebrow": "CONTACT US",
-      "modalTitle": "Inquiry details"
+      "modalTitle": "Inquiry details",
+      "source": "Campaign / source"
     },
     "users": {
       "title": "Users",
@@ -609,13 +622,14 @@
     },
     "library": {
       "title": "Content Library",
-      "description": "Manage solutions, industries, products, and case study pages displayed on your public website.",
+      "description": "Manage solutions, industries, products, case studies, articles, and campaign landing pages.",
       "addContent": "Add content",
       "solutions": "Solutions",
       "industries": "Industries",
       "products": "Products",
       "caseStudies": "Case studies",
       "articles": "Articles",
+      "landings": "Landing pages",
       "searchPlaceholder": "Search by title or slug...",
       "empty": "No content matches your filters.",
       "newTitle": "New Content",
@@ -658,7 +672,20 @@
       "addBenefit": "Add benefit",
       "useCases": "Use cases",
       "enableUseCases": "Enable use cases section",
-      "items": "Items (one per line)"
+      "items": "Items (one per line)",
+      "landingLayout": "Landing layout",
+      "landingLeadForm": "Lead form",
+      "landingWhatsApp": "Click-to-WhatsApp",
+      "landingContent": "Landing content",
+      "landingContentSubtitle": "Bullets and form / WhatsApp profile fields",
+      "highlights": "Highlights (one per line)",
+      "highlightsPlaceholder": "Omnichannel contact center\nAI voice bots for Arabic dialects",
+      "formNote": "Form note (under submit button)",
+      "whatsappDisplayName": "WhatsApp display name",
+      "whatsappPhone": "WhatsApp phone (digits)",
+      "officialWebsite": "Official website",
+      "officialEmail": "Official email",
+      "profileDescription": "Profile description"
     },
     "geo": {
       "title": "GEO — AI visibility",

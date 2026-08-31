@@ -16,6 +16,7 @@ type PageDoc = {
   _id: string
   slug: string
   category: PageCategory
+  landingType?: string
   status?: 'published' | 'draft'
   locales: {
     en?: { metaTitle?: string; heroHeading?: string; eyebrow?: string }
@@ -75,6 +76,7 @@ export default function AdminLibraryPage() {
     { id: 'product', label: t('library.products'), count: counts.product },
     { id: 'case-study', label: t('library.caseStudies'), count: counts['case-study'] },
     { id: 'article', label: t('library.articles'), count: counts.article },
+    { id: 'landing', label: t('library.landings'), count: counts.landing },
   ]
 
   return (

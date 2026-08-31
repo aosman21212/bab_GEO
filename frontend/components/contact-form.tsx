@@ -4,15 +4,21 @@ import { useState } from 'react'
 import { useLocale, useTranslations } from 'next-intl'
 import { ArrowRight } from 'lucide-react'
 import { submitInquiry } from '@/lib/api'
-
-const BOOK_DEMO_WHATSAPP =
-  'https://api.whatsapp.com/send?phone=966920035161&text=Book+a+demo'
+import { buildWhatsAppUrl, DEFAULT_WHATSAPP_PHONE } from '@/lib/landing-defaults'
 
 function fieldClass() {
   return 'w-full rounded-xl border border-border bg-muted/40 px-4 py-3 text-sm text-navy outline-none transition focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/20'
 }
 
-export function ContactForm() {
+export function ContactForm({
+  sourceSlug,
+  openWhatsAppAfterSubmit = true,
+  submitLabel,
+}: {
+  sourceSlug?: string
+  openWhatsAppAfterSubmit?: boolean
+  submitLabel?: string
+}) {
   const t = useTranslations('form')
   const locale = useLocale()
   const [sent, setSent] = useState(false)
@@ -31,6 +37,7 @@ export function ContactForm() {
       email: String(fd.get('email') || ''),
       project: String(fd.get('project') || ''),
       locale: locale === 'ar' ? 'ar' : 'en',
+      sourceSlug,
     })
     setPending(false)
     if (!result.ok) {
@@ -38,7 +45,10 @@ export function ContactForm() {
       return
     }
     setSent(true)
-    window.open(BOOK_DEMO_WHATSAPP, '_blank', 'noopener,noreferrer')
+    if (openWhatsAppAfterSubmit) {
+      const message = submitLabel || (locale === 'ar' ? 'احجز عرضاً' : 'Book a demo')
+      window.open(buildWhatsAppUrl(DEFAULT_WHATSAPP_PHONE, message), '_blank', 'noopener,noreferrer')
+    }
   }
 
   if (sent) {
@@ -102,9 +112,10 @@ export function ContactForm() {
       <button
         type="submit"
         disabled={pending}
-        className="mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-8 py-3 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90 disabled:opacity-60"
+        className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-8 py-3 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90 disabled:opacity-60 sm:w-auto"
       >
-        {pending ? '…' : t('send')} <ArrowRight className="h-4 w-4 rtl:rotate-180" />
+        {pending ? '…' : submitLabel || t('send')}{' '}
+        <ArrowRight className="h-4 w-4 rtl:rotate-180" />
       </button>
     </form>
   )

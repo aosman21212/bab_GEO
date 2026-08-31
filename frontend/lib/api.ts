@@ -68,6 +68,7 @@ export async function submitInquiry(body: {
   email: string
   project: string
   locale?: 'en' | 'ar'
+  sourceSlug?: string
 }) {
   const controller = new AbortController()
   const timer = setTimeout(() => controller.abort(), 8000)

@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { Plus, Trash2, Upload } from 'lucide-react'
 import { useAdminLocale } from '@/components/admin-locale-provider'
 import { AdminImagePicker } from '@/components/admin-image-picker'
-import type { PageCategory } from '@/lib/page-categories'
+import type { PageCategory, LandingType } from '@/lib/page-categories'
 
 export type FeatureCardForm = {
   accent: string
@@ -38,12 +38,20 @@ export type LocaleFormData = {
   useCasesEnabled: boolean
   useCasesHeading: string
   useCasesText: string
+  highlightsText: string
+  formNote: string
+  whatsappDisplayName: string
+  whatsappPhone: string
+  officialWebsite: string
+  officialEmail: string
+  profileDescription: string
 }
 
 export type PageMetaForm = {
   slug: string
   category: PageCategory
   status: 'published' | 'draft'
+  landingType?: LandingType
 }
 
 export function emptyLocaleForm(partial?: Partial<LocaleFormData>): LocaleFormData {
@@ -67,6 +75,13 @@ export function emptyLocaleForm(partial?: Partial<LocaleFormData>): LocaleFormDa
     useCasesEnabled: false,
     useCasesHeading: '',
     useCasesText: '',
+    highlightsText: '',
+    formNote: '',
+    whatsappDisplayName: '',
+    whatsappPhone: '',
+    officialWebsite: '',
+    officialEmail: '',
+    profileDescription: '',
     ...partial,
   }
 }
@@ -110,6 +125,15 @@ export function localeFromApi(raw: Record<string, unknown> | undefined | null): 
     useCasesEnabled: Boolean(useCases),
     useCasesHeading: String(useCases?.heading ?? ''),
     useCasesText: (useCases?.items ?? []).join('\n'),
+    highlightsText: Array.isArray(raw.highlights)
+      ? (raw.highlights as string[]).join('\n')
+      : '',
+    formNote: String(raw.formNote ?? ''),
+    whatsappDisplayName: String(raw.whatsappDisplayName ?? ''),
+    whatsappPhone: String(raw.whatsappPhone ?? ''),
+    officialWebsite: String(raw.officialWebsite ?? ''),
+    officialEmail: String(raw.officialEmail ?? ''),
+    profileDescription: String(raw.profileDescription ?? ''),
   })
 }
 
@@ -122,6 +146,16 @@ export function localeToApi(form: LocaleFormData): Record<string, unknown> {
     heroDescription: form.heroDescription,
     ctaLabel: form.ctaLabel,
     image: form.image,
+    highlights: form.highlightsText
+      .split('\n')
+      .map((l) => l.trim())
+      .filter(Boolean),
+    formNote: form.formNote,
+    whatsappDisplayName: form.whatsappDisplayName,
+    whatsappPhone: form.whatsappPhone,
+    officialWebsite: form.officialWebsite,
+    officialEmail: form.officialEmail,
+    profileDescription: form.profileDescription,
     impact: {
       heading: form.impactHeading,
       text: form.impactText,
@@ -219,6 +253,8 @@ export function AdminPageForm({
 }) {
   const { t } = useAdminLocale()
   const dir = locale === 'ar' ? 'rtl' : 'ltr'
+  const isLanding = meta.category === 'landing'
+  const landingType = meta.landingType || 'lead-form'
   const [uploading, setUploading] = useState(false)
   const [uploadError, setUploadError] = useState<string | null>(null)
 
@@ -251,29 +287,64 @@ export function AdminPageForm({
             <select
               className={fieldClass()}
               value={meta.category}
-              onChange={(e) =>
-                onMetaChange({ ...meta, category: e.target.value as PageCategory })
-              }
+              onChange={(e) => {
+                const category = e.target.value as PageCategory
+                onMetaChange({
+                  ...meta,
+                  category,
+                  landingType: category === 'landing' ? meta.landingType || 'lead-form' : undefined,
+                })
+              }}
             >
               <option value="solution">{t('common.solution')}</option>
               <option value="industry">{t('common.industry')}</option>
               <option value="product">{t('common.product')}</option>
               <option value="case-study">{t('common.caseStudy')}</option>
               <option value="article">{t('common.article')}</option>
+              <option value="landing">{t('common.landing')}</option>
             </select>
           </Label>
-          <Label label={t('common.status')}>
-            <select
-              className={fieldClass()}
-              value={meta.status}
-              onChange={(e) =>
-                onMetaChange({ ...meta, status: e.target.value as 'published' | 'draft' })
-              }
-            >
-              <option value="published">{t('common.published')}</option>
-              <option value="draft">{t('common.draft')}</option>
-            </select>
-          </Label>
+          {isLanding ? (
+            <Label label={t('pageForm.landingLayout')}>
+              <select
+                className={fieldClass()}
+                value={landingType}
+                onChange={(e) =>
+                  onMetaChange({ ...meta, landingType: e.target.value as LandingType })
+                }
+              >
+                <option value="lead-form">{t('pageForm.landingLeadForm')}</option>
+                <option value="whatsapp">{t('pageForm.landingWhatsApp')}</option>
+              </select>
+            </Label>
+          ) : (
+            <Label label={t('common.status')}>
+              <select
+                className={fieldClass()}
+                value={meta.status}
+                onChange={(e) =>
+                  onMetaChange({ ...meta, status: e.target.value as 'published' | 'draft' })
+                }
+              >
+                <option value="published">{t('common.published')}</option>
+                <option value="draft">{t('common.draft')}</option>
+              </select>
+            </Label>
+          )}
+          {isLanding ? (
+            <Label label={t('common.status')}>
+              <select
+                className={fieldClass()}
+                value={meta.status}
+                onChange={(e) =>
+                  onMetaChange({ ...meta, status: e.target.value as 'published' | 'draft' })
+                }
+              >
+                <option value="published">{t('common.published')}</option>
+                <option value="draft">{t('common.draft')}</option>
+              </select>
+            </Label>
+          ) : null}
         </div>
       </Card>
 
@@ -372,6 +443,69 @@ export function AdminPageForm({
         </Label>
       </Card>
 
+      {isLanding ? (
+        <Card title={t('pageForm.landingContent')} subtitle={t('pageForm.landingContentSubtitle')}>
+          <Label label={t('pageForm.highlights')} dir={dir}>
+            <textarea
+              className={`${fieldClass()} min-h-[120px] resize-y`}
+              value={value.highlightsText}
+              onChange={(e) => set('highlightsText', e.target.value)}
+              placeholder={t('pageForm.highlightsPlaceholder')}
+            />
+          </Label>
+          {landingType === 'lead-form' ? (
+            <Label label={t('pageForm.formNote')} dir={dir}>
+              <input
+                className={fieldClass()}
+                value={value.formNote}
+                onChange={(e) => set('formNote', e.target.value)}
+              />
+            </Label>
+          ) : (
+            <>
+              <Label label={t('pageForm.whatsappDisplayName')} dir={dir}>
+                <input
+                  className={fieldClass()}
+                  value={value.whatsappDisplayName}
+                  onChange={(e) => set('whatsappDisplayName', e.target.value)}
+                />
+              </Label>
+              <Label label={t('pageForm.whatsappPhone')}>
+                <input
+                  className={fieldClass()}
+                  value={value.whatsappPhone}
+                  onChange={(e) => set('whatsappPhone', e.target.value)}
+                  placeholder="966920035161"
+                />
+              </Label>
+              <Label label={t('pageForm.officialWebsite')}>
+                <input
+                  className={fieldClass()}
+                  value={value.officialWebsite}
+                  onChange={(e) => set('officialWebsite', e.target.value)}
+                />
+              </Label>
+              <Label label={t('pageForm.officialEmail')}>
+                <input
+                  className={fieldClass()}
+                  value={value.officialEmail}
+                  onChange={(e) => set('officialEmail', e.target.value)}
+                />
+              </Label>
+              <Label label={t('pageForm.profileDescription')} dir={dir}>
+                <textarea
+                  className={`${fieldClass()} min-h-[100px] resize-y`}
+                  value={value.profileDescription}
+                  onChange={(e) => set('profileDescription', e.target.value)}
+                />
+              </Label>
+            </>
+          )}
+        </Card>
+      ) : null}
+
+      {!isLanding ? (
+        <>
       <Card title={t('pageForm.impact')} subtitle={t('pageForm.impactSubtitle')}>
         <Label label={t('pageForm.heading')} dir={dir}>
           <input
@@ -587,6 +721,8 @@ export function AdminPageForm({
           </>
         ) : null}
       </Card>
+        </>
+      ) : null}
     </div>
   )
 }

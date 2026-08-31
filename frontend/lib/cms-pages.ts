@@ -17,9 +17,14 @@ function mapToPageContent(raw: Record<string, unknown>, slug: string): PageConte
     text: '',
   }
 
+  const highlights = Array.isArray(raw.highlights)
+    ? raw.highlights.map((h) => String(h)).filter(Boolean)
+    : undefined
+
   return {
     slug,
     category: (raw.category as PageContent['category']) || 'solution',
+    landingType: raw.landingType as PageContent['landingType'],
     metaTitle: String(raw.metaTitle ?? ''),
     metaDescription: String(raw.metaDescription ?? ''),
     eyebrow: String(raw.eyebrow ?? ''),
@@ -27,6 +32,13 @@ function mapToPageContent(raw: Record<string, unknown>, slug: string): PageConte
     heroDescription: String(raw.heroDescription ?? ''),
     ctaLabel: String(raw.ctaLabel ?? ''),
     image: String(raw.image ?? '/images/bab-hero.png'),
+    highlights,
+    formNote: String(raw.formNote ?? ''),
+    whatsappDisplayName: String(raw.whatsappDisplayName ?? ''),
+    whatsappPhone: String(raw.whatsappPhone ?? ''),
+    officialWebsite: String(raw.officialWebsite ?? ''),
+    officialEmail: String(raw.officialEmail ?? ''),
+    profileDescription: String(raw.profileDescription ?? ''),
     features: raw.features as PageContent['features'],
     benefits: raw.benefits as PageContent['benefits'],
     useCases: raw.useCases as PageContent['useCases'],

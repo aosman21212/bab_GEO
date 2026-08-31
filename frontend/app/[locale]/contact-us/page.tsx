@@ -9,6 +9,9 @@ import { Reveal } from '@/components/reveal'
 const BOOK_DEMO_WHATSAPP =
   'https://api.whatsapp.com/send?phone=966920035161&text=Book+a+demo'
 
+/** Sales inbox for Contact Us inquiries (distinct from general siteSettings.email). */
+const CONTACT_SALES_EMAIL = 'sales@bab.com.sa'
+
 export default function ContactPage() {
   const t = useTranslations('contactPage')
   const s = useTranslations('siteSettings')
@@ -17,7 +20,7 @@ export default function ContactPage() {
   const address = locale === 'ar' ? s('addressAr') : s('addressEn')
   const hours = locale === 'ar' ? s('hoursAr') : s('hoursEn')
   const phone = s('phone')
-  const email = s('email')
+  const email = CONTACT_SALES_EMAIL
   const phoneHref = `tel:${phone.replace(/[^\d+]/g, '')}`
 
   return (

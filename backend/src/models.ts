@@ -57,8 +57,12 @@ const pageSchema = new Schema(
     slug: { type: String, required: true, unique: true, trim: true },
     category: {
       type: String,
-      enum: ['solution', 'industry', 'product', 'case-study', 'article'],
+      enum: ['solution', 'industry', 'product', 'case-study', 'article', 'landing'],
       required: true,
+    },
+    landingType: {
+      type: String,
+      enum: ['lead-form', 'whatsapp'],
     },
     status: { type: String, enum: ['published', 'draft'], default: 'published' },
     locales: {
@@ -79,6 +83,7 @@ const inquirySchema = new Schema(
     email: { type: String, required: true },
     project: { type: String, required: true },
     locale: { type: String, enum: ['en', 'ar'], default: 'en' },
+    sourceSlug: { type: String, trim: true, default: '' },
     status: { type: String, enum: ['new', 'read', 'archived'], default: 'new' },
   },
   { timestamps: true }

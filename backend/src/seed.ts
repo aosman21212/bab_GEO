@@ -150,7 +150,8 @@ async function seedPages() {
   }
   const pages = JSON.parse(fs.readFileSync(pagesPath, 'utf8')) as Array<{
     slug: string
-    category: 'solution' | 'industry' | 'product' | 'case-study' | 'article'
+    category: 'solution' | 'industry' | 'product' | 'case-study' | 'article' | 'landing'
+    landingType?: 'lead-form' | 'whatsapp'
     locales: { en: unknown; ar?: unknown }
   }>
   for (const page of pages) {

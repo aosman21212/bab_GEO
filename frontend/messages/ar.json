@@ -219,6 +219,17 @@
     "thanksTitle": "شكراً لك!",
     "thanksBody": "تم استلام رسالتك. سيتواصل فريقنا معك قريباً."
   },
+  "landingPage": {
+    "headerCta": "تواصل معنا",
+    "whatsappBusiness": "واتساب للأعمال",
+    "chatOnWhatsApp": "تواصل عبر واتساب",
+    "whatsappPhone": "رقم واتساب",
+    "officialWebsite": "الموقع الرسمي",
+    "officialEmail": "البريد الرسمي",
+    "privacy": "سياسة الخصوصية",
+    "contact": "تواصل",
+    "home": "الرئيسية"
+  },
   "footer": {
     "company": "الشركة",
     "address": "العنوان",
@@ -453,6 +464,7 @@
       "product": "منتج",
       "caseStudy": "دراسة حالة",
       "article": "مقال",
+      "landing": "صفحة هبوط",
       "all": "الكل",
       "updated": "تم التحديث",
       "added": "تمت الإضافة",
@@ -523,7 +535,8 @@
       "markRead": "تعيين كمقروء",
       "archive": "أرشفة",
       "modalEyebrow": "تواصل معنا",
-      "modalTitle": "تفاصيل الاستفسار"
+      "modalTitle": "تفاصيل الاستفسار",
+      "source": "الحملة / المصدر"
     },
     "users": {
       "title": "المستخدمون",
@@ -609,13 +622,14 @@
     },
     "library": {
       "title": "مكتبة المحتوى",
-      "description": "إدارة صفحات الحلول والقطاعات والمنتجات ودراسات الحالة المعروضة على الموقع العام.",
+      "description": "إدارة صفحات الحلول والقطاعات والمنتجات ودراسات الحالة والمقالات وصفحات الحملات.",
       "addContent": "إضافة محتوى",
       "solutions": "حلول",
       "industries": "قطاعات",
       "products": "منتجات",
       "caseStudies": "دراسات حالة",
       "articles": "مقالات",
+      "landings": "صفحات هبوط",
       "searchPlaceholder": "ابحث بالعنوان أو المعرّف...",
       "empty": "لا يوجد محتوى يطابق عوامل التصفية.",
       "newTitle": "محتوى جديد",
@@ -658,7 +672,20 @@
       "addBenefit": "إضافة فائدة",
       "useCases": "حالات الاستخدام",
       "enableUseCases": "تفعيل قسم حالات الاستخدام",
-      "items": "العناصر (سطر لكل عنصر)"
+      "items": "العناصر (سطر لكل عنصر)",
+      "landingLayout": "تخطيط صفحة الهبوط",
+      "landingLeadForm": "نموذج عملاء محتملين",
+      "landingWhatsApp": "النقر إلى واتساب",
+      "landingContent": "محتوى الهبوط",
+      "landingContentSubtitle": "نقاط بارزة وحقول النموذج / ملف واتساب",
+      "highlights": "النقاط البارزة (سطر لكل نقطة)",
+      "highlightsPlaceholder": "مركز اتصال متعدد القنوات\nروبوتات صوتية بالذكاء الاصطناعي",
+      "formNote": "ملاحظة تحت زر الإرسال",
+      "whatsappDisplayName": "اسم العرض في واتساب",
+      "whatsappPhone": "رقم واتساب (أرقام فقط)",
+      "officialWebsite": "الموقع الرسمي",
+      "officialEmail": "البريد الرسمي",
+      "profileDescription": "وصف الملف الشخصي"
     },
     "geo": {
       "title": "GEO — الظهور في الذكاء الاصطناعي",

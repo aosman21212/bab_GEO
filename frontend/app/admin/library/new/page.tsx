@@ -28,6 +28,7 @@ export default function AdminLibraryNewPage() {
     slug: '',
     category: 'solution',
     status: 'published',
+    landingType: 'lead-form',
   })
   const [enForm, setEnForm] = useState<LocaleFormData>(emptyLocaleForm())
   const [arForm, setArForm] = useState<LocaleFormData>(emptyLocaleForm())
@@ -66,6 +67,7 @@ export default function AdminLibraryNewPage() {
       body: JSON.stringify({
         slug: meta.slug,
         category: meta.category,
+        landingType: meta.category === 'landing' ? meta.landingType || 'lead-form' : undefined,
         status: meta.status,
         locales: {
           en: localeToApi(enForm),
