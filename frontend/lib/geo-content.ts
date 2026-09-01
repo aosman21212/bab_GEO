@@ -42,12 +42,23 @@ export const GEO_LOGO_PATH = '/images/logo-bab.png'
 
 
 
+const PRODUCTION_SITE_URL = 'https://bab.com.sa'
+
 export function getSiteUrl() {
-  const raw =
+  let raw =
     process.env.SITE_URL ||
     process.env.NEXT_PUBLIC_SITE_URL ||
-    'https://bab.com.sa'
-  const origin = raw.replace(/\/$/, '')
+    PRODUCTION_SITE_URL
+  let origin = raw.replace(/\/$/, '')
+
+  // Never emit localhost in production sitemap/robots/llms (misconfigured env).
+  if (
+    process.env.NODE_ENV === 'production' &&
+    /localhost|127\.0\.0\.1/i.test(origin)
+  ) {
+    origin = PRODUCTION_SITE_URL
+  }
+
   if (!basePath) return origin
   if (origin.endsWith(basePath)) return origin
   return `${origin}${basePath}`
