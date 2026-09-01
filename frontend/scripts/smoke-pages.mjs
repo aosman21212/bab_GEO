@@ -44,10 +44,12 @@ const GEO_ROUTES = [
   '/sitemap.xml',
   '/.well-known/ai.txt',
   '/googled43fdb9897d9f8a7.html',
+  '/BingSiteAuth.xml',
+  '/877C499DA34F5945E4D93D5E4A752DA4.txt',
 ]
 
-/** Optional GEO routes — 200 (configured) or 404 (not configured) both pass. */
-const OPTIONAL_GEO_ROUTES = ['/BingSiteAuth.xml']
+/** Optional GEO routes — 200 when configured. */
+const OPTIONAL_GEO_ROUTES = []
 
 const ADMIN_ROUTES = [
   '/admin',
