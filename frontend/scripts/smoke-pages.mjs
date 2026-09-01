@@ -45,7 +45,7 @@ const GEO_ROUTES = [
   '/.well-known/ai.txt',
   '/googled43fdb9897d9f8a7.html',
   '/BingSiteAuth.xml',
-  '/877C499DA34F5945E4D93D5E4A752DA4.txt',
+  '/a0d1d00c073c48c2b85694d1a36ccfbf.txt',
 ]
 
 /** Optional GEO routes — 200 when configured. */

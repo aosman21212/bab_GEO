@@ -37,6 +37,7 @@ type CrawlerFile = {
 
 type IndexNowMeta = {
   siteUrl: string
+  indexNowKey?: string
   keyConfigured: boolean
   keyFileUrl: string | null
   sitemapUrl: string
@@ -120,6 +121,9 @@ export default function AdminGeoPage() {
   )
   const [checking, setChecking] = useState(false)
   const [meta, setMeta] = useState<IndexNowMeta | null>(null)
+  const [indexNowKey, setIndexNowKey] = useState('')
+  const [keyStatus, setKeyStatus] = useState<string | null>(null)
+  const [savingKey, setSavingKey] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
 
@@ -132,7 +136,9 @@ export default function AdminGeoPage() {
       return
     }
     if (!res.ok) return
-    setMeta((await res.json()) as IndexNowMeta)
+    const data = (await res.json()) as IndexNowMeta
+    setMeta(data)
+    setIndexNowKey(data.indexNowKey || '')
   }, [router])
 
   const recheckOne = async (path: string): Promise<FileStatus> => {
@@ -167,6 +173,31 @@ export default function AdminGeoPage() {
     loadMeta()
     checkAll()
   }, [loadMeta, checkAll])
+
+  const saveIndexNowKey = async () => {
+    setSavingKey(true)
+    setKeyStatus(null)
+    const res = await fetch(withBasePath('/api/admin/indexnow'), {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ key: indexNowKey.trim() }),
+    })
+    const data = (await res.json().catch(() => ({}))) as {
+      error?: string
+      keyFileUrl?: string
+      indexNowKey?: string
+    }
+    setSavingKey(false)
+    if (!res.ok) {
+      setKeyStatus(data.error || t('geo.indexNowKeyError'))
+      return
+    }
+    setKeyStatus(t('geo.indexNowKeySaved'))
+    await loadMeta()
+    if (data.keyFileUrl) {
+      await recheckOne(`/${indexNowKey.trim()}.txt`)
+    }
+  }
 
   const submitIndexNow = async () => {
     setSubmitting(true)
@@ -284,7 +315,31 @@ export default function AdminGeoPage() {
             </div>
           </div>
 
-          <div className="mt-4 space-y-1 text-sm text-muted-foreground">
+          <div className="mt-4 space-y-4">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-end">
+              <label className="flex flex-1 flex-col gap-2 text-sm font-semibold text-navy">
+                {t('geo.indexNowKeyLabel')}
+                <input
+                  type="text"
+                  className="w-full rounded-xl border border-border bg-muted px-3 py-2.5 font-mono text-sm text-navy outline-none transition focus:border-primary focus:bg-white"
+                  value={indexNowKey}
+                  onChange={(e) => setIndexNowKey(e.target.value)}
+                  placeholder={t('geo.indexNowKeyPlaceholder')}
+                  spellCheck={false}
+                />
+              </label>
+              <button
+                type="button"
+                disabled={savingKey || !indexNowKey.trim()}
+                onClick={saveIndexNowKey}
+                className="inline-flex shrink-0 items-center justify-center rounded-full border border-border px-4 py-2.5 text-sm font-semibold text-navy hover:border-primary disabled:opacity-60"
+              >
+                {savingKey ? t('geo.savingKey') : t('geo.saveIndexNowKey')}
+              </button>
+            </div>
+            {keyStatus ? <p className="text-sm text-navy">{keyStatus}</p> : null}
+
+            <div className="space-y-1 text-sm text-muted-foreground">
             <p>
               {t('geo.sitemap')}:{' '}
               <a
@@ -313,6 +368,7 @@ export default function AdminGeoPage() {
               )}
             </p>
             {submitStatus ? <p className="pt-2 text-navy">{submitStatus}</p> : null}
+            </div>
           </div>
 
           <div className="mt-5 rounded-xl border border-border bg-muted/80 p-4 text-sm leading-relaxed text-muted-foreground">

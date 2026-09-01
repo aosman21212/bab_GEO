@@ -27,6 +27,8 @@ export type GeoSiteSettings = {
   geoAboutAr?: string
   /** Citation preference line for llms / ai.txt */
   geoCitationNote?: string
+  /** IndexNow API key — set from Admin → GEO */
+  indexNowKey?: string
 }
 
 export type GeoPageRef = {
@@ -67,6 +69,13 @@ export function getSiteUrl() {
 export function getIndexNowKey() {
   return process.env.INDEXNOW_KEY || ''
 }
+
+export async function resolveIndexNowKey(): Promise<string> {
+  const settings = await loadGeoSettings()
+  return settings.indexNowKey?.trim() || process.env.INDEXNOW_KEY?.trim() || ''
+}
+
+export const INDEXNOW_KEY_PATTERN = /^[a-zA-Z0-9-]{8,128}$/
 
 const DEFAULT_BING_SITE_AUTH_CODE = '877C499DA34F5945E4D93D5E4A752DA4'
 
@@ -200,6 +209,7 @@ export function mergeGeoSettings(partial?: Partial<GeoSiteSettings> | null): Geo
     geoCitationNote: settings.geoCitationNote?.trim()
       ? settings.geoCitationNote
       : fallbackSettings.geoCitationNote,
+    indexNowKey: settings.indexNowKey?.trim() || undefined,
   }
 }
 

@@ -1,11 +1,41 @@
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
-import { collectSitemapUrls, getIndexNowKey, getSiteUrl } from '@/lib/geo-content'
+import {
+  collectSitemapUrls,
+  getSiteUrl,
+  INDEXNOW_KEY_PATTERN,
+  resolveIndexNowKey,
+} from '@/lib/geo-content'
+import { getApiUrl } from '@/lib/api'
 import { ADMIN_SESSION_COOKIE, setAdminSessionCookie } from '@/lib/admin-session'
 
 function slideSession(response: NextResponse, token: string) {
   setAdminSessionCookie(response, token)
   return response
+}
+
+async function loadSiteSettings(token: string): Promise<Record<string, unknown>> {
+  const res = await fetch(`${getApiUrl()}/api/content/admin/en`, {
+    headers: { Authorization: `Bearer ${token}` },
+    cache: 'no-store',
+  })
+  if (!res.ok) return {}
+  const docs = (await res.json()) as { key: string; data: Record<string, unknown> }[]
+  const doc = docs.find((d) => d.key === 'siteSettings')
+  return doc?.data ?? {}
+}
+
+async function saveSiteSettings(token: string, data: Record<string, unknown>) {
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    'Content-Type': 'application/json',
+  }
+  const body = JSON.stringify({ data })
+  const [enRes, arRes] = await Promise.all([
+    fetch(`${getApiUrl()}/api/content/en/siteSettings`, { method: 'PUT', headers, body }),
+    fetch(`${getApiUrl()}/api/content/ar/siteSettings`, { method: 'PUT', headers, body }),
+  ])
+  return enRes.ok && arRes.ok
 }
 
 export async function GET() {
@@ -16,12 +46,13 @@ export async function GET() {
   }
 
   const site = getSiteUrl()
-  const key = getIndexNowKey()
+  const key = await resolveIndexNowKey()
   const urls = await collectSitemapUrls()
 
   return slideSession(
     NextResponse.json({
       siteUrl: site,
+      indexNowKey: key,
       keyConfigured: Boolean(key),
       keyFileUrl: key ? `${site}/${key}.txt` : null,
       sitemapUrl: `${site}/sitemap.xml`,
@@ -37,6 +68,39 @@ export async function GET() {
   )
 }
 
+export async function PUT(req: Request) {
+  const jar = await cookies()
+  const token = jar.get(ADMIN_SESSION_COOKIE)?.value
+  if (!token) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  const body = (await req.json().catch(() => ({}))) as { key?: string }
+  const key = body.key?.trim() ?? ''
+  if (!INDEXNOW_KEY_PATTERN.test(key)) {
+    return NextResponse.json(
+      { error: 'Invalid key. Use 8–128 alphanumeric characters (and optional hyphens).' },
+      { status: 400 },
+    )
+  }
+
+  const current = await loadSiteSettings(token)
+  const ok = await saveSiteSettings(token, { ...current, indexNowKey: key })
+  if (!ok) {
+    return NextResponse.json({ error: 'Failed to save IndexNow key' }, { status: 502 })
+  }
+
+  const site = getSiteUrl()
+  return slideSession(
+    NextResponse.json({
+      ok: true,
+      indexNowKey: key,
+      keyFileUrl: `${site}/${key}.txt`,
+    }),
+    token,
+  )
+}
+
 export async function POST() {
   const jar = await cookies()
   const token = jar.get(ADMIN_SESSION_COOKIE)?.value
@@ -44,11 +108,11 @@ export async function POST() {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  const key = getIndexNowKey()
+  const key = await resolveIndexNowKey()
   const site = getSiteUrl()
   if (!key) {
     return NextResponse.json(
-      { error: 'INDEXNOW_KEY is not set. Run npm run seo:rotate-indexnow-key' },
+      { error: 'IndexNow key is not set. Save a key in GEO settings first.' },
       { status: 400 },
     )
   }
