@@ -91,6 +91,7 @@ ADMIN_PASSWORD=Admin123!
 
 | Variable | Default | Used by |
 |----------|---------|---------|
+| `SITE_URL` | empty | frontend runtime (sitemap, robots, llms — **no rebuild**) |
 | `NEXT_PUBLIC_SITE_URL` | `http://localhost:3003` | frontend (build + runtime) |
 | `NEXT_PUBLIC_BASE_PATH` | empty | frontend (build + runtime) |
 | `NEXT_PUBLIC_API_URL` | `http://localhost:4001` | frontend (build) |
@@ -100,12 +101,15 @@ ADMIN_PASSWORD=Admin123!
 Override by creating a root `.env` file next to `docker-compose.yml`:
 
 ```env
+SITE_URL=https://bab.com.sa
 NEXT_PUBLIC_SITE_URL=https://bab.com.sa
 NEXT_PUBLIC_BASE_PATH=
 CORS_ORIGIN=https://bab.com.sa
 JWT_SECRET=your-production-secret
 ADMIN_PASSWORD=your-strong-password
 ```
+
+> `SITE_URL` fixes sitemap/robots/llms immediately on `docker compose up -d` (no rebuild). Rebuild frontend if you also need `NEXT_PUBLIC_SITE_URL` in client bundles.
 
 After changing Docker env vars:
 
@@ -182,7 +186,10 @@ const nextConfig = {
 
 ```ts
 export function getSiteUrl() {
-  const raw = process.env.NEXT_PUBLIC_SITE_URL || 'https://bab.com.sa'
+  const raw =
+    process.env.SITE_URL ||
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    'https://bab.com.sa'
   const origin = raw.replace(/\/$/, '')
   if (!basePath) return origin
   return `${origin}${basePath}`
@@ -190,6 +197,8 @@ export function getSiteUrl() {
 ```
 
 Used by: `llms.txt`, `sitemap.xml`, `robots.txt`, `ai.txt`, JSON-LD, admin GEO page.
+
+> **`SITE_URL`** (server-only, runtime) overrides `NEXT_PUBLIC_SITE_URL` for all SEO URLs. Set it in production to fix sitemap showing `localhost` without rebuilding.
 
 ---
 
@@ -345,12 +354,23 @@ location / {
 ### Env vars (root `.env` next to `docker-compose.yml`)
 
 ```env
+SITE_URL=https://bab.com.sa
 NEXT_PUBLIC_SITE_URL=https://bab.com.sa
 NEXT_PUBLIC_BASE_PATH=
 NEXT_PUBLIC_API_URL=http://localhost:4001
 CORS_ORIGIN=https://bab.com.sa
 JWT_SECRET=<strong-secret>
 ADMIN_PASSWORD=<strong-password>
+```
+
+### Quick fix (sitemap shows localhost — no rebuild)
+
+```bash
+# Add to .env on server:
+SITE_URL=https://bab.com.sa
+
+docker compose up -d
+curl -s https://bab.com.sa/sitemap.xml | head -5
 ```
 
 ### Backend (`backend/.env` on server)
@@ -386,12 +406,13 @@ cd frontend && npm run seo:submit-indexnow
 
 | Problem | Fix |
 |---------|-----|
+| Sitemap/robots show `http://localhost:3003` | Set `SITE_URL=https://bab.com.sa` in `.env`, run `docker compose up -d` |
 | `http://localhost:3003/` shows 404 | Rebuild frontend Docker image |
 | Admin preview opens wrong path | Rebuild frontend Docker image |
 | Images broken (404) | Ensure `AppImage` is used; rebuild frontend |
 | CORS errors in admin | Set `CORS_ORIGIN=http://localhost:3003` in `backend/.env` |
 | Language button goes to `/ar/ar` | Rebuild frontend |
-| GEO page shows `localhost:3003` | Expected locally; set production URL in env for prod |
+| GEO page shows `localhost:3003` | Set `SITE_URL=https://bab.com.sa` in production `.env` |
 | Changes not visible in Docker | Run `docker compose build frontend` then `up -d` |
 
 ---

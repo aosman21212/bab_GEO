@@ -43,7 +43,10 @@ export const GEO_LOGO_PATH = '/images/logo-bab.png'
 
 
 export function getSiteUrl() {
-  const raw = process.env.NEXT_PUBLIC_SITE_URL || 'https://bab.com.sa'
+  const raw =
+    process.env.SITE_URL ||
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    'https://bab.com.sa'
   const origin = raw.replace(/\/$/, '')
   if (!basePath) return origin
   if (origin.endsWith(basePath)) return origin
