@@ -65,6 +65,5 @@ export default function robots(): MetadataRoute.Robots {
       ...aiUserAgents.map((userAgent) => ({ userAgent, ...shared })),
     ],
     sitemap: `${site}/sitemap.xml`,
-    host: new URL(site).host,
   }
 }
