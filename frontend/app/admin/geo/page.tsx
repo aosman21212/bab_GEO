@@ -25,6 +25,8 @@ type PurposeKey =
   | 'purposeRobots'
   | 'purposeSitemap'
   | 'purposeAi'
+  | 'purposeBingSiteAuth'
+  | 'purposeGoogleSiteAuth'
 
 type CrawlerFile = {
   file: string
@@ -72,6 +74,16 @@ const INITIAL_FILES: Omit<CrawlerFile, 'status'>[] = [
     file: 'ai.txt',
     path: '/.well-known/ai.txt',
     purposeKey: 'purposeAi',
+  },
+  {
+    file: 'BingSiteAuth.xml',
+    path: '/BingSiteAuth.xml',
+    purposeKey: 'purposeBingSiteAuth',
+  },
+  {
+    file: 'googled43fdb9897d9f8a7.html',
+    path: '/googled43fdb9897d9f8a7.html',
+    purposeKey: 'purposeGoogleSiteAuth',
   },
 ]
 
@@ -304,7 +316,9 @@ export default function AdminGeoPage() {
           </div>
 
           <div className="mt-5 rounded-xl border border-border bg-muted/80 p-4 text-sm leading-relaxed text-muted-foreground">
-            <p>{t('geo.bingHelp')}</p>
+            <p>{t('geo.bingSiteAuthHelp')}</p>
+            <p className="mt-3">{t('geo.googleSiteAuthHelp')}</p>
+            <p className="mt-3">{t('geo.bingHelp')}</p>
             <p className="mt-3">{t('geo.googleHelp')}</p>
           </div>
 

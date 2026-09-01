@@ -43,7 +43,11 @@ const GEO_ROUTES = [
   '/robots.txt',
   '/sitemap.xml',
   '/.well-known/ai.txt',
+  '/googled43fdb9897d9f8a7.html',
 ]
+
+/** Optional GEO routes — 200 (configured) or 404 (not configured) both pass. */
+const OPTIONAL_GEO_ROUTES = ['/BingSiteAuth.xml']
 
 const ADMIN_ROUTES = [
   '/admin',
@@ -94,11 +98,12 @@ async function fetchPage(url, { allowRedirect = false } = {}) {
   }
 }
 
-async function testFrontend(path, group) {
+async function testFrontend(path, group, { optional = false } = {}) {
   const url = `${BASE_URL}${path}`
   const allowRedirect = ALLOW_REDIRECT.has(path)
   const result = await fetchPage(url, { allowRedirect })
-  return { ...result, path, group }
+  const ok = result.ok || (optional && result.status === 404)
+  return { ...result, ok, path, group }
 }
 
 async function testApi(name, fn) {
@@ -129,6 +134,9 @@ async function main() {
   // GEO routes
   for (const route of GEO_ROUTES) {
     results.push(await testFrontend(route, 'geo'))
+  }
+  for (const route of OPTIONAL_GEO_ROUTES) {
+    results.push(await testFrontend(route, 'geo', { optional: true }))
   }
 
   // Admin routes

@@ -66,6 +66,8 @@ services:
         NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3003}
         NEXT_PUBLIC_BASE_PATH: ${NEXT_PUBLIC_BASE_PATH:-}
         INDEXNOW_KEY: ${INDEXNOW_KEY:-}
+        BING_SITE_AUTH_CODE: ${BING_SITE_AUTH_CODE:-}
+        GOOGLE_SITE_VERIFICATION: ${GOOGLE_SITE_VERIFICATION:-googled43fdb9897d9f8a7}
     restart: unless-stopped
     ports:
       - '3003:3000'
@@ -75,6 +77,8 @@ services:
       NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3003}
       NEXT_PUBLIC_BASE_PATH: ${NEXT_PUBLIC_BASE_PATH:-}
       INDEXNOW_KEY: ${INDEXNOW_KEY:-}
+      BING_SITE_AUTH_CODE: ${BING_SITE_AUTH_CODE:-}
+      GOOGLE_SITE_VERIFICATION: ${GOOGLE_SITE_VERIFICATION:-googled43fdb9897d9f8a7}
     volumes:
       - uploads:/app/public/uploads
     depends_on:

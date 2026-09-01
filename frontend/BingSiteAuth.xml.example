@@ -1,6 +1,10 @@
-# Bing Webmaster Tools site ownership (optional)
-# Download BingSiteAuth.xml from Bing after verifying https://bab.com.sa
-# and place it at public/BingSiteAuth.xml so https://bab.com.sa/BingSiteAuth.xml resolves.
+# Bing Webmaster Tools site ownership
 #
-# For IndexNow keys, prefer:
+# Set BING_SITE_AUTH_CODE in frontend/.env.local or Docker env to the <user>
+# value from Bing Webmaster Tools → Add site → Verify → XML file or Meta tag.
+#
+# The app serves https://YOUR_DOMAIN/BingSiteAuth.xml automatically.
+# A msvalidate.01 meta tag is also added to all public pages when the code is set.
+#
+# For IndexNow URL submission (separate from site verification):
 #   npm run seo:rotate-indexnow-key -- --key=<bing-indexnow-key>

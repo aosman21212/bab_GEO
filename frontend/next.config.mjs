@@ -44,6 +44,13 @@ const nextConfig = {
         destination: '/api/indexnow-key',
       })
     }
+    const googleVerification = process.env.GOOGLE_SITE_VERIFICATION?.trim()
+    if (googleVerification) {
+      rules.push({
+        source: `/${googleVerification}.html`,
+        destination: '/api/google-site-verification',
+      })
+    }
     return rules
   },
 }

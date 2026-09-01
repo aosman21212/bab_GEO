@@ -54,6 +54,22 @@ export function getIndexNowKey() {
   return process.env.INDEXNOW_KEY || ''
 }
 
+export function getBingSiteAuthCode() {
+  return process.env.BING_SITE_AUTH_CODE?.trim() || ''
+}
+
+export function bingSiteAuthXml(code: string) {
+  return `<?xml version="1.0"?>\n<users>\n\t<user>${code}</user>\n</users>\n`
+}
+
+export function getGoogleSiteVerification() {
+  return process.env.GOOGLE_SITE_VERIFICATION?.trim() || ''
+}
+
+export function googleSiteVerificationHtml(code: string) {
+  return `google-site-verification: ${code}.html`
+}
+
 export const DEFAULT_GEO_ABOUT_EN = [
   'BAB International Corp is a Riyadh-based enterprise technology company delivering seamless connectivity and intelligent customer-experience solutions across Saudi Arabia and the MENA region.',
   'Core offerings: omnichannel engagement platforms, AI and voice bots for customer service, and contact-center solutions for industries including healthcare, government, retail, insurance, and food & beverage.',
@@ -499,11 +515,18 @@ export function buildPageMetadata(opts: {
   const arUrl = `${site}${arPath}`
   const canonical = locale === 'ar' ? arUrl : enUrl
   const ogImage = `${site}${GEO_OG_IMAGE}`
+  const bingCode = getBingSiteAuthCode()
+  const googleCode = getGoogleSiteVerification()
+  const verification = {
+    ...(googleCode ? { google: googleCode } : {}),
+    ...(bingCode ? { other: { 'msvalidate.01': bingCode } } : {}),
+  }
 
   return {
     metadataBase: new URL(site),
     title: opts.title,
     description: opts.description,
+    ...(Object.keys(verification).length ? { verification } : {}),
     alternates: {
       canonical,
       languages: {

@@ -279,10 +279,47 @@ These URLs are built from `getSiteUrl()`. Change env only — no code edits.
 | `sitemap.xml` | `http://localhost:3003/sitemap.xml` |
 | `robots.txt` | `http://localhost:3003/robots.txt` |
 | `.well-known/ai.txt` | `http://localhost:3003/.well-known/ai.txt` |
+| `BingSiteAuth.xml` | `http://localhost:3003/BingSiteAuth.xml` (when `BING_SITE_AUTH_CODE` is set) |
+| `googled43fdb9897d9f8a7.html` | `http://localhost:3003/googled43fdb9897d9f8a7.html` |
 
-**Code:** `frontend/lib/geo-content.ts`, `frontend/app/sitemap.ts`, `frontend/app/robots.ts`
+**Code:** `frontend/lib/geo-content.ts`, `frontend/app/sitemap.ts`, `frontend/app/robots.ts`, `frontend/app/BingSiteAuth.xml/route.ts`, `frontend/app/api/google-site-verification/route.ts`
 
 **Docs:** `docs/geo-chatbot-tests.md`
+
+### Bing Webmaster site verification
+
+1. In Bing Webmaster Tools → Add site → **Verify** → choose XML file or Meta tag.
+2. Copy the `<user>` code into env:
+
+   ```env
+   BING_SITE_AUTH_CODE=your-bing-verification-code
+   ```
+
+3. Rebuild frontend: `docker compose build frontend && docker compose up -d`
+4. Confirm `https://bab.com.sa/BingSiteAuth.xml` returns valid XML.
+5. Click **Verify** in Bing Webmaster Tools.
+
+The same code also adds `<meta name="msvalidate.01" content="...">` on all public pages.
+
+### Google Search Console site verification
+
+1. In Google Search Console → Add property → **HTML file** verification.
+2. Set env (filename without `.html`):
+
+   ```env
+   GOOGLE_SITE_VERIFICATION=googled43fdb9897d9f8a7
+   ```
+
+3. Rebuild frontend: `docker compose build frontend && docker compose up -d`
+4. Confirm `https://bab.com.sa/googled43fdb9897d9f8a7.html` returns:
+
+   ```
+   google-site-verification: googled43fdb9897d9f8a7.html
+   ```
+
+5. Click **Verify** in Search Console, then submit `https://bab.com.sa/sitemap.xml` under **Sitemaps**.
+
+Also adds `<meta name="google-site-verification" content="googled43fdb9897d9f8a7">` on all public pages.
 
 ---
 
