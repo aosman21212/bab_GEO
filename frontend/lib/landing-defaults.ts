@@ -11,3 +11,15 @@ export function buildWhatsAppUrl(phone: string, message: string) {
   const digits = phone.replace(/\D/g, '')
   return `https://api.whatsapp.com/send?phone=${digits}&text=${encodeURIComponent(message)}`
 }
+
+export function formatWhatsAppPhoneDisplay(phone: string) {
+  const digits = phone.replace(/\D/g, '')
+  if (!digits) return ''
+  if (digits.startsWith('966') && digits.length >= 12) {
+    const rest = digits.slice(3)
+    if (rest.length === 9) {
+      return `+966 ${rest.slice(0, 3)} ${rest.slice(3, 6)} ${rest.slice(6)}`
+    }
+  }
+  return `+${digits}`
+}

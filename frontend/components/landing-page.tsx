@@ -1,6 +1,5 @@
 'use client'
 
-import Image from 'next/image'
 import { Check, Globe, Mail, MessageCircle, Phone } from 'lucide-react'
 import { useLocale, useTranslations } from 'next-intl'
 import type { PageContent } from '@/lib/site-content'
@@ -13,11 +12,15 @@ import {
   DEFAULT_PROFILE_DESCRIPTION_EN,
   DEFAULT_WHATSAPP_DISPLAY,
   DEFAULT_WHATSAPP_PHONE,
+  formatWhatsAppPhoneDisplay,
 } from '@/lib/landing-defaults'
-import { Link } from '@/i18n/navigation'
 import { ContactForm } from '@/components/contact-form'
 import { LandingChromeHider } from '@/components/landing-chrome-hider'
+import { LandingImageSlider } from '@/components/landing-image-slider'
+import { LandingHeader } from '@/components/landing-header'
 import { Reveal } from '@/components/reveal'
+import { SiteFooter } from '@/components/site-footer'
+import { buildLandingSlideImages } from '@/lib/landing-slides'
 
 export function LandingPage({
   page,
@@ -38,45 +41,37 @@ export function LandingPage({
   const profileDescription =
     page.profileDescription?.trim() ||
     (isAr ? DEFAULT_PROFILE_DESCRIPTION_AR : DEFAULT_PROFILE_DESCRIPTION_EN)
-  const waMessage = page.ctaLabel?.trim() || (isAr ? 'احجز عرضاً' : 'Book a demo')
+  const waMessage = page.ctaLabel?.trim() || t('defaultCtaLabel')
   const waUrl = buildWhatsAppUrl(waPhone, waMessage)
+  const isWhatsApp = landingType === 'whatsapp'
+  const slideImages = buildLandingSlideImages(page)
 
   return (
     <>
       <LandingChromeHider />
-      <div className="flex min-h-screen flex-col bg-[linear-gradient(180deg,#f7f6fb_0%,#ffffff_45%)]">
-        <header className="border-b border-border/60 bg-white/90 backdrop-blur">
-          <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-4">
-            <Link href="/" className="inline-flex items-center gap-2">
-              <Image
-                src="/images/logo-bab.png"
-                alt="BAB"
-                width={120}
-                height={40}
-                className="h-9 w-auto"
-              />
-            </Link>
-            <Link
-              href="/contact-us"
-              className="rounded-full bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90"
-            >
-              {t('headerCta')}
-            </Link>
-          </div>
-        </header>
+      <div className="flex min-h-screen flex-col bg-[linear-gradient(180deg,#f7f6fb_0%,#ffffff_35%)]">
+        <LandingHeader />
 
         <main className="flex-1">
-          <section className="mx-auto grid max-w-7xl items-start gap-10 px-6 py-12 md:grid-cols-2 md:py-16 lg:gap-14">
+          <section className="mx-auto grid max-w-7xl items-start gap-10 px-6 py-14 md:grid-cols-2 md:py-20 lg:gap-14 lg:py-24">
             <Reveal>
               <p className="text-[11px] font-bold tracking-[0.16em] text-primary">{page.eyebrow}</p>
-              <h1 className="mt-3 text-balance text-3xl font-extrabold leading-tight text-navy md:text-4xl lg:text-5xl">
+              <h1
+                className={`mt-3 text-balance text-3xl font-extrabold text-navy md:text-4xl lg:text-5xl ${
+                  isWhatsApp ? 'leading-snug' : 'leading-tight'
+                }`}
+              >
                 {page.heroHeading}
               </h1>
-              <p className="mt-4 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground md:text-lg">
+              <p
+                className={`mt-4 max-w-xl text-pretty text-base text-muted-foreground md:text-lg ${
+                  isWhatsApp ? 'leading-7 md:leading-8' : 'leading-relaxed'
+                }`}
+              >
                 {page.heroDescription}
               </p>
               {highlights.length > 0 ? (
-                <ul className="mt-8 space-y-3">
+                <ul className={`mt-8 ${isWhatsApp ? 'space-y-4' : 'space-y-3'}`}>
                   {highlights.map((item) => (
                     <li key={item} className="flex gap-3 text-sm leading-relaxed text-navy md:text-base">
                       <span className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
@@ -93,6 +88,7 @@ export function LandingPage({
               {landingType === 'lead-form' ? (
                 <div>
                   <ContactForm
+                    variant="landing"
                     sourceSlug={page.slug}
                     openWhatsAppAfterSubmit
                     submitLabel={page.ctaLabel || undefined}
@@ -102,8 +98,8 @@ export function LandingPage({
                   ) : null}
                 </div>
               ) : (
-                <div className="rounded-2xl border border-border bg-white p-6 shadow-lg md:p-8">
-                  <div className="mb-6 flex items-center gap-3">
+                <div className="space-y-6 rounded-2xl border border-border bg-white p-6 shadow-lg md:p-8">
+                  <div className="flex items-center gap-3">
                     <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#25D366]/10 text-[#25D366]">
                       <MessageCircle className="h-6 w-6" />
                     </span>
@@ -119,28 +115,28 @@ export function LandingPage({
                     href={waUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mb-6 flex w-full items-center justify-center gap-2 rounded-full bg-[#25D366] px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-[#1ebe57]"
+                    className="flex w-full items-center justify-center gap-2 rounded-full bg-[#25D366] px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-[#1ebe57]"
                   >
                     <MessageCircle className="h-4 w-4" />
                     {page.ctaLabel || t('chatOnWhatsApp')}
                   </a>
 
-                  <dl className="space-y-4 text-sm">
+                  <dl className="space-y-5 text-sm md:text-base">
                     <div className="flex gap-3">
                       <Phone className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                      <div>
+                      <div className="space-y-1">
                         <dt className="font-semibold text-navy">{t('whatsappPhone')}</dt>
-                        <dd className="text-muted-foreground">+{waPhone.replace(/^\+/, '')}</dd>
+                        <dd className="text-muted-foreground">{formatWhatsAppPhoneDisplay(waPhone)}</dd>
                       </div>
                     </div>
                     <div className="flex gap-3">
                       <Globe className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                      <div>
+                      <div className="min-w-0 space-y-1">
                         <dt className="font-semibold text-navy">{t('officialWebsite')}</dt>
                         <dd>
                           <a
                             href={officialWebsite}
-                            className="text-muted-foreground hover:text-primary"
+                            className="break-words text-muted-foreground hover:text-primary"
                             target="_blank"
                             rel="noopener noreferrer"
                           >
@@ -151,10 +147,13 @@ export function LandingPage({
                     </div>
                     <div className="flex gap-3">
                       <Mail className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                      <div>
+                      <div className="min-w-0 space-y-1">
                         <dt className="font-semibold text-navy">{t('officialEmail')}</dt>
                         <dd>
-                          <a href={`mailto:${officialEmail}`} className="text-muted-foreground hover:text-primary">
+                          <a
+                            href={`mailto:${officialEmail}`}
+                            className="break-words text-muted-foreground hover:text-primary"
+                          >
                             {officialEmail}
                           </a>
                         </dd>
@@ -162,7 +161,7 @@ export function LandingPage({
                     </div>
                   </dl>
 
-                  <p className="mt-6 rounded-xl bg-muted/50 p-4 text-sm leading-relaxed text-muted-foreground">
+                  <p className="rounded-xl bg-muted/50 p-5 text-sm leading-7 text-muted-foreground md:text-base">
                     {profileDescription}
                   </p>
                 </div>
@@ -170,39 +169,10 @@ export function LandingPage({
             </Reveal>
           </section>
 
-          {page.image ? (
-            <section className="mx-auto max-w-7xl px-6 pb-14">
-              <Reveal>
-                <div className="relative aspect-[16/9] overflow-hidden rounded-2xl border border-border bg-muted shadow-sm">
-                  <Image
-                    src={page.image}
-                    alt=""
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 1280px) 100vw, 1280px"
-                  />
-                </div>
-              </Reveal>
-            </section>
-          ) : null}
+          {slideImages.length > 0 ? <LandingImageSlider images={slideImages} /> : null}
         </main>
 
-        <footer className="border-t border-white/10 bg-navy text-white">
-          <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 py-8 text-sm md:flex-row">
-            <p className="text-white/60">© {new Date().getFullYear()} BAB International Corp</p>
-            <nav className="flex flex-wrap items-center justify-center gap-5">
-              <Link href="/privacy-policy" className="text-white/80 transition hover:text-primary">
-                {t('privacy')}
-              </Link>
-              <Link href="/contact-us" className="text-white/80 transition hover:text-primary">
-                {t('contact')}
-              </Link>
-              <Link href="/" className="text-white/80 transition hover:text-primary">
-                {t('home')}
-              </Link>
-            </nav>
-          </div>
-        </footer>
+        <SiteFooter />
       </div>
     </>
   )

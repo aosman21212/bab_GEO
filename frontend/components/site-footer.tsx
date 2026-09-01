@@ -63,7 +63,7 @@ export function SiteFooter() {
   }
 
   return (
-    <footer id="contact" className="mt-16 bg-muted md:mt-24">
+    <footer id="contact" data-site-chrome="footer" className="mt-16 bg-muted md:mt-24">
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 md:py-16">
         <div className="mb-10">
           <BabLogo size="lg" />

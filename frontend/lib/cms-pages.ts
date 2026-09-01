@@ -21,6 +21,10 @@ function mapToPageContent(raw: Record<string, unknown>, slug: string): PageConte
     ? raw.highlights.map((h) => String(h)).filter(Boolean)
     : undefined
 
+  const galleryImages = Array.isArray(raw.galleryImages)
+    ? raw.galleryImages.map((h) => String(h)).filter(Boolean)
+    : undefined
+
   return {
     slug,
     category: (raw.category as PageContent['category']) || 'solution',
@@ -32,6 +36,7 @@ function mapToPageContent(raw: Record<string, unknown>, slug: string): PageConte
     heroDescription: String(raw.heroDescription ?? ''),
     ctaLabel: String(raw.ctaLabel ?? ''),
     image: String(raw.image ?? '/images/bab-hero.png'),
+    galleryImages,
     highlights,
     formNote: String(raw.formNote ?? ''),
     whatsappDisplayName: String(raw.whatsappDisplayName ?? ''),
@@ -47,6 +52,10 @@ function mapToPageContent(raw: Record<string, unknown>, slug: string): PageConte
       text: String(impact.text ?? ''),
     },
   }
+}
+
+function highlightsHaveArabic(highlights: string[] | undefined) {
+  return Boolean(highlights?.some((item) => hasArabic(item)))
 }
 
 /** Prefer CMS fields, but keep static Arabic sections when CMS still has English bodies. */
@@ -73,6 +82,17 @@ function mergeLocalizedPage(cms: PageContent, fallback: PageContent): PageConten
       : fallback.heroDescription || cms.heroDescription,
     ctaLabel: hasArabic(cms.ctaLabel) ? cms.ctaLabel : fallback.ctaLabel || cms.ctaLabel,
     image: cms.image || fallback.image,
+    galleryImages:
+      cms.galleryImages && cms.galleryImages.length > 0
+        ? cms.galleryImages
+        : fallback.galleryImages ?? cms.galleryImages,
+    highlights: highlightsHaveArabic(cms.highlights)
+      ? cms.highlights
+      : fallback.highlights ?? cms.highlights,
+    formNote: hasArabic(cms.formNote) ? cms.formNote : fallback.formNote || cms.formNote,
+    profileDescription: hasArabic(cms.profileDescription)
+      ? cms.profileDescription
+      : fallback.profileDescription || cms.profileDescription,
     features: pickSection(cms.features, fallback.features),
     benefits: pickSection(cms.benefits, fallback.benefits),
     useCases: pickSection(cms.useCases, fallback.useCases),
@@ -108,6 +128,7 @@ export async function fetchCmsPage(
     const mapped = mapToPageContent(raw, slug)
     if (!mapped) return fallback
     if (locale === 'ar' && fallback) return mergeLocalizedPage(mapped, fallback)
+    if (locale === 'ar') return mapped
     return mapped
   } catch {
     return fallback

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
+import { ExternalLink } from 'lucide-react'
 import { AdminShell } from '@/components/admin-shell'
 import { useAdminLocale } from '@/components/admin-locale-provider'
 import {
@@ -13,6 +14,7 @@ import {
   type PageMetaForm,
 } from '@/components/admin-page-form'
 import type { PageCategory, LandingType } from '@/lib/page-categories'
+import { cmsPublicPagePath } from '@/lib/public-urls'
 
 type PageDoc = {
   slug: string
@@ -122,6 +124,16 @@ export default function AdminLibraryEditPage() {
       onLocaleChange={setLocale}
       actions={
         <div className="flex gap-2">
+          {meta.status === 'published' ? (
+            <a
+              href={cmsPublicPagePath(locale, slug)}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1.5 rounded-full border border-border px-4 py-2 text-sm font-semibold text-navy hover:border-primary hover:text-primary"
+            >
+              <ExternalLink className="h-3.5 w-3.5" /> {t('library.viewPage')}
+            </a>
+          ) : null}
           <button
             type="button"
             onClick={remove}

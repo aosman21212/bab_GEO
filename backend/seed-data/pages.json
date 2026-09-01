@@ -2371,6 +2371,11 @@
         "heroDescription": "Omni-channel contact centers, AI voice bots, and smart CRM — built for Saudi enterprises.",
         "ctaLabel": "Book a demo",
         "image": "/images/hero-man-phone.png",
+        "galleryImages": [
+          "/images/bab-hero.png",
+          "/images/network-sphere.png",
+          "/images/bab-telecom.png"
+        ],
         "highlights": [
           "Omni-channel contact center platform",
           "AI voice bots and intelligent routing",
@@ -2386,6 +2391,11 @@
         "heroDescription": "مراكز اتصال متعددة القنوات وروبوتات صوتية بالذكاء الاصطناعي وإدارة علاقات ذكية — للمؤسسات السعودية.",
         "ctaLabel": "احجز عرضاً",
         "image": "/images/hero-man-phone.png",
+        "galleryImages": [
+          "/images/bab-hero.png",
+          "/images/network-sphere.png",
+          "/images/bab-telecom.png"
+        ],
         "highlights": [
           "منصة مركز اتصال متعدد القنوات",
           "روبوتات صوتية بالذكاء الاصطناعي وتوجيه ذكي",
@@ -2408,6 +2418,11 @@
         "heroDescription": "Get answers about contact center, AI, and digital communication solutions — message us directly.",
         "ctaLabel": "Book a demo",
         "image": "/images/hero-man-phone.png",
+        "galleryImages": [
+          "/images/bab-hero.png",
+          "/images/network-sphere.png",
+          "/images/bab-telecom.png"
+        ],
         "highlights": [
           "Fast response from our sales team",
           "Demo scheduling via chat",
@@ -2417,7 +2432,7 @@
         "whatsappPhone": "966920035161",
         "officialWebsite": "https://bab.com.sa",
         "officialEmail": "sales@bab.com.sa",
-        "profileDescription": "BAB International Corp delivers contact center, AI, and communication solutions across Saudi Arabia and the MENA region since 1999."
+        "profileDescription": "Saudi enterprise partner for contact center, AI, and omnichannel solutions since 1999."
       },
       "ar": {
         "metaTitle": "تواصل عبر واتساب — باب الدولية",
@@ -2427,6 +2442,11 @@
         "heroDescription": "احصل على إجابات حول مراكز الاتصال والذكاء الاصطناعي وحلول الاتصالات — راسلنا مباشرة.",
         "ctaLabel": "احجز عرضاً",
         "image": "/images/hero-man-phone.png",
+        "galleryImages": [
+          "/images/bab-hero.png",
+          "/images/network-sphere.png",
+          "/images/bab-telecom.png"
+        ],
         "highlights": [
           "استجابة سريعة من فريق المبيعات",
           "جدولة العروض عبر المحادثة",
@@ -2436,7 +2456,7 @@
         "whatsappPhone": "966920035161",
         "officialWebsite": "https://bab.com.sa",
         "officialEmail": "sales@bab.com.sa",
-        "profileDescription": "تقدّم باب الدولية حلول مراكز الاتصال والذكاء الاصطناعي والاتصالات في المملكة ومنطقة الشرق الأوسط وشمال أفريقيا منذ 1999."
+        "profileDescription": "شريك مؤسسي سعودي لحلول مراكز الاتصال والذكاء الاصطناعي والقنوات المتعددة منذ 1999."
       }
     }
   }

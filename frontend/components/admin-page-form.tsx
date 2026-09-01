@@ -1,10 +1,11 @@
 'use client'
 
 import { useState, type ReactNode } from 'react'
-import Image from 'next/image'
 import { Plus, Trash2, Upload } from 'lucide-react'
 import { useAdminLocale } from '@/components/admin-locale-provider'
+import { AdminGalleryImagesField } from '@/components/admin-gallery-images-field'
 import { AdminImagePicker } from '@/components/admin-image-picker'
+import { AdminMediaPreview } from '@/components/admin-media-preview'
 import type { PageCategory, LandingType } from '@/lib/page-categories'
 
 export type FeatureCardForm = {
@@ -39,6 +40,7 @@ export type LocaleFormData = {
   useCasesHeading: string
   useCasesText: string
   highlightsText: string
+  galleryImagesText: string
   formNote: string
   whatsappDisplayName: string
   whatsappPhone: string
@@ -76,6 +78,7 @@ export function emptyLocaleForm(partial?: Partial<LocaleFormData>): LocaleFormDa
     useCasesHeading: '',
     useCasesText: '',
     highlightsText: '',
+    galleryImagesText: '',
     formNote: '',
     whatsappDisplayName: '',
     whatsappPhone: '',
@@ -128,6 +131,9 @@ export function localeFromApi(raw: Record<string, unknown> | undefined | null): 
     highlightsText: Array.isArray(raw.highlights)
       ? (raw.highlights as string[]).join('\n')
       : '',
+    galleryImagesText: Array.isArray(raw.galleryImages)
+      ? (raw.galleryImages as string[]).join('\n')
+      : '',
     formNote: String(raw.formNote ?? ''),
     whatsappDisplayName: String(raw.whatsappDisplayName ?? ''),
     whatsappPhone: String(raw.whatsappPhone ?? ''),
@@ -147,6 +153,10 @@ export function localeToApi(form: LocaleFormData): Record<string, unknown> {
     ctaLabel: form.ctaLabel,
     image: form.image,
     highlights: form.highlightsText
+      .split('\n')
+      .map((l) => l.trim())
+      .filter(Boolean),
+    galleryImages: form.galleryImagesText
       .split('\n')
       .map((l) => l.trim())
       .filter(Boolean),
@@ -256,7 +266,9 @@ export function AdminPageForm({
   const isLanding = meta.category === 'landing'
   const landingType = meta.landingType || 'lead-form'
   const [uploading, setUploading] = useState(false)
+  const [galleryUploading, setGalleryUploading] = useState(false)
   const [uploadError, setUploadError] = useState<string | null>(null)
+  const [galleryUploadError, setGalleryUploadError] = useState<string | null>(null)
 
   const set = <K extends keyof LocaleFormData>(key: K, v: LocaleFormData[K]) => {
     onChange({ ...value, [key]: v })
@@ -401,21 +413,7 @@ export function AdminPageForm({
         </Label>
         <Label label={t('pageForm.heroImage')}>
           <div className="flex flex-col gap-3 sm:flex-row sm:items-start">
-            <div className="relative h-28 w-full max-w-[200px] overflow-hidden rounded-xl border border-border bg-muted">
-              {value.image ? (
-                <Image
-                  src={value.image}
-                  alt=""
-                  fill
-                  className="object-cover"
-                  unoptimized
-                />
-              ) : (
-                <div className="flex h-full items-center justify-center text-xs text-muted-foreground">
-                  {t('pageForm.noImage')}
-                </div>
-              )}
-            </div>
+            <AdminMediaPreview src={value.image} label={t('pageForm.noImage')} />
             <div className="flex min-w-0 flex-1 flex-col gap-2">
               <AdminImagePicker
                 disabled={uploading}
@@ -452,6 +450,19 @@ export function AdminPageForm({
               onChange={(e) => set('highlightsText', e.target.value)}
               placeholder={t('pageForm.highlightsPlaceholder')}
             />
+          </Label>
+          <Label label={t('pageForm.galleryImages')}>
+            <AdminGalleryImagesField
+              value={value.galleryImagesText}
+              onChange={(galleryImagesText) => set('galleryImagesText', galleryImagesText)}
+              disabled={uploading}
+              uploading={galleryUploading}
+              onUploadingChange={setGalleryUploading}
+              onError={setGalleryUploadError}
+            />
+            {galleryUploadError ? (
+              <p className="mt-2 text-xs text-red-600">{galleryUploadError}</p>
+            ) : null}
           </Label>
           {landingType === 'lead-form' ? (
             <Label label={t('pageForm.formNote')} dir={dir}>

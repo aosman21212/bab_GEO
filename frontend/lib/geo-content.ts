@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { getPathname } from '@/i18n/navigation'
 import { allPages } from '@/lib/site-content'
 import { fetchSiteContent, getApiUrl } from '@/lib/api'
 import { BAB_SOCIAL_URLS } from '@/lib/social-profiles'
@@ -491,9 +492,12 @@ export function buildPageMetadata(opts: {
   const locale = opts.locale === 'ar' ? 'ar' : 'en'
   const site = getSiteUrl()
   const path = (opts.path || '').replace(/^\//, '')
-  const canonical = path ? `${site}/${locale}/${path}` : `${site}/${locale}`
-  const enUrl = path ? `${site}/en/${path}` : `${site}/en`
-  const arUrl = path ? `${site}/ar/${path}` : `${site}/ar`
+  const href = path ? `/${path}` : '/'
+  const enPath = getPathname({ locale: 'en', href })
+  const arPath = getPathname({ locale: 'ar', href })
+  const enUrl = `${site}${enPath}`
+  const arUrl = `${site}${arPath}`
+  const canonical = locale === 'ar' ? arUrl : enUrl
   const ogImage = `${site}${GEO_OG_IMAGE}`
 
   return {

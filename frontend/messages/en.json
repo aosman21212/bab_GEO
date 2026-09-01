@@ -221,11 +221,18 @@
   },
   "landingPage": {
     "headerCta": "Contact us",
+    "navHome": "Home",
+    "navServices": "Services",
+    "navSolutions": "Solutions",
     "whatsappBusiness": "WhatsApp Business",
     "chatOnWhatsApp": "Chat on WhatsApp",
     "whatsappPhone": "WhatsApp phone number",
     "officialWebsite": "Official website",
     "officialEmail": "Official email address",
+    "defaultCtaLabel": "Book a demo",
+    "sliderPrev": "Previous slide",
+    "sliderNext": "Next slide",
+    "sliderGoTo": "Go to slide {n}",
     "privacy": "Privacy policy",
     "contact": "Contact",
     "home": "Home"
@@ -640,7 +647,11 @@
       "editTitle": "Edit content",
       "editDescription": "Editing /{slug} — switch language in the header to edit EN or AR.",
       "loadingDescription": "Loading /{slug}…",
-      "deleteConfirm": "Delete this page?"
+      "deleteConfirm": "Delete this page?",
+      "openEn": "Open EN",
+      "openAr": "Open AR",
+      "viewPage": "View page",
+      "draftNotPublic": "Draft — not public"
     },
     "pageForm": {
       "page": "Page",
@@ -680,6 +691,11 @@
       "landingContentSubtitle": "Bullets and form / WhatsApp profile fields",
       "highlights": "Highlights (one per line)",
       "highlightsPlaceholder": "Omnichannel contact center\nAI voice bots for Arabic dialects",
+      "galleryImages": "Gallery slider images",
+      "uploadGalleryImage": "Upload gallery image",
+      "removeGalleryImage": "Remove gallery image",
+      "galleryImagesPlaceholder": "/images/bab-hero.png\n/images/network-sphere.png",
+      "galleryImagesHint": "Upload images or paste one URL per line. Hero image is always first in the slider; gallery images are added after it.",
       "formNote": "Form note (under submit button)",
       "whatsappDisplayName": "WhatsApp display name",
       "whatsappPhone": "WhatsApp phone (digits)",

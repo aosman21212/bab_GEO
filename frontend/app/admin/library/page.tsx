@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { Pencil, Plus, Search } from 'lucide-react'
+import { Pencil, Plus, Search, ExternalLink } from 'lucide-react'
 import { AdminShell } from '@/components/admin-shell'
 import { useAdminLocale } from '@/components/admin-locale-provider'
 import {
@@ -11,6 +11,7 @@ import {
   PAGE_CATEGORIES,
   type PageCategory,
 } from '@/lib/page-categories'
+import { cmsPublicPagePath } from '@/lib/public-urls'
 
 type PageDoc = {
   _id: string
@@ -168,12 +169,49 @@ export default function AdminLibraryPage() {
                     </span>
                   </td>
                   <td className="px-5 py-4 text-right">
-                    <Link
-                      href={`/admin/library/${p.slug}`}
-                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline"
-                    >
-                      <Pencil className="h-3.5 w-3.5" /> {t('common.edit')}
-                    </Link>
+                    <div className="flex flex-wrap items-center justify-end gap-3">
+                      <Link
+                        href={`/admin/library/${p.slug}`}
+                        className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline"
+                      >
+                        <Pencil className="h-3.5 w-3.5" /> {t('common.edit')}
+                      </Link>
+                      {status === 'published' ? (
+                        <>
+                          <a
+                            href={cmsPublicPagePath('en', p.slug)}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="inline-flex items-center gap-1 text-sm font-semibold text-navy hover:text-primary"
+                          >
+                            <ExternalLink className="h-3.5 w-3.5" /> {t('library.openEn')}
+                          </a>
+                          <a
+                            href={cmsPublicPagePath('ar', p.slug)}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="inline-flex items-center gap-1 text-sm font-semibold text-navy hover:text-primary"
+                          >
+                            <ExternalLink className="h-3.5 w-3.5" /> {t('library.openAr')}
+                          </a>
+                        </>
+                      ) : (
+                        <>
+                          <span
+                            className="text-sm text-muted-foreground"
+                            title={t('library.draftNotPublic')}
+                          >
+                            EN
+                          </span>
+                          <span
+                            className="text-sm text-muted-foreground"
+                            title={t('library.draftNotPublic')}
+                          >
+                            AR
+                          </span>
+                        </>
+                      )}
+                    </div>
                   </td>
                 </tr>
               )

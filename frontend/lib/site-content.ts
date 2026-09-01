@@ -22,6 +22,7 @@ export type PageContent = {
   heroDescription: string
   ctaLabel: string
   image: string
+  galleryImages?: string[]
   highlights?: string[]
   formNote?: string
   whatsappDisplayName?: string

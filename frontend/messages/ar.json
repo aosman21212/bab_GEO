@@ -221,11 +221,18 @@
   },
   "landingPage": {
     "headerCta": "تواصل معنا",
+    "navHome": "الرئيسية",
+    "navServices": "الخدمات",
+    "navSolutions": "الحلول",
     "whatsappBusiness": "واتساب للأعمال",
     "chatOnWhatsApp": "تواصل عبر واتساب",
     "whatsappPhone": "رقم واتساب",
     "officialWebsite": "الموقع الرسمي",
     "officialEmail": "البريد الرسمي",
+    "defaultCtaLabel": "احجز عرضاً",
+    "sliderPrev": "الشريحة السابقة",
+    "sliderNext": "الشريحة التالية",
+    "sliderGoTo": "الانتقال إلى الشريحة {n}",
     "privacy": "سياسة الخصوصية",
     "contact": "تواصل",
     "home": "الرئيسية"
@@ -640,7 +647,11 @@
       "editTitle": "تعديل المحتوى",
       "editDescription": "تعديل /{slug} — بدّل اللغة في الرأس لتحرير EN أو AR.",
       "loadingDescription": "جارٍ تحميل /{slug}…",
-      "deleteConfirm": "حذف هذه الصفحة؟"
+      "deleteConfirm": "حذف هذه الصفحة؟",
+      "openEn": "فتح EN",
+      "openAr": "فتح AR",
+      "viewPage": "عرض الصفحة",
+      "draftNotPublic": "مسودة — غير منشورة"
     },
     "pageForm": {
       "page": "الصفحة",
@@ -680,6 +691,11 @@
       "landingContentSubtitle": "نقاط بارزة وحقول النموذج / ملف واتساب",
       "highlights": "النقاط البارزة (سطر لكل نقطة)",
       "highlightsPlaceholder": "مركز اتصال متعدد القنوات\nروبوتات صوتية بالذكاء الاصطناعي",
+      "galleryImages": "صور معرض الشرائح",
+      "uploadGalleryImage": "رفع صورة للمعرض",
+      "removeGalleryImage": "إزالة صورة المعرض",
+      "galleryImagesPlaceholder": "/images/bab-hero.png\n/images/network-sphere.png",
+      "galleryImagesHint": "ارفع الصور أو الصق رابطاً في كل سطر. صورة القسم الرئيسي تظهر أولاً في الشرائح، ثم صور المعرض.",
       "formNote": "ملاحظة تحت زر الإرسال",
       "whatsappDisplayName": "اسم العرض في واتساب",
       "whatsappPhone": "رقم واتساب (أرقام فقط)",
