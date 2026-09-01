@@ -40,7 +40,9 @@ INDEXNOW_KEY=your-key-here
 |----------|-------|------------|
 | `NEXT_PUBLIC_SITE_URL` | `http://localhost:3003` | `https://bab.com.sa` |
 | `NEXT_PUBLIC_BASE_PATH` | empty | empty |
-| `NEXT_PUBLIC_API_URL` | `http://localhost:4001` | `https://api.bab.com.sa` or same host |
+| `NEXT_PUBLIC_API_URL` | `http://localhost:4001` | optional — SSR/build-time fetches only |
+
+> **Public forms** (contact, book demo, job applications) post to same-origin `/api/inquiries` and `/api/job-applications` on the Next.js frontend, which proxies to the Express backend via server-side `API_URL`. They do **not** depend on `NEXT_PUBLIC_API_URL` in the browser.
 
 > `NEXT_PUBLIC_SITE_URL` is the **origin only** (scheme + host + port). The site runs at domain root.
 
@@ -413,6 +415,7 @@ cd frontend && npm run seo:submit-indexnow
 | CORS errors in admin | Set `CORS_ORIGIN=http://localhost:3003` in `backend/.env` |
 | Language button goes to `/ar/ar` | Rebuild frontend |
 | GEO page shows `localhost:3003` | Set `SITE_URL=https://bab.com.sa` in production `.env` |
+| Contact form posts to `localhost:4001` | Rebuild frontend after pulling — forms use `/api/inquiries` proxy on same origin |
 | Changes not visible in Docker | Run `docker compose build frontend` then `up -d` |
 
 ---

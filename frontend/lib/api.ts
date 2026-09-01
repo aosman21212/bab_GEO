@@ -1,3 +1,5 @@
+import { withBasePath } from '@/lib/base-path'
+
 export function getApiUrl() {
   return (
     process.env.API_URL ||
@@ -73,7 +75,7 @@ export async function submitInquiry(body: {
   const controller = new AbortController()
   const timer = setTimeout(() => controller.abort(), 8000)
   try {
-    const res = await fetch(`${getApiUrl()}/api/inquiries`, {
+    const res = await fetch(withBasePath('/api/inquiries'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
@@ -115,7 +117,7 @@ export async function submitJobApplication(formData: FormData) {
   const controller = new AbortController()
   const timer = setTimeout(() => controller.abort(), 20000)
   try {
-    const res = await fetch(`${getApiUrl()}/api/job-applications`, {
+    const res = await fetch(withBasePath('/api/job-applications'), {
       method: 'POST',
       body: formData,
       signal: controller.signal,
