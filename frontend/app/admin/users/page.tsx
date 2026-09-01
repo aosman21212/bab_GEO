@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { AdminShell } from '@/components/admin-shell'
 import { useAdminLocale } from '@/components/admin-locale-provider'
 import { Pencil, Trash2, Users } from 'lucide-react'
+import { withBasePath } from '@/lib/base-path'
 
 type AdminUser = {
   _id: string
@@ -36,8 +37,8 @@ export default function AdminUsersPage() {
 
   const load = async () => {
     const [usersRes, meRes] = await Promise.all([
-      fetch('/api/admin/proxy/users'),
-      fetch('/api/admin/proxy/auth/me'),
+      fetch(withBasePath('/api/admin/proxy/users')),
+      fetch(withBasePath('/api/admin/proxy/auth/me')),
     ])
     if (usersRes.status === 401 || meRes.status === 401) {
       router.push('/admin')
@@ -98,7 +99,7 @@ export default function AdminUsersPage() {
     if (form.password) payload.password = form.password
 
     const res = await fetch(
-      editingId ? `/api/admin/proxy/users/${editingId}` : '/api/admin/proxy/users',
+      editingId ? withBasePath(`/api/admin/proxy/users/${editingId}`) : withBasePath('/api/admin/proxy/users'),
       {
         method: editingId ? 'PATCH' : 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -139,7 +140,7 @@ export default function AdminUsersPage() {
     }
     if (!confirm(t('users.deleteConfirm'))) return
 
-    const res = await fetch(`/api/admin/proxy/users/${user._id}`, { method: 'DELETE' })
+    const res = await fetch(withBasePath(`/api/admin/proxy/users/${user._id}`), { method: 'DELETE' })
     if (!res.ok) {
       const data = (await res.json().catch(() => ({}))) as { error?: string }
       if (data.error?.includes('own')) setStatus(t('users.cannotDeleteSelf'))

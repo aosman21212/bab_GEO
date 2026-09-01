@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import Image from '@/components/app-image'
 import { ArrowRight, Check } from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
 import type { PageContent } from '@/lib/site-content'

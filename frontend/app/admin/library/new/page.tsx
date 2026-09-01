@@ -11,6 +11,7 @@ import {
   type LocaleFormData,
   type PageMetaForm,
 } from '@/components/admin-page-form'
+import { withBasePath } from '@/lib/base-path'
 
 function slugify(value: string) {
   return value
@@ -61,7 +62,7 @@ export default function AdminLibraryNewPage() {
       setError(t('library.slugRequired'))
       return
     }
-    const res = await fetch('/api/admin/proxy/pages', {
+    const res = await fetch(withBasePath('/api/admin/proxy/pages'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

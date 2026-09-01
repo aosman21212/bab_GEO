@@ -1,23 +1,29 @@
 'use client'
 
-import { useState } from 'react'
-import Image from 'next/image'
+import { useEffect, useState } from 'react'
+import Image from '@/components/app-image'
 import { useRouter } from 'next/navigation'
 import { useAdminLocale } from '@/components/admin-locale-provider'
+import { withBasePath } from '@/lib/base-path'
 
 export default function AdminLoginPage() {
   const router = useRouter()
   const { t, uiLocale, setUiLocale } = useAdminLocale()
+  const [sessionExpired, setSessionExpired] = useState(false)
   const [email, setEmail] = useState('admin@bab.com.sa')
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [pending, setPending] = useState(false)
 
+  useEffect(() => {
+    setSessionExpired(new URLSearchParams(window.location.search).get('reason') === 'idle')
+  }, [])
+
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setPending(true)
     setError(null)
-    const res = await fetch('/api/admin/login', {
+    const res = await fetch(withBasePath('/api/admin/login'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),
@@ -59,6 +65,11 @@ export default function AdminLoginPage() {
         />
         <h1 className="mt-6 text-2xl font-extrabold text-navy">{t('login.title')}</h1>
         <p className="mt-2 text-sm text-muted-foreground">{t('login.subtitle')}</p>
+        {sessionExpired ? (
+          <p className="mt-3 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800">
+            {t('login.sessionExpired')}
+          </p>
+        ) : null}
 
         <form onSubmit={onSubmit} className="mt-8 flex flex-col gap-4">
           <label className="flex flex-col gap-1.5 text-sm font-medium text-navy">

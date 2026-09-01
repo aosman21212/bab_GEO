@@ -2,8 +2,8 @@
 
 ## Setup (before any chat)
 
-1. Open http://localhost:3003/llms.txt and copy **all** text.
-2. For FAQ tests, also open http://localhost:3003/llms-full.txt and copy **all** text.
+1. Open http://localhost:3003/bab_geo/llms.txt and copy **all** text.
+2. For FAQ tests, also open http://localhost:3003/bab_geo/llms-full.txt and copy **all** text.
 3. Open Claude.ai / ChatGPT / Gemini / Perplexity → new chat.
 4. Paste one of the **Test packs** below (replace the placeholder with your copied file).
 5. Score: **PASS** if answers stay inside the pasted source; **FAIL** if invents products, phones, URLs, or cities not in the text.
@@ -12,13 +12,13 @@
 
 Local checklist:
 
-- http://localhost:3003/llms.txt
-- http://localhost:3003/llms-full.txt
-- http://localhost:3003/llms-small.txt
-- http://localhost:3003/.well-known/ai.txt
-- http://localhost:3003/robots.txt
-- http://localhost:3003/sitemap.xml
-- Admin GEO: http://localhost:3003/admin/geo
+- http://localhost:3003/bab_geo/llms.txt
+- http://localhost:3003/bab_geo/llms-full.txt
+- http://localhost:3003/bab_geo/llms-small.txt
+- http://localhost:3003/bab_geo/.well-known/ai.txt
+- http://localhost:3003/bab_geo/robots.txt
+- http://localhost:3003/bab_geo/sitemap.xml
+- Admin GEO: http://localhost:3003/bab_geo/admin/geo
 
 ---
 
@@ -140,7 +140,7 @@ Still use ONLY the same SOURCE TEXT. For each question answer Yes, No, or Not st
 
 ```text
 Fetch and read this URL only (do not use other sites):
-https://YOUR-DOMAIN/llms.txt
+https://YOUR-DOMAIN/bab_geo/llms.txt
 
 Then answer questions 1–20 from TEST A above using only that page.
 If you cannot fetch the URL, say so clearly.
@@ -149,10 +149,10 @@ If you cannot fetch the URL, say so clearly.
 Also try:
 
 ```text
-Fetch https://YOUR-DOMAIN/llms-full.txt and answer TEST B questions 1–14 only from that page.
+Fetch https://YOUR-DOMAIN/bab_geo/llms-full.txt and answer TEST B questions 1–14 only from that page.
 ```
 
-Replace `YOUR-DOMAIN` with `bab.com.sa` or your tunnel host (not localhost unless the tool can reach it).
+Replace `YOUR-DOMAIN` with `bab.com.sa` or your tunnel host (not localhost unless the tool can reach it). English pages omit `/en` in URLs (default locale); Arabic uses `/bab_geo/ar/...`.
 
 ---
 

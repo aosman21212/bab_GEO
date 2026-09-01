@@ -1,6 +1,6 @@
 'use client'
 
-import Image from 'next/image'
+import Image from '@/components/app-image'
 import { useTranslations } from 'next-intl'
 import { Reveal } from './reveal'
 import { usePrefersReducedMotion } from './motion-utils'

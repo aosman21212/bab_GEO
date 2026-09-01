@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { Cairo } from 'next/font/google'
 import { AdminLocaleProvider } from '@/components/admin-locale-provider'
+import { AdminSessionGuard } from '@/components/admin-session-guard'
 import '../globals.css'
 
 const cairo = Cairo({
@@ -19,7 +20,9 @@ export default function AdminRootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={cairo.variable}>
       <body className="min-h-screen bg-muted text-navy antialiased">
-        <AdminLocaleProvider>{children}</AdminLocaleProvider>
+        <AdminLocaleProvider>
+          <AdminSessionGuard>{children}</AdminSessionGuard>
+        </AdminLocaleProvider>
       </body>
     </html>
   )

@@ -3,6 +3,7 @@ import { getPathname } from '@/i18n/navigation'
 import { allPages } from '@/lib/site-content'
 import { fetchSiteContent, getApiUrl } from '@/lib/api'
 import { BAB_SOCIAL_URLS } from '@/lib/social-profiles'
+import { basePath } from '@/lib/base-path'
 
 export type GeoFaq = { question: string; answer: string }
 
@@ -43,7 +44,10 @@ export const GEO_LOGO_PATH = '/images/logo-bab.png'
 
 export function getSiteUrl() {
   const raw = process.env.NEXT_PUBLIC_SITE_URL || 'https://bab.com.sa'
-  return raw.replace(/\/$/, '')
+  const origin = raw.replace(/\/$/, '')
+  if (!basePath) return origin
+  if (origin.endsWith(basePath)) return origin
+  return `${origin}${basePath}`
 }
 
 export function getIndexNowKey() {
@@ -197,11 +201,9 @@ export async function loadPublishedPages(): Promise<GeoPageRef[]> {
 
 export function localePath(locale: 'en' | 'ar', path = '') {
   const site = getSiteUrl()
-  const clean = path.replace(/^\//, '')
-  if (locale === 'en') {
-    return clean ? `${site}/en/${clean}` : `${site}/en`
-  }
-  return clean ? `${site}/ar/${clean}` : `${site}/ar`
+  const href = path ? `/${path.replace(/^\//, '')}` : '/'
+  const localized = getPathname({ href, locale })
+  return `${site}${localized}`
 }
 
 export function faqsForLocale(settings: GeoSiteSettings, locale: 'en' | 'ar'): GeoFaq[] {
@@ -234,7 +236,7 @@ function seoBlock(settings: GeoSiteSettings) {
   ].join('\n')
 }
 
-function pageLinks(pages: GeoPageRef[], site: string) {
+function pageLinks(pages: GeoPageRef[]) {
   const solutions = pages.filter((p) => p.category === 'solution')
   const industries = pages.filter((p) => p.category === 'industry')
   const products = pages.filter((p) => p.category === 'product')
@@ -248,8 +250,8 @@ function pageLinks(pages: GeoPageRef[], site: string) {
     for (const p of list) {
       const titleEn = p.titleEn || p.title
       const titleAr = p.titleAr || titleEn
-      lines.push(`- EN — ${titleEn}: ${site}/en/${p.slug}`)
-      lines.push(`- AR — ${titleAr}: ${site}/ar/${p.slug}`)
+      lines.push(`- EN — ${titleEn}: ${localePath('en', p.slug)}`)
+      lines.push(`- AR — ${titleAr}: ${localePath('ar', p.slug)}`)
     }
   }
 
@@ -291,21 +293,20 @@ export async function buildLlmsTxt(): Promise<string> {
     contactBlock(settings),
     '',
     '## Key pages',
-    `- Home: ${site}`,
-    `- English: ${site}/en`,
-    `- Arabic: ${site}/ar`,
-    `- About (EN): ${site}/en/about-us`,
-    `- About (AR): ${site}/ar/about-us`,
-    `- Success Stories (EN): ${site}/en/success-stories`,
-    `- Success Stories (AR): ${site}/ar/success-stories`,
-    `- Articles (EN): ${site}/en/articles`,
-    `- Articles (AR): ${site}/ar/articles`,
-    `- Careers (EN): ${site}/en/careers`,
-    `- Careers (AR): ${site}/ar/careers`,
-    `- Contact (EN): ${site}/en/contact-us`,
-    `- Contact (AR): ${site}/ar/contact-us`,
+    `- Home (EN): ${localePath('en', '')}`,
+    `- Home (AR): ${localePath('ar', '')}`,
+    `- About (EN): ${localePath('en', 'about-us')}`,
+    `- About (AR): ${localePath('ar', 'about-us')}`,
+    `- Success Stories (EN): ${localePath('en', 'success-stories')}`,
+    `- Success Stories (AR): ${localePath('ar', 'success-stories')}`,
+    `- Articles (EN): ${localePath('en', 'articles')}`,
+    `- Articles (AR): ${localePath('ar', 'articles')}`,
+    `- Careers (EN): ${localePath('en', 'careers')}`,
+    `- Careers (AR): ${localePath('ar', 'careers')}`,
+    `- Contact (EN): ${localePath('en', 'contact-us')}`,
+    `- Contact (AR): ${localePath('ar', 'contact-us')}`,
     '',
-    pageLinks(pages, site),
+    pageLinks(pages),
     '',
     '## AI / crawler files',
     `- Full summary + FAQ: ${site}/llms-full.txt`,
@@ -341,7 +342,7 @@ export async function buildLlmsFullTxt(): Promise<string> {
     contactBlock(settings),
     '',
     '## Content library',
-    pageLinks(pages, site),
+    pageLinks(pages),
     '',
     faqSection('## FAQ (English)', faqsEn),
     '',
@@ -354,12 +355,11 @@ export async function buildLlmsFullTxt(): Promise<string> {
 
 export async function buildLlmsSmallTxt(): Promise<string> {
   const settings = await loadGeoSettings()
-  const site = getSiteUrl()
   const summaryEn =
     settings.seoDescriptionEn ||
     'BAB International Corp provides seamless connectivity and intelligent solutions in Saudi Arabia.'
   const summaryAr = settings.seoDescriptionAr || summaryEn
-  return `BAB International Corp — EN: ${summaryEn} AR: ${summaryAr} Sites: ${site}/en · ${site}/ar Contact: ${settings.email || ''} · ${settings.phone || ''}\n`
+  return `BAB International Corp — EN: ${summaryEn} AR: ${summaryAr} Sites: ${localePath('en', '')} · ${localePath('ar', '')} Contact: ${settings.email || ''} · ${settings.phone || ''}\n`
 }
 
 export async function buildAiTxt(): Promise<string> {

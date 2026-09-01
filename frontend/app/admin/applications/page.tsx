@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { AdminShell } from '@/components/admin-shell'
 import { useAdminLocale } from '@/components/admin-locale-provider'
 import { Download, Eye, FileText, X } from 'lucide-react'
+import { withBasePath } from '@/lib/base-path'
 
 type Application = {
   _id: string
@@ -51,7 +52,7 @@ export default function AdminApplicationsPage() {
   }
 
   const load = async () => {
-    const res = await fetch('/api/admin/proxy/job-applications')
+    const res = await fetch(withBasePath('/api/admin/proxy/job-applications'))
     if (res.status === 401) {
       router.push('/admin')
       return
@@ -93,7 +94,7 @@ export default function AdminApplicationsPage() {
   }, [items, filter])
 
   const setStatus = async (id: string, status: string) => {
-    await fetch(`/api/admin/proxy/job-applications/${id}`, {
+    await fetch(withBasePath(`/api/admin/proxy/job-applications/${id}`), {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ status }),

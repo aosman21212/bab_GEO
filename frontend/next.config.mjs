@@ -4,9 +4,11 @@ import createNextIntlPlugin from 'next-intl/plugin'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const withNextIntl = createNextIntlPlugin('./i18n/request.ts')
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '/bab_geo'
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  basePath,
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -17,6 +19,14 @@ const nextConfig = {
     root: __dirname,
   },
   output: 'standalone',
+  async redirects() {
+    return [
+      { source: '/ar/admin', destination: '/admin', permanent: false },
+      { source: '/en/admin', destination: '/admin', permanent: false },
+      { source: '/ar/admin/:path*', destination: '/admin/:path*', permanent: false },
+      { source: '/en/admin/:path*', destination: '/admin/:path*', permanent: false },
+    ]
+  },
   async rewrites() {
     const rules = [
       {

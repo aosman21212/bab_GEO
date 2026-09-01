@@ -1,6 +1,6 @@
 'use client'
 
-import Image from 'next/image'
+import Image from '@/components/app-image'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import type { ReactNode } from 'react'
@@ -19,6 +19,7 @@ import {
   Users,
 } from 'lucide-react'
 import { useAdminLocale } from '@/components/admin-locale-provider'
+import { withBasePath } from '@/lib/base-path'
 
 const navItems = [
   { href: '/admin/dashboard', key: 'nav.overview', icon: LayoutDashboard },
@@ -52,7 +53,7 @@ export function AdminShell({
   const { t, uiLocale, setUiLocale } = useAdminLocale()
 
   const logout = async () => {
-    await fetch('/api/admin/logout', { method: 'POST' })
+    await fetch(withBasePath('/api/admin/logout'), { method: 'POST' })
     router.push('/admin')
   }
 

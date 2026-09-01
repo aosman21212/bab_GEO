@@ -1,6 +1,6 @@
 'use client'
 
-import Image from 'next/image'
+import Image from '@/components/app-image'
 import { useTranslations } from 'next-intl'
 import { Reveal, StaggerGroup, StaggerItem } from './reveal'
 

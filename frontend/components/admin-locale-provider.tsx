@@ -11,6 +11,7 @@ import {
 } from 'react'
 import en from '@/messages/en.json'
 import ar from '@/messages/ar.json'
+import { basePath } from '@/lib/base-path'
 
 export type AdminUiLocale = 'en' | 'ar'
 
@@ -53,7 +54,7 @@ function persistLocale(locale: AdminUiLocale) {
   } catch {
     /* ignore */
   }
-  document.cookie = `${COOKIE_KEY}=${locale};path=/;max-age=31536000;SameSite=Lax`
+  document.cookie = `${COOKIE_KEY}=${locale};path=${basePath || '/'};max-age=31536000;SameSite=Lax`
 }
 
 function lookup(

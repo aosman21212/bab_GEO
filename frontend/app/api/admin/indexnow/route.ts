@@ -1,12 +1,17 @@
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 import { collectSitemapUrls, getIndexNowKey, getSiteUrl } from '@/lib/geo-content'
+import { ADMIN_SESSION_COOKIE, setAdminSessionCookie } from '@/lib/admin-session'
 
-const COOKIE = 'bab_admin_token'
+function slideSession(response: NextResponse, token: string) {
+  setAdminSessionCookie(response, token)
+  return response
+}
 
 export async function GET() {
   const jar = await cookies()
-  if (!jar.get(COOKIE)?.value) {
+  const token = jar.get(ADMIN_SESSION_COOKIE)?.value
+  if (!token) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
@@ -14,25 +19,28 @@ export async function GET() {
   const key = getIndexNowKey()
   const urls = await collectSitemapUrls()
 
-  return NextResponse.json({
-    siteUrl: site,
-    keyConfigured: Boolean(key),
-    keyFileUrl: key ? `${site}/${key}.txt` : null,
-    sitemapUrl: `${site}/sitemap.xml`,
-    urlCount: urls.length,
-    priorityUrls: [
-      `${site}/`,
-      `${site}/en`,
-      `${site}/ar`,
-      `${site}/llms.txt`,
-      `${site}/en/about-us`,
-    ],
-  })
+  return slideSession(
+    NextResponse.json({
+      siteUrl: site,
+      keyConfigured: Boolean(key),
+      keyFileUrl: key ? `${site}/${key}.txt` : null,
+      sitemapUrl: `${site}/sitemap.xml`,
+      urlCount: urls.length,
+      priorityUrls: [
+        `${site}`,
+        `${site}/ar`,
+        `${site}/llms.txt`,
+        `${site}/about-us`,
+      ],
+    }),
+    token,
+  )
 }
 
 export async function POST() {
   const jar = await cookies()
-  if (!jar.get(COOKIE)?.value) {
+  const token = jar.get(ADMIN_SESSION_COOKIE)?.value
+  if (!token) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
@@ -88,14 +96,17 @@ export async function POST() {
   }
 
   const anyOk = results.some((r) => r.ok)
-  return NextResponse.json(
-    {
-      ok: anyOk,
-      urlCount: urlList.length,
-      keyLocation: payload.keyLocation,
-      results,
-      note: 'IndexNow covers Bing, Yandex, Seznam, and Naver — not Google. Use Search Console for Google.',
-    },
-    { status: anyOk ? 200 : 502 },
+  return slideSession(
+    NextResponse.json(
+      {
+        ok: anyOk,
+        urlCount: urlList.length,
+        keyLocation: payload.keyLocation,
+        results,
+        note: 'IndexNow covers Bing, Yandex, Seznam, and Naver — not Google. Use Search Console for Google.',
+      },
+      { status: anyOk ? 200 : 502 },
+    ),
+    token,
   )
 }

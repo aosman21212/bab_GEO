@@ -14,6 +14,7 @@ import {
   Search,
   Settings2,
 } from 'lucide-react'
+import { withBasePath } from '@/lib/base-path'
 
 type FileStatus = 'unknown' | 'ok' | 'error'
 
@@ -113,7 +114,7 @@ export default function AdminGeoPage() {
   const okCount = useMemo(() => files.filter((f) => f.status === 'ok').length, [files])
 
   const loadMeta = useCallback(async () => {
-    const res = await fetch('/api/admin/indexnow')
+    const res = await fetch(withBasePath('/api/admin/indexnow'))
     if (res.status === 401) {
       router.push('/admin')
       return
@@ -124,7 +125,7 @@ export default function AdminGeoPage() {
 
   const recheckOne = async (path: string): Promise<FileStatus> => {
     try {
-      const res = await fetch(path, { method: 'GET', cache: 'no-store' })
+      const res = await fetch(withBasePath(path), { method: 'GET', cache: 'no-store' })
       return res.ok ? 'ok' : 'error'
     } catch {
       return 'error'
@@ -158,7 +159,7 @@ export default function AdminGeoPage() {
   const submitIndexNow = async () => {
     setSubmitting(true)
     setSubmitStatus(null)
-    const res = await fetch('/api/admin/indexnow', { method: 'POST' })
+    const res = await fetch(withBasePath('/api/admin/indexnow'), { method: 'POST' })
     const data = (await res.json().catch(() => ({}))) as {
       error?: string
       ok?: boolean
@@ -314,11 +315,10 @@ export default function AdminGeoPage() {
             <ul className="mt-2 space-y-1 text-sm">
               {(
                 meta?.priorityUrls || [
-                  `${siteUrl}/`,
-                  `${siteUrl}/en`,
+                  siteUrl,
                   `${siteUrl}/ar`,
                   `${siteUrl}/llms.txt`,
-                  `${siteUrl}/en/about-us`,
+                  `${siteUrl}/about-us`,
                 ]
               ).map((url) => (
                 <li key={url}>
@@ -409,7 +409,7 @@ export default function AdminGeoPage() {
                       <td className="px-6 py-4">
                         <div className="flex justify-end gap-2">
                           <a
-                            href={row.path}
+                            href={withBasePath(row.path)}
                             target="_blank"
                             rel="noreferrer"
                             className="inline-flex items-center gap-1 rounded-full border border-border px-3 py-1.5 text-xs font-semibold text-navy hover:border-primary hover:text-primary"

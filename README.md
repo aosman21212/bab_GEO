@@ -15,7 +15,7 @@ npm run docker:up
 npm run docker:seed
 ```
 
-- Web: http://localhost:3003
+- Web: http://localhost:3003/bab_geo
 - API: http://localhost:4001/api/health
 
 Stop: `npm run docker:down`
@@ -25,7 +25,8 @@ Optional env (compose substitutes from shell or a root `.env`):
 | Variable | Default |
 |----------|---------|
 | `NEXT_PUBLIC_API_URL` | `http://localhost:4001` |
-| `NEXT_PUBLIC_SITE_URL` | `https://bab.com.sa` |
+| `NEXT_PUBLIC_SITE_URL` | `http://localhost:3003` |
+| `NEXT_PUBLIC_BASE_PATH` | `/bab_geo` |
 | `INDEXNOW_KEY` | empty |
 | `JWT_SECRET` | `change-me-in-production-bab-cms` |
 | `ADMIN_EMAIL` / `ADMIN_PASSWORD` | `admin@bab.com.sa` / `Admin123!` |

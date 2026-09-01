@@ -1,5 +1,6 @@
 import { solutionGroups } from '@/lib/nav-tree'
 import { normalizePageCategory, type PageCategory } from '@/lib/page-categories'
+import { withBasePath } from '@/lib/base-path'
 
 export type CmsNavLink = {
   href: string
@@ -61,7 +62,7 @@ export function partitionCmsNavExtras(
 /** Browser-safe fetch via Next same-origin proxy (avoids CORS to :4001). */
 export async function fetchCmsNavExtras(locale: string): Promise<CmsNavExtras> {
   try {
-    const res = await fetch('/api/cms/published-pages', {
+    const res = await fetch(withBasePath('/api/cms/published-pages'), {
       cache: 'no-store',
     })
     if (!res.ok) return emptyCmsNavExtras()

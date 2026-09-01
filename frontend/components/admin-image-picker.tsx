@@ -4,6 +4,7 @@ import { useCallback, useRef, useState } from 'react'
 import Cropper, { type Area } from 'react-easy-crop'
 import 'react-easy-crop/react-easy-crop.css'
 import { useAdminLocale } from '@/components/admin-locale-provider'
+import { withBasePath } from '@/lib/base-path'
 
 type Props = {
   onUploaded: (url: string, fileName: string) => void
@@ -54,7 +55,7 @@ async function cropToBlob(imageSrc: string, crop: Area, mime = 'image/jpeg'): Pr
 async function uploadFile(file: File | Blob, fileName: string): Promise<string> {
   const body = new FormData()
   body.append('file', file, fileName)
-  const res = await fetch('/api/admin/upload', { method: 'POST', body })
+  const res = await fetch(withBasePath('/api/admin/upload'), { method: 'POST', body })
   const data = await res.json().catch(() => ({}))
   if (!res.ok) {
     throw new Error((data as { error?: string }).error || 'Upload failed')

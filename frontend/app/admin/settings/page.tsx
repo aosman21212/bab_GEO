@@ -11,6 +11,7 @@ import {
   DEFAULT_GEO_CITATION_NOTE,
 } from '@/lib/geo-content'
 import { Mail, Plus, Trash2 } from 'lucide-react'
+import { withBasePath } from '@/lib/base-path'
 
 type FaqItem = { question: string; answer: string }
 
@@ -151,7 +152,7 @@ export default function AdminSettingsPage() {
 
   useEffect(() => {
     const load = async () => {
-      const res = await fetch('/api/admin/proxy/content/admin/en')
+      const res = await fetch(withBasePath('/api/admin/proxy/content/admin/en'))
       if (res.status === 401) {
         router.push('/admin')
         return
@@ -191,12 +192,12 @@ export default function AdminSettingsPage() {
     setPending(true)
     setStatus(null)
     const [enRes, arRes] = await Promise.all([
-      fetch('/api/admin/proxy/content/en/siteSettings', {
+      fetch(withBasePath('/api/admin/proxy/content/en/siteSettings'), {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ data: settings }),
       }),
-      fetch('/api/admin/proxy/content/ar/siteSettings', {
+      fetch(withBasePath('/api/admin/proxy/content/ar/siteSettings'), {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ data: settings }),

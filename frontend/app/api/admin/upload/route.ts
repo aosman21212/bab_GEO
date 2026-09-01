@@ -1,12 +1,11 @@
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 import { getApiUrl } from '@/lib/api'
-
-const COOKIE = 'bab_admin_token'
+import { ADMIN_SESSION_COOKIE, setAdminSessionCookie } from '@/lib/admin-session'
 
 export async function POST(req: Request) {
   const jar = await cookies()
-  const token = jar.get(COOKIE)?.value
+  const token = jar.get(ADMIN_SESSION_COOKIE)?.value
   if (!token) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const form = await req.formData()
@@ -17,8 +16,10 @@ export async function POST(req: Request) {
   })
 
   const text = await res.text()
-  return new NextResponse(text, {
+  const response = new NextResponse(text, {
     status: res.status,
     headers: { 'Content-Type': res.headers.get('Content-Type') || 'application/json' },
   })
+  if (res.ok) setAdminSessionCookie(response, token)
+  return response
 }

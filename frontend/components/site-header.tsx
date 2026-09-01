@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useMemo, useState, useTransition } from 'react'
-import Image from 'next/image'
+import Image from '@/components/app-image'
 import { useLocale, useTranslations } from 'next-intl'
 import { AnimatePresence, motion } from 'motion/react'
 import { ChevronDown, Menu, X, ArrowRight } from 'lucide-react'
@@ -14,6 +14,7 @@ import {
   type CmsNavLink,
 } from '@/lib/cms-nav'
 import { BabLogo } from './bab-logo'
+import { withBasePath } from '@/lib/base-path'
 
 const menuSlides = [
   '/images/bab-technology.png',
@@ -22,7 +23,7 @@ const menuSlides = [
   '/images/bab-telecom.png',
 ] as const
 
-const SPAM_PDF = '/docs/ar_spam_policy.pdf'
+const SPAM_PDF = withBasePath('/docs/ar_spam_policy.pdf')
 
 function navLinkClass(active: boolean) {
   return `text-[13px] font-medium tracking-wide transition-colors hover:text-primary md:text-sm ${

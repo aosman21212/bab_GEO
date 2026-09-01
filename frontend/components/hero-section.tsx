@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import Image from 'next/image'
+import Image from '@/components/app-image'
 import { motion } from 'motion/react'
 import { ArrowRight } from 'lucide-react'
 import { useTranslations } from 'next-intl'

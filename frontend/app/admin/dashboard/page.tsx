@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { AdminShell } from '@/components/admin-shell'
 import { useAdminLocale } from '@/components/admin-locale-provider'
 import { FileText, Handshake, Mail, Plus, Users } from 'lucide-react'
+import { withBasePath } from '@/lib/base-path'
 
 export default function AdminDashboardPage() {
   const router = useRouter()
@@ -21,10 +22,10 @@ export default function AdminDashboardPage() {
   useEffect(() => {
     const load = async () => {
       const [pagesRes, partnersRes, inquiriesRes, usersRes] = await Promise.all([
-        fetch('/api/admin/proxy/pages'),
-        fetch('/api/admin/proxy/partners/admin/all'),
-        fetch('/api/admin/proxy/inquiries'),
-        fetch('/api/admin/proxy/users'),
+        fetch(withBasePath('/api/admin/proxy/pages')),
+        fetch(withBasePath('/api/admin/proxy/partners/admin/all')),
+        fetch(withBasePath('/api/admin/proxy/inquiries')),
+        fetch(withBasePath('/api/admin/proxy/users')),
       ])
       if (pagesRes.status === 401) {
         router.push('/admin')

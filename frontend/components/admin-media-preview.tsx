@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { ImageOff } from 'lucide-react'
+import { withBasePathIfInternal } from '@/lib/base-path'
 
 export function AdminMediaPreview({
   src,
@@ -45,7 +46,7 @@ export function AdminMediaPreview({
     <div className={`relative overflow-hidden rounded-xl border border-border bg-muted ${className}`}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src={trimmed}
+        src={withBasePathIfInternal(trimmed)}
         alt=""
         className="h-full w-full object-cover"
         onError={() => setFailed(true)}

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { AdminShell } from '@/components/admin-shell'
 import { useAdminLocale } from '@/components/admin-locale-provider'
 import { Pencil, Trash2 } from 'lucide-react'
+import { withBasePath } from '@/lib/base-path'
 
 type EmploymentType = 'full-time' | 'part-time' | 'contract' | 'internship'
 type JobStatus = 'open' | 'closed'
@@ -78,7 +79,7 @@ export default function AdminJobsPage() {
   const [pending, setPending] = useState(false)
 
   const load = async () => {
-    const res = await fetch('/api/admin/proxy/jobs/admin/all')
+    const res = await fetch(withBasePath('/api/admin/proxy/jobs/admin/all'))
     if (res.status === 401) {
       router.push('/admin')
       return
@@ -155,7 +156,7 @@ export default function AdminJobsPage() {
       order: Number(form.order) || 0,
     }
     const res = await fetch(
-      editingId ? `/api/admin/proxy/jobs/${editingId}` : '/api/admin/proxy/jobs',
+      editingId ? withBasePath(`/api/admin/proxy/jobs/${editingId}`) : withBasePath('/api/admin/proxy/jobs'),
       {
         method: editingId ? 'PUT' : 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -173,7 +174,7 @@ export default function AdminJobsPage() {
   }
 
   const toggleStatus = async (job: Job) => {
-    await fetch(`/api/admin/proxy/jobs/${job._id}`, {
+    await fetch(withBasePath(`/api/admin/proxy/jobs/${job._id}`), {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ status: job.status === 'open' ? 'closed' : 'open' }),
@@ -183,7 +184,7 @@ export default function AdminJobsPage() {
 
   const remove = async (id: string) => {
     if (!confirm(t('jobs.deleteConfirm'))) return
-    await fetch(`/api/admin/proxy/jobs/${id}`, { method: 'DELETE' })
+    await fetch(withBasePath(`/api/admin/proxy/jobs/${id}`), { method: 'DELETE' })
     if (editingId === id) resetForm()
     await load()
   }

@@ -492,7 +492,8 @@
       "password": "Password",
       "signIn": "Sign in",
       "signingIn": "Signing in…",
-      "failed": "Login failed"
+      "failed": "Login failed",
+      "sessionExpired": "Your session expired due to inactivity. Please sign in again."
     },
     "settings": {
       "title": "Site Settings",

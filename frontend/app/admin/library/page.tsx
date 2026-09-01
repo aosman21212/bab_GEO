@@ -12,6 +12,7 @@ import {
   type PageCategory,
 } from '@/lib/page-categories'
 import { cmsPublicPagePath } from '@/lib/public-urls'
+import { withBasePath } from '@/lib/base-path'
 
 type PageDoc = {
   _id: string
@@ -35,7 +36,7 @@ export default function AdminLibraryPage() {
   const [q, setQ] = useState('')
 
   const load = async () => {
-    const res = await fetch('/api/admin/proxy/pages')
+    const res = await fetch(withBasePath('/api/admin/proxy/pages'))
     if (res.status === 401) {
       router.push('/admin')
       return

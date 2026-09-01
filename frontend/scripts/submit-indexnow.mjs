@@ -35,7 +35,10 @@ function loadEnvFile(filePath) {
 loadEnvFile(path.join(root, '.env.local'))
 loadEnvFile(path.join(root, '.env'))
 
-const site = (process.env.NEXT_PUBLIC_SITE_URL || 'https://bab.com.sa').replace(/\/$/, '')
+const basePath = (process.env.NEXT_PUBLIC_BASE_PATH || '/bab_geo').replace(/\/$/, '')
+const origin = (process.env.NEXT_PUBLIC_SITE_URL || 'https://bab.com.sa').replace(/\/$/, '')
+const site =
+  basePath && !origin.endsWith(basePath) ? `${origin}${basePath}` : origin
 const key = process.env.INDEXNOW_KEY || ''
 
 if (!key) {
@@ -60,11 +63,10 @@ async function urlsFromSitemap() {
 
 const fallback = [
   site,
-  `${site}/en`,
   `${site}/ar`,
   `${site}/llms.txt`,
-  `${site}/en/about-us`,
-  `${site}/en/contact-us`,
+  `${site}/about-us`,
+  `${site}/contact-us`,
 ]
 
 const urlList = (await urlsFromSitemap()) || fallback

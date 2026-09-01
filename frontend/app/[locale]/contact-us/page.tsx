@@ -1,6 +1,6 @@
 ﻿'use client'
 
-import Image from 'next/image'
+import Image from '@/components/app-image'
 import { useLocale, useTranslations } from 'next-intl'
 import { MapPin, Phone, Mail, Clock, MessageCircle } from 'lucide-react'
 import { ContactForm } from '@/components/contact-form'

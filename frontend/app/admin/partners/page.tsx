@@ -1,12 +1,13 @@
 'use client'
 
 import { useEffect, useMemo, useState } from 'react'
-import Image from 'next/image'
+import Image from '@/components/app-image'
 import { useRouter } from 'next/navigation'
 import { AdminShell } from '@/components/admin-shell'
 import { useAdminLocale } from '@/components/admin-locale-provider'
 import { AdminImagePicker } from '@/components/admin-image-picker'
 import { ImagePlus, Pencil, Trash2, Upload } from 'lucide-react'
+import { withBasePath } from '@/lib/base-path'
 
 type Partner = {
   _id: string
@@ -59,7 +60,7 @@ export default function AdminPartnersPage() {
   const [pending, setPending] = useState(false)
 
   const load = async () => {
-    const res = await fetch('/api/admin/proxy/partners/admin/all')
+    const res = await fetch(withBasePath('/api/admin/proxy/partners/admin/all'))
     if (res.status === 401) {
       router.push('/admin')
       return
@@ -145,7 +146,7 @@ export default function AdminPartnersPage() {
       active: form.active,
     }
     const res = await fetch(
-      editingId ? `/api/admin/proxy/partners/${editingId}` : '/api/admin/proxy/partners',
+      editingId ? withBasePath(`/api/admin/proxy/partners/${editingId}`) : withBasePath('/api/admin/proxy/partners'),
       {
         method: editingId ? 'PUT' : 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -163,7 +164,7 @@ export default function AdminPartnersPage() {
   }
 
   const toggle = async (p: Partner) => {
-    await fetch(`/api/admin/proxy/partners/${p._id}`, {
+    await fetch(withBasePath(`/api/admin/proxy/partners/${p._id}`), {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ active: !p.active }),
@@ -173,7 +174,7 @@ export default function AdminPartnersPage() {
 
   const remove = async (id: string) => {
     if (!confirm(t('partners.deleteConfirm'))) return
-    await fetch(`/api/admin/proxy/partners/${id}`, { method: 'DELETE' })
+    await fetch(withBasePath(`/api/admin/proxy/partners/${id}`), { method: 'DELETE' })
     if (editingId === id) resetForm()
     await load()
   }

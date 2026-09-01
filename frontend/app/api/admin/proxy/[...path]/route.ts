@@ -1,8 +1,7 @@
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 import { getApiUrl } from '@/lib/api'
-
-const COOKIE = 'bab_admin_token'
+import { ADMIN_SESSION_COOKIE, setAdminSessionCookie } from '@/lib/admin-session'
 
 type Ctx = { params: Promise<{ path: string[] }> }
 
@@ -36,10 +35,17 @@ function isBinaryContentType(contentType: string | null) {
   )
 }
 
+function slideSession(response: NextResponse, token: string) {
+  if (response.status >= 200 && response.status < 300) {
+    setAdminSessionCookie(response, token)
+  }
+  return response
+}
+
 async function proxy(req: Request, ctx: Ctx, method: string) {
   const { path } = await ctx.params
   const jar = await cookies()
-  const token = jar.get(COOKIE)?.value
+  const token = jar.get(ADMIN_SESSION_COOKIE)?.value
   if (!token) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const url = new URL(req.url)
@@ -62,12 +68,15 @@ async function proxy(req: Request, ctx: Ctx, method: string) {
     const buf = await res.arrayBuffer()
     const outHeaders: HeadersInit = { 'Content-Type': contentType }
     if (disposition) outHeaders['Content-Disposition'] = disposition
-    return new NextResponse(buf, { status: res.status, headers: outHeaders })
+    return slideSession(new NextResponse(buf, { status: res.status, headers: outHeaders }), token)
   }
 
   const text = await res.text()
-  return new NextResponse(text, {
-    status: res.status,
-    headers: { 'Content-Type': contentType },
-  })
+  return slideSession(
+    new NextResponse(text, {
+      status: res.status,
+      headers: { 'Content-Type': contentType },
+    }),
+    token,
+  )
 }

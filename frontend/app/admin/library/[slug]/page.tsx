@@ -15,6 +15,7 @@ import {
 } from '@/components/admin-page-form'
 import type { PageCategory, LandingType } from '@/lib/page-categories'
 import { cmsPublicPagePath } from '@/lib/public-urls'
+import { withBasePath } from '@/lib/base-path'
 
 type PageDoc = {
   slug: string
@@ -46,7 +47,7 @@ export default function AdminLibraryEditPage() {
 
   useEffect(() => {
     const load = async () => {
-      const res = await fetch(`/api/admin/proxy/pages/by-id/${slug}`)
+      const res = await fetch(withBasePath(`/api/admin/proxy/pages/by-id/${slug}`))
       if (res.status === 401) {
         router.push('/admin')
         return
@@ -79,7 +80,7 @@ export default function AdminLibraryEditPage() {
       en: localeToApi(enForm),
       ar: localeToApi(arForm),
     }
-    const res = await fetch(`/api/admin/proxy/pages/${slug}`, {
+    const res = await fetch(withBasePath(`/api/admin/proxy/pages/${slug}`), {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -101,7 +102,7 @@ export default function AdminLibraryEditPage() {
 
   const remove = async () => {
     if (!confirm(t('library.deleteConfirm'))) return
-    const res = await fetch(`/api/admin/proxy/pages/${slug}`, { method: 'DELETE' })
+    const res = await fetch(withBasePath(`/api/admin/proxy/pages/${slug}`), { method: 'DELETE' })
     if (res.ok) router.push('/admin/library')
   }
 

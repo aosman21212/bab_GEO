@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import Image from '@/components/app-image'
 import { Link } from '@/i18n/navigation'
 
 /** Official BAB logo (orange BAB + door icon + indigo باب) */

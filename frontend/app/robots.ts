@@ -1,7 +1,7 @@
 import type { MetadataRoute } from 'next'
 import { getSiteUrl } from '@/lib/geo-content'
 
-/** Paths AI/search crawlers should skip (admin + API). Site uses /admin, not /dashboard. */
+/** Paths AI/search crawlers should skip (admin + API). Relative to base path when robots.txt is served under a subpath. */
 const disallow = ['/admin', '/api/'] as const
 
 /** Major LLM / AI-search crawler tokens — explicit Allow for GEO visibility. */
@@ -65,6 +65,6 @@ export default function robots(): MetadataRoute.Robots {
       ...aiUserAgents.map((userAgent) => ({ userAgent, ...shared })),
     ],
     sitemap: `${site}/sitemap.xml`,
-    host: site,
+    host: new URL(site).host,
   }
 }

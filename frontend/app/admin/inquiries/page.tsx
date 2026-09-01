@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { AdminShell } from '@/components/admin-shell'
 import { useAdminLocale } from '@/components/admin-locale-provider'
 import { Eye, Mail, X } from 'lucide-react'
+import { withBasePath } from '@/lib/base-path'
 
 type Inquiry = {
   _id: string
@@ -50,7 +51,7 @@ export default function AdminInquiriesPage() {
   }
 
   const load = async () => {
-    const res = await fetch('/api/admin/proxy/inquiries')
+    const res = await fetch(withBasePath('/api/admin/proxy/inquiries'))
     if (res.status === 401) {
       router.push('/admin')
       return
@@ -92,7 +93,7 @@ export default function AdminInquiriesPage() {
   }, [items, filter])
 
   const setStatus = async (id: string, status: string) => {
-    await fetch(`/api/admin/proxy/inquiries/${id}`, {
+    await fetch(withBasePath(`/api/admin/proxy/inquiries/${id}`), {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ status }),
