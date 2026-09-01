@@ -3,6 +3,7 @@ export const basePath = (process.env.NEXT_PUBLIC_BASE_PATH || '/bab_geo').replac
 export function withBasePath(path: string) {
   if (!path.startsWith('/')) return `${basePath}/${path}`
   if (basePath && path.startsWith(basePath)) return path
+  if (path === '/' && basePath) return basePath
   return `${basePath}${path}`
 }
 

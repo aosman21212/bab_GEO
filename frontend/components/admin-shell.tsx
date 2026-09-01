@@ -109,7 +109,7 @@ export function AdminShell({
             <Plus className="h-4 w-4" /> {t('newContent')}
           </Link>
           <a
-            href="/"
+            href={withBasePath('/')}
             target="_blank"
             rel="noreferrer"
             className="inline-flex w-full items-center gap-2 rounded-xl px-3 py-2 text-sm text-white/70 hover:bg-white/5 hover:text-white"
@@ -169,7 +169,7 @@ export function AdminShell({
                 unoptimized
               />
               <a
-                href="/"
+                href={withBasePath('/')}
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center rounded-full border border-border px-4 py-2 text-sm font-semibold text-navy hover:border-primary hover:text-primary"

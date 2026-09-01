@@ -21,6 +21,7 @@ const nextConfig = {
   output: 'standalone',
   async redirects() {
     return [
+      { source: '/', destination: '/bab_geo', permanent: false, basePath: false },
       { source: '/ar/admin', destination: '/admin', permanent: false },
       { source: '/en/admin', destination: '/admin', permanent: false },
       { source: '/ar/admin/:path*', destination: '/admin/:path*', permanent: false },
