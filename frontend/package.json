@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint .",
     "seo:submit-indexnow": "node scripts/submit-indexnow.mjs",
-    "seo:rotate-indexnow-key": "node scripts/rotate-indexnow-key.mjs"
+    "seo:rotate-indexnow-key": "node scripts/rotate-indexnow-key.mjs",
+    "smoke": "node scripts/smoke-pages.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.5.0",

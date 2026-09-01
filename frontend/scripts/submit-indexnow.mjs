@@ -35,7 +35,7 @@ function loadEnvFile(filePath) {
 loadEnvFile(path.join(root, '.env.local'))
 loadEnvFile(path.join(root, '.env'))
 
-const basePath = (process.env.NEXT_PUBLIC_BASE_PATH || '/bab_geo').replace(/\/$/, '')
+const basePath = (process.env.NEXT_PUBLIC_BASE_PATH ?? '').replace(/\/$/, '')
 const origin = (process.env.NEXT_PUBLIC_SITE_URL || 'https://bab.com.sa').replace(/\/$/, '')
 const site =
   basePath && !origin.endsWith(basePath) ? `${origin}${basePath}` : origin

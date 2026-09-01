@@ -9,7 +9,7 @@ npm run docker:up
 npm run docker:seed
 ```
 
-API: `http://localhost:4001` — Frontend: `http://localhost:3003/bab_geo`
+API: `http://localhost:4001` — Frontend: `http://localhost:3003`
 
 See root [`README.md`](../README.md).
 

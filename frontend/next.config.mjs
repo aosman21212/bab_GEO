@@ -4,7 +4,7 @@ import createNextIntlPlugin from 'next-intl/plugin'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const withNextIntl = createNextIntlPlugin('./i18n/request.ts')
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '/bab_geo'
+const basePath = (process.env.NEXT_PUBLIC_BASE_PATH ?? '').replace(/\/$/, '')
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -21,7 +21,9 @@ const nextConfig = {
   output: 'standalone',
   async redirects() {
     return [
-      { source: '/', destination: '/bab_geo', permanent: false, basePath: false },
+      ...(basePath
+        ? [{ source: '/', destination: basePath, permanent: false, basePath: false }]
+        : []),
       { source: '/ar/admin', destination: '/admin', permanent: false },
       { source: '/en/admin', destination: '/admin', permanent: false },
       { source: '/ar/admin/:path*', destination: '/admin/:path*', permanent: false },
