@@ -50,9 +50,9 @@ const defaults: SiteSettings = {
   addressEn: 'Al-Yasmin, King Abdulaziz Rd, Riyadh, KSA',
   addressAr: 'الياسمين، طريق الملك عبدالعزيز، الرياض، المملكة العربية السعودية',
   seoTitleEn:
-    'BAB International Corp | Omnichannel, Contact Center & AI Voice Bots in Saudi Arabia',
+    'BAB International Corp | Omnichannel & Contact Center in KSA',
   seoTitleAr:
-    'باب الدولية | قنوات متعددة ومراكز اتصال وروبوتات صوتية بالذكاء الاصطناعي في السعودية',
+    'باب الدولية | قنوات متعددة ومراكز اتصال في السعودية',
   seoDescriptionEn:
     'Saudi enterprise partner for seamless connectivity and intelligent CX: omnichannel engagement, AI and voice bots, and contact-center platforms across Saudi Arabia and the MENA region.',
   seoDescriptionAr:
@@ -127,6 +127,21 @@ const defaults: SiteSettings = {
 
 function fieldClass() {
   return 'w-full rounded-xl border border-border bg-muted px-3 py-2.5 text-sm text-navy outline-none transition focus:border-primary focus:bg-white'
+}
+
+const SEO_TITLE_MAX = 70
+
+function SeoTitleLengthHint({ value }: { value: string }) {
+  const length = value.length
+  const overLimit = length > SEO_TITLE_MAX
+  return (
+    <span
+      className={`text-xs font-normal ${overLimit ? 'text-red-600' : 'text-muted-foreground'}`}
+    >
+      {length}/{SEO_TITLE_MAX} characters
+      {overLimit ? ' — title may be truncated in search results' : ''}
+    </span>
+  )
 }
 
 function tabFromHash(): SettingsTab {
@@ -345,6 +360,7 @@ export default function AdminSettingsPage() {
                   value={settings.seoTitleEn}
                   onChange={(e) => set('seoTitleEn', e.target.value)}
                 />
+                <SeoTitleLengthHint value={settings.seoTitleEn} />
               </label>
               <label className="flex flex-col gap-2 text-sm font-semibold text-navy">
                 {t('settings.seoDescEn')}
@@ -362,6 +378,7 @@ export default function AdminSettingsPage() {
                   value={settings.seoTitleAr}
                   onChange={(e) => set('seoTitleAr', e.target.value)}
                 />
+                <SeoTitleLengthHint value={settings.seoTitleAr} />
               </label>
               <label className="flex flex-col gap-2 text-sm font-semibold text-navy">
                 {t('settings.seoDescAr')}

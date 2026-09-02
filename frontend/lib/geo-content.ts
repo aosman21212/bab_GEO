@@ -116,8 +116,8 @@ const fallbackSettings: GeoSiteSettings = {
   addressEn: 'Al-Yasmin, King Abdulaziz Rd, Riyadh, KSA',
   addressAr: 'الياسمين، طريق الملك عبدالعزيز، الرياض، المملكة العربية السعودية',
   seoTitleEn:
-    'BAB International Corp | Omnichannel, Contact Center & AI Voice Bots in Saudi Arabia',
-  seoTitleAr: 'باب الدولية | قنوات متعددة ومراكز اتصال وروبوتات صوتية بالذكاء الاصطناعي في السعودية',
+    'BAB International Corp | Omnichannel & Contact Center in KSA',
+  seoTitleAr: 'باب الدولية | قنوات متعددة ومراكز اتصال في السعودية',
   seoDescriptionEn:
     'Saudi enterprise partner for seamless connectivity and intelligent CX: omnichannel engagement, AI and voice bots, and contact-center platforms across Saudi Arabia and the MENA region.',
   seoDescriptionAr:
