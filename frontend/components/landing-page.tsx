@@ -90,7 +90,7 @@ export function LandingPage({
                   <ContactForm
                     variant="landing"
                     sourceSlug={page.slug}
-                    openWhatsAppAfterSubmit
+                    openWhatsAppAfterSubmit={false}
                     submitLabel={page.ctaLabel || undefined}
                   />
                   {page.formNote ? (
