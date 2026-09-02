@@ -8,6 +8,7 @@ import { Reveal } from './reveal'
 
 export function ImpactSection() {
   const t = useTranslations('impact')
+  const alt = useTranslations('imageAlt')
 
   return (
     <section className="pb-8 md:pb-12">
@@ -16,7 +17,7 @@ export function ImpactSection() {
           <div className="absolute inset-0">
             <Image
               src="/images/bg-ss3.webp"
-              alt=""
+              alt={alt('impactBg')}
               fill
               sizes="100vw"
               className="object-cover opacity-40"

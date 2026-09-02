@@ -38,6 +38,23 @@
     "body": "Engage customers across channels, unlock new revenue streams, and enhance experiences with data-driven insights — all supported by AI.",
     "cta": "Contact Us"
   },
+  "imageAlt": {
+    "heroSlidePhone": "Customer using smartphone for omnichannel support",
+    "heroSlideHeadset": "Contact center agent with headset providing customer service",
+    "contactHeroBg": "BAB International Corp contact and support team",
+    "aboutHeroBg": "BAB International Corp team and office in Riyadh",
+    "aboutEngineering": "BAB digital engineering and customer experience solutions",
+    "aboutImpactBg": "Enterprise connectivity and customer experience at BAB",
+    "impactBg": "Omnichannel and contact center solutions background",
+    "transformationBg": "Riyadh skyline representing digital transformation in KSA",
+    "benefitsBg": "Unified customer experience and omnichannel communication",
+    "partnersLogos": "BAB technology partners including Meta, Microsoft, AWS, and Genesys",
+    "menuSlideTechnology": "BAB enterprise technology and connectivity solutions",
+    "menuSlideHero": "BAB omnichannel customer experience platform",
+    "menuSlideNetwork": "Connected network and intelligent communication solutions",
+    "menuSlideTelecom": "BAB telecom and contact center services",
+    "landingSlide": "BAB solutions and customer experience showcase"
+  },
   "works": {
     "title": "Our Works",
     "items": {
@@ -56,7 +73,7 @@
     }
   },
   "successStories": {
-    "metaTitle": "Success Stories",
+    "metaTitle": "Customer Success Stories & CX Case Studies in KSA",
     "metaDescription": "Real customer outcomes powered by BAB omnichannel, contact center, and AI solutions across Saudi Arabia and the MENA region.",
     "eyebrow": "Case studies",
     "title": "Success Stories",
@@ -65,7 +82,7 @@
     "empty": "Success stories will appear here once case study pages are published in the CMS."
   },
   "articlesPage": {
-    "metaTitle": "Articles",
+    "metaTitle": "CX Insights on Omnichannel, AI & Contact Centers in KSA",
     "metaDescription": "Insights on omnichannel CX, AI voice bots, and contact-center strategy for Saudi Arabia and the MENA region from BAB International Corp.",
     "eyebrow": "Insights",
     "title": "Articles",
@@ -74,7 +91,7 @@
     "empty": "Articles will appear here once article pages are published in the CMS."
   },
   "careersPage": {
-    "metaTitle": "Careers",
+    "metaTitle": "Careers at BAB — Jobs in Riyadh & Saudi Arabia",
     "metaDescription": "Browse open positions at BAB International Corp and submit your CV to join our team in Riyadh and across the region.",
     "eyebrow": "Careers",
     "title": "Browse all open positions",
@@ -262,7 +279,7 @@
     "sitemap": "Sitemap"
   },
   "about": {
-    "metaTitle": "About Us",
+    "metaTitle": "About BAB — Omnichannel & Contact Center Experts Since 1999",
     "metaDescription": "Learn about BAB International Corp — Riyadh-based experts in omnichannel CX, contact centers, and AI solutions since 1999.",
     "title": "Pioneering Change",
     "intro": "At Bab International, we redefine the way businesses connect, communicate, and grow. Since 1999, we have been at the forefront of digital transformation, delivering cutting-edge IT and communication solutions tailored to our clients' unique needs.",
@@ -300,7 +317,7 @@
     "v4Body": "Impact through actions, not just words. We focus on creating meaningful change, internally and externally."
   },
   "contactPage": {
-    "metaTitle": "Contact Us",
+    "metaTitle": "Contact BAB for Demos & Enterprise CX Solutions in KSA",
     "metaDescription": "Contact BAB International Corp in Riyadh for demos, partnerships, and omnichannel or contact-center solutions in Saudi Arabia.",
     "title": "Get in Touch With Us!",
     "body": "Reach out for questions, demos or partnerships.",
@@ -315,7 +332,7 @@
     "brand": "BAB"
   },
   "sitemapPage": {
-    "metaTitle": "Sitemap",
+    "metaTitle": "Sitemap — All BAB Solutions, Industries & Company Pages",
     "metaDescription": "Browse every public page on bab.com.sa — solutions, industries, articles, careers, and company information.",
     "title": "Sitemap",
     "body": "Browse every public page on bab.com.sa in one place.",
@@ -327,10 +344,10 @@
   },
   "legal": {
     "privacyTitle": "Privacy Policy",
-    "privacyMetaTitle": "Privacy Policy",
+    "privacyMetaTitle": "Privacy Policy — How BAB Protects Your Personal Data",
     "privacyMetaDescription": "Read how BAB International Corp collects, uses, and protects your personal information on bab.com.sa.",
     "termsTitle": "Terms & Conditions",
-    "termsMetaTitle": "Terms & Conditions",
+    "termsMetaTitle": "Terms & Conditions for BAB Website & Services in KSA",
     "termsMetaDescription": "Terms and conditions for using the BAB International Corp website and services in Saudi Arabia.",
     "privacyBody": "BAB International Corp respects your privacy. We collect and use personal information only as needed to provide our services, respond to inquiries, and improve your experience. We do not sell your data to third parties. For questions about this policy, contact info@bab.com.sa.",
     "termsBody": "By using this website and our services, you agree to these terms. Content on this site is owned by BAB International Corp. Services are provided subject to applicable contracts and Saudi law. Contact us for full commercial terms."

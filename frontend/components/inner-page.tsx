@@ -80,11 +80,10 @@ export async function InnerPage({ page }: { page: PageContent }) {
           <div className="relative mx-auto max-w-7xl overflow-hidden">
             <Image
               src="/images/home.jpg"
-              alt=""
+              alt={`${page.benefits.heading} — ${page.metaTitle}`}
               fill
               className="object-cover"
               sizes="100vw"
-              aria-hidden
             />
             <div className="absolute inset-0 bg-navy/90" />
             <div className="relative px-6 py-12 md:px-12 md:py-16">
@@ -141,11 +140,10 @@ export async function InnerPage({ page }: { page: PageContent }) {
         <div className="relative mx-auto max-w-7xl overflow-hidden">
           <Image
             src="/images/bg-ss3.webp"
-            alt=""
+            alt={`${page.impact.heading} — ${page.metaTitle}`}
             fill
             className="object-cover"
             sizes="100vw"
-            aria-hidden
           />
           <div className="absolute inset-0 bg-navy/90" />
           <div className="relative max-w-2xl px-6 py-14 md:px-12 md:py-20">

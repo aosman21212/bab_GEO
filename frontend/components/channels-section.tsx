@@ -44,7 +44,7 @@ export function ChannelsSection() {
               className="flex flex-col items-center justify-center gap-2.5 rounded-2xl bg-muted/50 px-3 py-5 transition-colors hover:bg-muted"
             >
               <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-background shadow-sm md:h-14 md:w-14">
-                <Image src={c.icon} alt="" width={28} height={28} className="h-7 w-7 object-contain" />
+                <Image src={c.icon} alt={t(c.key)} width={28} height={28} className="h-7 w-7 object-contain" />
               </div>
               <span className="text-center text-[11px] font-semibold text-navy sm:text-xs md:text-sm">
                 {t(c.key)}

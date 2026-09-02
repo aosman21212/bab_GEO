@@ -17,10 +17,10 @@ import { BabLogo } from './bab-logo'
 import { withBasePath } from '@/lib/base-path'
 
 const menuSlides = [
-  '/images/bab-technology.png',
-  '/images/bab-hero.png',
-  '/images/network-sphere.png',
-  '/images/bab-telecom.png',
+  { src: '/images/bab-technology.png', altKey: 'menuSlideTechnology' },
+  { src: '/images/bab-hero.png', altKey: 'menuSlideHero' },
+  { src: '/images/network-sphere.png', altKey: 'menuSlideNetwork' },
+  { src: '/images/bab-telecom.png', altKey: 'menuSlideTelecom' },
 ] as const
 
 const SPAM_PDF = withBasePath('/docs/ar_spam_policy.pdf')
@@ -33,6 +33,7 @@ function navLinkClass(active: boolean) {
 
 export function SiteHeader() {
   const t = useTranslations('nav')
+  const imageAlt = useTranslations('imageAlt')
   const locale = useLocale()
   const pathname = usePathname()
   const router = useRouter()
@@ -139,7 +140,7 @@ export function SiteHeader() {
                     <div className="relative min-h-[220px] overflow-hidden rounded-xl bg-muted">
                       <AnimatePresence mode="wait">
                         <motion.div
-                          key={menuSlides[slideIndex]}
+                          key={menuSlides[slideIndex].src}
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           exit={{ opacity: 0 }}
@@ -147,8 +148,8 @@ export function SiteHeader() {
                           className="absolute inset-0"
                         >
                           <Image
-                            src={menuSlides[slideIndex]}
-                            alt=""
+                            src={menuSlides[slideIndex].src}
+                            alt={imageAlt(menuSlides[slideIndex].altKey)}
                             fill
                             sizes="240px"
                             className="object-cover"
@@ -157,9 +158,9 @@ export function SiteHeader() {
                         </motion.div>
                       </AnimatePresence>
                       <div className="absolute inset-x-0 bottom-2 z-10 flex items-center justify-center gap-1.5">
-                        {menuSlides.map((src, i) => (
+                        {menuSlides.map((slide, i) => (
                           <button
-                            key={src}
+                            key={slide.src}
                             type="button"
                             aria-label={`Slide ${i + 1}`}
                             onClick={() => setSlideIndex(i)}

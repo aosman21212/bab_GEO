@@ -7,12 +7,14 @@ import { usePrefersReducedMotion } from './motion-utils'
 
 function LogosMarquee() {
   const reduced = usePrefersReducedMotion()
+  const alt = useTranslations('imageAlt')
+  const partnersAlt = alt('partnersLogos')
 
   if (reduced) {
     return (
       <Image
         src="/images/bab-partners-logos.png"
-        alt=""
+        alt={partnersAlt}
         width={1400}
         height={180}
         className="h-auto w-full object-contain opacity-80"
@@ -27,7 +29,7 @@ function LogosMarquee() {
           <Image
             key={copy}
             src="/images/bab-partners-logos.png"
-            alt=""
+            alt={partnersAlt}
             width={1400}
             height={180}
             className="h-auto w-[min(1400px,92vw)] shrink-0 object-contain opacity-80"

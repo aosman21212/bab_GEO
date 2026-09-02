@@ -15,6 +15,7 @@ const CONTACT_SALES_EMAIL = 'sales@bab.com.sa'
 
 export default function ContactPage() {
   const t = useTranslations('contactPage')
+  const imageAlt = useTranslations('imageAlt')
   const s = useTranslations('siteSettings')
   const locale = useLocale()
 
@@ -34,7 +35,7 @@ export default function ContactPage() {
       <section className="relative isolate min-h-[52vh] overflow-hidden md:min-h-[58vh]">
         <Image
           src="/images/bg-ss3.webp"
-          alt=""
+          alt={imageAlt('contactHeroBg')}
           fill
           priority
           sizes="100vw"

@@ -10,9 +10,13 @@ import { Reveal } from './reveal'
 import { HeroMotionBg } from './hero-motion-bg'
 import { usePrefersReducedMotion } from './motion-utils'
 
-const slides = ['/images/hero-man-phone.png', '/images/support-headset.png'] as const
+const slides = [
+  { src: '/images/hero-man-phone.png', altKey: 'heroSlidePhone' },
+  { src: '/images/support-headset.png', altKey: 'heroSlideHeadset' },
+] as const
 
 function HeroImageCarousel() {
+  const t = useTranslations('imageAlt')
   const reduced = usePrefersReducedMotion()
   const [index, setIndex] = useState(0)
   const [paused, setPaused] = useState(false)
@@ -33,17 +37,17 @@ function HeroImageCarousel() {
       onMouseLeave={() => setPaused(false)}
     >
       <div className="relative aspect-[16/9] min-h-[280px] w-full md:min-h-[420px]">
-        {slides.map((src, i) => (
+        {slides.map((slide, i) => (
           <div
-            key={src}
+            key={slide.src}
             className={`absolute inset-0 transition-opacity duration-500 ${
               i === index ? 'z-[1] opacity-100' : 'z-0 opacity-0'
             }`}
             aria-hidden={i !== index}
           >
             <Image
-              src={src}
-              alt=""
+              src={slide.src}
+              alt={t(slide.altKey)}
               fill
               priority={i === 0}
               sizes="100vw"
@@ -54,9 +58,9 @@ function HeroImageCarousel() {
         ))}
 
         <div className="absolute inset-x-0 bottom-3 z-10 flex items-center justify-center gap-1.5 sm:bottom-4">
-          {slides.map((src, i) => (
+          {slides.map((slide, i) => (
             <button
-              key={src}
+              key={slide.src}
               type="button"
               aria-label={`Slide ${i + 1}`}
               onClick={() => setIndex(i)}

@@ -53,7 +53,7 @@ export const solutions: PageContent[] = [
   {
     slug: 'omnichannel',
     category: 'solution',
-    metaTitle: 'Omnichannel',
+    metaTitle: 'Omnichannel CX Solutions for Enterprises in Saudi Arabia',
     metaDescription:
       'Unify every touchpoint and deliver seamless customer journeys across all channels with BAB omnichannel solutions.',
     eyebrow: 'Omnichannel',
@@ -130,7 +130,7 @@ export const solutions: PageContent[] = [
   {
     slug: 'live-engagement-platform',
     category: 'solution',
-    metaTitle: 'Live Engagement Platform',
+    metaTitle: 'Live Customer Engagement Platform for Saudi Enterprises',
     metaDescription:
       'Turn every visitor into a real-time conversation. Boost engagement and convert faster with BAB live interaction tools.',
     eyebrow: 'Live Engagement Platform',
@@ -198,7 +198,7 @@ export const solutions: PageContent[] = [
   {
     slug: 'rich-communication-services',
     category: 'solution',
-    metaTitle: 'Rich Communication Services',
+    metaTitle: 'Rich Communication Services (RCS) for Saudi Businesses',
     metaDescription:
       'Revolutionize customer conversations with RCS messaging â€” rich, interactive, branded messages with no downloads needed.',
     eyebrow: 'Rich Communication Services',
@@ -265,7 +265,7 @@ export const solutions: PageContent[] = [
   {
     slug: 'social-media-messaging-integration',
     category: 'solution',
-    metaTitle: 'Conversational Messaging Platform',
+    metaTitle: 'Conversational Messaging Platform for Customer Engagement',
     metaDescription:
       'Connect all your social channels in one seamless inbox â€” WhatsApp, Instagram, Facebook and more.',
     eyebrow: 'Conversational Messaging Platform',
@@ -341,7 +341,7 @@ export const solutions: PageContent[] = [
   {
     slug: 'digital-transformation',
     category: 'solution',
-    metaTitle: 'Digital Transformation Solutions',
+    metaTitle: 'Digital Transformation & Cloud Solutions in Saudi Arabia',
     metaDescription:
       'Transform your business with cloud solutions, custom development, interactive services, and data analytics.',
     eyebrow: 'Digital Transformation Solutions',
@@ -376,7 +376,7 @@ export const solutions: PageContent[] = [
   {
     slug: 'voice-bot',
     category: 'solution',
-    metaTitle: 'Voice Bot',
+    metaTitle: 'AI Voice Bot Solutions for Customer Service in KSA',
     metaDescription:
       'AI Voice Bot that speaks your customerâ€™s language â€” human-like conversations in Saudi dialects, anytime.',
     eyebrow: 'Voice Bot',
@@ -428,7 +428,7 @@ export const solutions: PageContent[] = [
   {
     slug: 'ai-solution',
     category: 'solution',
-    metaTitle: 'AI Solutions',
+    metaTitle: 'AI & NLP Solutions for Enterprise Customer Experience',
     metaDescription:
       'Accelerate business growth with AI-powered automation and intelligence. Unlock efficiency and personalize customer experiences.',
     eyebrow: 'AI Solutions',
@@ -456,7 +456,7 @@ export const solutions: PageContent[] = [
   {
     slug: 'call-center',
     category: 'solution',
-    metaTitle: 'Call Center',
+    metaTitle: 'Contact Center Solutions in Saudi Arabia',
     metaDescription:
       'Grow your call center operations with advanced technology. Drive efficiency, ensure data security, and improve client experiences.',
     eyebrow: 'Call Center',
@@ -516,7 +516,7 @@ export const industries: PageContent[] = [
   {
     slug: 'healthcare-solutions',
     category: 'industry',
-    metaTitle: 'Healthcare Solutions',
+    metaTitle: 'Healthcare Contact Center & CX Solutions in KSA',
     metaDescription:
       'Enhancing healthcare delivery with integrated patient engagement technology â€” reliable, scalable, and compassionate.',
     eyebrow: 'Healthcare Support Solutions',
@@ -583,7 +583,7 @@ export const industries: PageContent[] = [
   {
     slug: 'food-and-beverage',
     category: 'industry',
-    metaTitle: 'Food & Beverage Industry',
+    metaTitle: 'Food & Beverage Customer Experience Solutions in KSA',
     metaDescription:
       'Driving growth for F&B businesses â€” outsource key operations to improve efficiency, customer satisfaction, and profitability.',
     eyebrow: 'Food & Beverage Industry',
@@ -648,7 +648,7 @@ export const industries: PageContent[] = [
   {
     slug: 'government-public-sector',
     category: 'industry',
-    metaTitle: 'Government & Public Sector',
+    metaTitle: 'Government & Public Sector CX Solutions in KSA',
     metaDescription:
       'Equipping the government and public sector â€” driving digital transformation and enhancing citizen engagement.',
     eyebrow: 'Government & Public Sector',
@@ -713,7 +713,7 @@ export const industries: PageContent[] = [
   {
     slug: 'insurance-bpo-solutions',
     category: 'industry',
-    metaTitle: 'Insurance Call Center',
+    metaTitle: 'Insurance Contact Center & Customer Support in KSA',
     metaDescription:
       'Future-proof your insurance operations with BAB â€” trusted insurance BPO solutions for efficiency and compliance.',
     eyebrow: 'Insurance Call Center',
@@ -773,7 +773,7 @@ export const industries: PageContent[] = [
   {
     slug: 'retail-support-solutions',
     category: 'industry',
-    metaTitle: 'Retail Support Solutions',
+    metaTitle: 'Retail Customer Support & Omnichannel Solutions in KSA',
     metaDescription:
       'Delivering retail growth with smart, scalable solutions. Enhance customer experience and streamline operations.',
     eyebrow: 'Retail Support Solutions',

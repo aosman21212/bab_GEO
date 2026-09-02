@@ -32,6 +32,7 @@ const values = [
 
 export default function AboutPage() {
   const t = useTranslations('about')
+  const imageAlt = useTranslations('imageAlt')
   const common = useTranslations('common')
 
   return (
@@ -58,7 +59,7 @@ export default function AboutPage() {
             <div className="relative mt-10 aspect-[21/9] overflow-hidden">
               <Image
                 src="/images/bg-about.webp"
-                alt=""
+                alt={imageAlt('aboutHeroBg')}
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, 1280px"
@@ -86,7 +87,7 @@ export default function AboutPage() {
         <div className="mx-auto grid max-w-7xl items-center gap-10 px-6 lg:grid-cols-2">
           <Reveal>
             <div className="relative aspect-[4/5] overflow-hidden">
-              <Image src="/images/bab-hero.png" alt="" fill className="object-cover" sizes="50vw" />
+              <Image src="/images/bab-hero.png" alt={imageAlt('aboutEngineering')} fill className="object-cover" sizes="50vw" />
             </div>
           </Reveal>
           <Reveal delay={0.1}>
@@ -144,7 +145,7 @@ export default function AboutPage() {
 
       <section className="px-6 py-12 md:py-16">
         <div className="relative mx-auto max-w-7xl overflow-hidden">
-          <Image src="/images/bg-ss3.webp" alt="" fill className="object-cover" sizes="100vw" />
+          <Image src="/images/bg-ss3.webp" alt={imageAlt('aboutImpactBg')} fill className="object-cover" sizes="100vw" />
           <div className="absolute inset-0 bg-navy/90" />
           <div className="relative max-w-2xl px-6 py-14 md:px-12 md:py-20">
             <p className="text-sm font-bold uppercase tracking-wider text-primary">

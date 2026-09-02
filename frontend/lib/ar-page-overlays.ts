@@ -18,7 +18,7 @@ export type ArPageOverlay = Partial<
 
 export const arPageOverlays: Record<string, ArPageOverlay> = {
   omnichannel: {
-    metaTitle: 'القنوات المتعددة',
+    metaTitle: 'حلول تجربة العملاء متعددة القنوات للمؤسسات في السعودية',
     metaDescription:
       'وحّد كل نقاط التواصل وقدّم رحلات عملاء سلسة عبر جميع القنوات مع حلول باب للقنوات المتعددة.',
     eyebrow: 'القنوات المتعددة',
@@ -93,7 +93,7 @@ export const arPageOverlays: Record<string, ArPageOverlay> = {
   },
 
   'live-engagement-platform': {
-    metaTitle: 'منصة التفاعل المباشر',
+    metaTitle: 'منصة التفاعل المباشر مع العملاء للمؤسسات السعودية',
     metaDescription:
       'حوّل كل زائر إلى محادثة فورية. عزّز التفاعل وحوّل أسرع مع أدوات باب للتفاعل المباشر.',
     eyebrow: 'منصة التفاعل المباشر',
@@ -158,7 +158,7 @@ export const arPageOverlays: Record<string, ArPageOverlay> = {
   },
 
   'rich-communication-services': {
-    metaTitle: 'خدمات التواصل الغني',
+    metaTitle: 'خدمات التواصل الغني (RCS) للأعمال في السعودية',
     metaDescription:
       'أحدث ثورة في محادثات العملاء برسائل RCS — رسائل غنية وتفاعلية وذات علامة تجارية دون الحاجة إلى تنزيلات.',
     eyebrow: 'خدمات التواصل الغني',
@@ -223,7 +223,7 @@ export const arPageOverlays: Record<string, ArPageOverlay> = {
   },
 
   'social-media-messaging-integration': {
-    metaTitle: 'منصة الرسائل الحوارية',
+    metaTitle: 'منصة الرسائل الحوارية لتفاعل العملاء والتواصل',
     metaDescription:
       'اربط كل قنواتك الاجتماعية في صندوق وارد واحد سلس — واتساب وإنستغرام وفيسبوك والمزيد.',
     eyebrow: 'منصة الرسائل الحوارية',
@@ -297,7 +297,7 @@ export const arPageOverlays: Record<string, ArPageOverlay> = {
   },
 
   'digital-transformation': {
-    metaTitle: 'حلول التحول الرقمي',
+    metaTitle: 'حلول التحول الرقمي والسحابة للمؤسسات في السعودية',
     metaDescription:
       'حوّل أعمالك بحلول السحابة والتطوير المخصص والخدمات التفاعلية وتحليلات البيانات.',
     eyebrow: 'حلول التحول الرقمي',
@@ -330,7 +330,7 @@ export const arPageOverlays: Record<string, ArPageOverlay> = {
   },
 
   'voice-bot': {
-    metaTitle: 'روبوت الصوت',
+    metaTitle: 'حلول روبوت الصوت بالذكاء الاصطناعي لخدمة العملاء في السعودية',
     metaDescription:
       'روبوت صوت بالذكاء الاصطناعي يتحدث بلغة عميلك — محادثات شبيهة بالبشر باللهجات السعودية، في أي وقت.',
     eyebrow: 'روبوت الصوت',
@@ -380,7 +380,7 @@ export const arPageOverlays: Record<string, ArPageOverlay> = {
   },
 
   'ai-solution': {
-    metaTitle: 'حلول الذكاء الاصطناعي',
+    metaTitle: 'حلول الذكاء الاصطناعي ومعالجة اللغة لتجربة العملاء',
     metaDescription:
       'سرّع نمو الأعمال بأتمتة وذكاء مدعومين بالذكاء الاصطناعي. افتح الكفاءة وخصّص تجارب العملاء.',
     eyebrow: 'حلول الذكاء الاصطناعي',
@@ -405,7 +405,7 @@ export const arPageOverlays: Record<string, ArPageOverlay> = {
   },
 
   'call-center': {
-    metaTitle: 'مركز الاتصال',
+    metaTitle: 'حلول مراكز الاتصال وخدمة العملاء في السعودية',
     metaDescription:
       'نمِّ عمليات مركز الاتصال بتقنيات متقدمة. ادفع الكفاءة، واضمن أمن البيانات، وحسّن تجارب العملاء.',
     eyebrow: 'مركز الاتصال',
@@ -459,7 +459,7 @@ export const arPageOverlays: Record<string, ArPageOverlay> = {
   },
 
   'healthcare-solutions': {
-    metaTitle: 'حلول الرعاية الصحية',
+    metaTitle: 'حلول مراكز اتصال الرعاية الصحية وتجربة العملاء في السعودية',
     metaDescription:
       'تعزيز تقديم الرعاية الصحية بتقنيات تفاعل المرضى المتكاملة — موثوقة وقابلة للتوسع وإنسانية.',
     eyebrow: 'حلول دعم الرعاية الصحية',
@@ -524,7 +524,7 @@ export const arPageOverlays: Record<string, ArPageOverlay> = {
   },
 
   'food-and-beverage': {
-    metaTitle: 'قطاع الأغذية والمشروبات',
+    metaTitle: 'حلول تجربة عملاء قطاع الأغذية والمشروبات في السعودية',
     metaDescription:
       'دفع نمو أعمال الأغذية والمشروبات — استعن بخارجي للعمليات الرئيسية لتحسين الكفاءة ورضا العملاء والربحية.',
     eyebrow: 'قطاع الأغذية والمشروبات',
@@ -586,7 +586,7 @@ export const arPageOverlays: Record<string, ArPageOverlay> = {
   },
 
   'government-public-sector': {
-    metaTitle: 'الحكومة والقطاع العام',
+    metaTitle: 'حلول تجربة العملاء للحكومة والقطاع العام في السعودية',
     metaDescription:
       'تمكين الحكومة والقطاع العام — دفع التحول الرقمي وتعزيز تفاعل المواطنين.',
     eyebrow: 'الحكومة والقطاع العام',
@@ -648,7 +648,7 @@ export const arPageOverlays: Record<string, ArPageOverlay> = {
   },
 
   'insurance-bpo-solutions': {
-    metaTitle: 'مركز اتصال التأمين',
+    metaTitle: 'مركز اتصال التأمين ودعم العملاء في السعودية',
     metaDescription:
       'جهّز عمليات التأمين للمستقبل مع باب — حلول استعانة خارجية موثوقة للتأمين من أجل الكفاءة والامتثال.',
     eyebrow: 'مركز اتصال التأمين',
@@ -706,7 +706,7 @@ export const arPageOverlays: Record<string, ArPageOverlay> = {
   },
 
   'retail-support-solutions': {
-    metaTitle: 'حلول دعم التجزئة',
+    metaTitle: 'حلول دعم التجزئة والقنوات المتعددة في السعودية',
     metaDescription:
       'نمو التجزئة بحلول ذكية وقابلة للتوسع. عزّز تجربة العملاء وبسّط العمليات.',
     eyebrow: 'حلول دعم التجزئة',

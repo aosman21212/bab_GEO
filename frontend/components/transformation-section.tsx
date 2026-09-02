@@ -8,6 +8,7 @@ import { Reveal } from './reveal'
 
 export function TransformationSection() {
   const t = useTranslations('transformation')
+  const alt = useTranslations('imageAlt')
 
   return (
     <section id="about" className="py-8 md:py-12">
@@ -16,7 +17,7 @@ export function TransformationSection() {
           <div className="absolute inset-0">
             <Image
               src="/images/riyadh-skyline.png"
-              alt=""
+              alt={alt('transformationBg')}
               fill
               sizes="100vw"
               className="object-cover object-center"

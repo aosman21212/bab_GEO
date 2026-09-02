@@ -6,12 +6,12 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { Reveal } from '@/components/reveal'
 
-function SlideFrame({ src, priority }: { src: string; priority?: boolean }) {
+function SlideFrame({ src, alt, priority }: { src: string; alt: string; priority?: boolean }) {
   return (
     <div className="relative aspect-[16/9] w-full shrink-0 overflow-hidden rounded-xl bg-muted">
       <Image
         src={src}
-        alt=""
+        alt={alt}
         fill
         priority={priority}
         className="object-cover"
@@ -23,6 +23,8 @@ function SlideFrame({ src, priority }: { src: string; priority?: boolean }) {
 
 export function LandingImageSlider({ images }: { images: string[] }) {
   const t = useTranslations('landingPage')
+  const imageAlt = useTranslations('imageAlt')
+  const slideAlt = imageAlt('landingSlide')
   const slides = [...new Set(images.map((src) => src.trim()).filter(Boolean))]
   const [index, setIndex] = useState(0)
   const count = slides.length
@@ -51,7 +53,7 @@ export function LandingImageSlider({ images }: { images: string[] }) {
         <Reveal>
           <div className="rounded-2xl border border-border/60 bg-white p-2 shadow-md md:p-3">
             {count === 1 ? (
-              <SlideFrame src={slides[0]} priority />
+              <SlideFrame src={slides[0]} alt={slideAlt} priority />
             ) : (
               <div className="relative">
                 <div className="overflow-hidden rounded-xl">
@@ -61,7 +63,7 @@ export function LandingImageSlider({ images }: { images: string[] }) {
                   >
                     {slides.map((src, i) => (
                       <div key={`${src}-${i}`} className="w-full shrink-0">
-                        <SlideFrame src={src} priority={i === 0} />
+                        <SlideFrame src={src} alt={slideAlt} priority={i === 0} />
                       </div>
                     ))}
                   </div>

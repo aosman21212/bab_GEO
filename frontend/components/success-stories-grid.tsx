@@ -29,7 +29,7 @@ export function SuccessStoriesGrid({ stories }: { stories: SuccessStoryCard[] })
             <div className="relative aspect-[16/10] overflow-hidden bg-muted">
               <Image
                 src={story.image}
-                alt=""
+                alt={story.title}
                 fill
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
