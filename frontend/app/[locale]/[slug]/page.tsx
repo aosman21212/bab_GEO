@@ -5,7 +5,7 @@ import { InnerPage } from '@/components/inner-page'
 import { LandingPage } from '@/components/landing-page'
 import { allPages } from '@/lib/site-content'
 import { fetchCmsPage } from '@/lib/cms-pages'
-import { buildPageMetadata } from '@/lib/geo-content'
+import { buildPageMetadata, humanizeSlug } from '@/lib/geo-content'
 import { getGaMeasurementId } from '@/lib/analytics'
 import { routing, type Locale } from '@/i18n/routing'
 
@@ -27,7 +27,7 @@ export async function generateMetadata({
   if (!page) return {}
   return buildPageMetadata({
     locale,
-    title: page.metaTitle,
+    title: page.metaTitle?.trim() || page.heroHeading || humanizeSlug(slug),
     description: page.metaDescription,
     path: slug,
   })

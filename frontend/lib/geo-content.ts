@@ -7,8 +7,36 @@ import { basePath } from '@/lib/base-path'
 
 export const SEO_TITLE_MAX = 70
 export const SEO_DESCRIPTION_MAX = 160
+export const SEO_TITLE_MIN = 15
 export const SEO_TITLE_SUFFIX = ' | BAB'
 export const SEO_TITLE_SEGMENT_MAX = SEO_TITLE_MAX - SEO_TITLE_SUFFIX.length
+
+const SEO_TITLE_FALLBACK = 'BAB International Corp — Omnichannel & Contact Center'
+
+export function humanizeSlug(slug: string): string {
+  return slug
+    .split(/[-_]+/)
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ')
+}
+
+/** Pad short titles so Bing's 15-character minimum is met (segment or absolute). */
+export function ensureMinSeoTitle(title: string, absolute = false): string {
+  const max = absolute ? SEO_TITLE_MAX : SEO_TITLE_SEGMENT_MAX
+  let trimmed = title.trim()
+
+  if (!trimmed) {
+    trimmed = SEO_TITLE_FALLBACK
+  }
+
+  if (trimmed.length < SEO_TITLE_MIN) {
+    const expanded = `${trimmed} — BAB International Corp`
+    trimmed = expanded.length >= SEO_TITLE_MIN ? expanded : `${expanded} in KSA`
+  }
+
+  return absolute ? formatSeoTitle(trimmed, max) : formatSeoSegment(trimmed)
+}
 
 export function formatSeoTitle(title: string, max = SEO_TITLE_MAX): string {
   const trimmed = title.trim()
@@ -29,10 +57,10 @@ export function formatSeoSegment(title: string): string {
 
 export function resolvePageTitle(title: string, absolute = false) {
   if (absolute) {
-    const full = formatSeoTitle(title)
+    const full = ensureMinSeoTitle(title, true)
     return { title: full, fullTitle: full }
   }
-  const segment = formatSeoSegment(title)
+  const segment = ensureMinSeoTitle(title, false)
   const fullTitle = formatSeoTitle(`${segment}${SEO_TITLE_SUFFIX}`)
   return { title: segment, fullTitle }
 }

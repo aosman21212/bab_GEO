@@ -10,6 +10,8 @@ import {
   DEFAULT_GEO_ABOUT_EN,
   DEFAULT_GEO_CITATION_NOTE,
   SEO_DESCRIPTION_MAX,
+  SEO_TITLE_MAX,
+  SEO_TITLE_MIN,
 } from '@/lib/geo-content'
 import { Mail, Plus, Trash2 } from 'lucide-react'
 import { withBasePath } from '@/lib/base-path'
@@ -130,17 +132,18 @@ function fieldClass() {
   return 'w-full rounded-xl border border-border bg-muted px-3 py-2.5 text-sm text-navy outline-none transition focus:border-primary focus:bg-white'
 }
 
-const SEO_TITLE_MAX = 70
-
 function SeoTitleLengthHint({ value }: { value: string }) {
   const length = value.length
   const overLimit = length > SEO_TITLE_MAX
+  const underMin = value.trim().length > 0 && length < SEO_TITLE_MIN
+  const warn = overLimit || underMin
   return (
     <span
-      className={`text-xs font-normal ${overLimit ? 'text-red-600' : 'text-muted-foreground'}`}
+      className={`text-xs font-normal ${warn ? 'text-red-600' : 'text-muted-foreground'}`}
     >
       {length}/{SEO_TITLE_MAX} characters
       {overLimit ? ' — title may be truncated in search results' : ''}
+      {underMin ? ` — title too short (min ${SEO_TITLE_MIN} characters)` : ''}
     </span>
   )
 }

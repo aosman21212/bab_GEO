@@ -7,17 +7,33 @@ import { AdminGalleryImagesField } from '@/components/admin-gallery-images-field
 import { AdminImagePicker } from '@/components/admin-image-picker'
 import { AdminMediaPreview } from '@/components/admin-media-preview'
 import type { PageCategory, LandingType } from '@/lib/page-categories'
-import { SEO_DESCRIPTION_MAX, SEO_TITLE_SEGMENT_MAX } from '@/lib/geo-content'
+import { SEO_DESCRIPTION_MAX, SEO_TITLE_MIN, SEO_TITLE_SEGMENT_MAX, SEO_TITLE_SUFFIX } from '@/lib/geo-content'
 
-function SeoFieldHint({ value, max }: { value: string; max: number }) {
+function SeoFieldHint({
+  value,
+  max,
+  min,
+  suffix,
+}: {
+  value: string
+  max: number
+  min?: number
+  suffix?: string
+}) {
   const length = value.length
   const overLimit = length > max
+  const effectiveLength = suffix ? length + suffix.length : length
+  const underMin =
+    min !== undefined && min > 0 && value.trim().length > 0 && effectiveLength < min
+  const warn = overLimit || underMin
   return (
     <span
-      className={`text-xs font-normal ${overLimit ? 'text-red-600' : 'text-muted-foreground'}`}
+      className={`text-xs font-normal ${warn ? 'text-red-600' : 'text-muted-foreground'}`}
     >
       {length}/{max} characters
+      {suffix && value.trim() ? ` · effective: ${effectiveLength} with suffix` : ''}
       {overLimit ? ' — may be truncated in search results' : ''}
+      {underMin ? ` — title too short (min ${min} chars${suffix ? ' including suffix' : ''})` : ''}
     </span>
   )
 }
@@ -384,7 +400,12 @@ export function AdminPageForm({
             value={value.metaTitle}
             onChange={(e) => set('metaTitle', e.target.value)}
           />
-          <SeoFieldHint value={value.metaTitle} max={SEO_TITLE_SEGMENT_MAX} />
+          <SeoFieldHint
+            value={value.metaTitle}
+            max={SEO_TITLE_SEGMENT_MAX}
+            min={SEO_TITLE_MIN}
+            suffix={SEO_TITLE_SUFFIX}
+          />
         </Label>
         <Label label={t('pageForm.metaDescription')} dir={dir}>
           <textarea
