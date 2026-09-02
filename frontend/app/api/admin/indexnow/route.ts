@@ -57,6 +57,7 @@ export async function GET() {
       keyFileUrl: key ? `${site}/${key}.txt` : null,
       sitemapUrl: `${site}/sitemap.xml`,
       urlCount: urls.length,
+      allUrls: urls,
       priorityUrls: [
         `${site}`,
         `${site}/ar`,

@@ -42,6 +42,7 @@ type IndexNowMeta = {
   keyFileUrl: string | null
   sitemapUrl: string
   urlCount: number
+  allUrls?: string[]
   priorityUrls: string[]
 }
 
@@ -88,6 +89,8 @@ const INITIAL_FILES: Omit<CrawlerFile, 'status'>[] = [
   },
 ]
 
+const CRAWLER_FILE_COUNT = INITIAL_FILES.length
+
 function statusPill(
   status: FileStatus,
   t: (key: string, vars?: Record<string, string | number>) => string,
@@ -126,6 +129,7 @@ export default function AdminGeoPage() {
   const [savingKey, setSavingKey] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
+  const [copyStatus, setCopyStatus] = useState<string | null>(null)
 
   const okCount = useMemo(() => files.filter((f) => f.status === 'ok').length, [files])
 
@@ -225,6 +229,18 @@ export default function AdminGeoPage() {
 
   const siteUrl = meta?.siteUrl || 'https://bab.com.sa'
   const publicUrlConfigured = Boolean(meta?.siteUrl)
+  const allUrls = meta?.allUrls ?? []
+
+  const copyAllUrls = async () => {
+    if (!allUrls.length) return
+    try {
+      await navigator.clipboard.writeText(allUrls.join('\n'))
+      setCopyStatus(t('geo.urlsCopied'))
+      setTimeout(() => setCopyStatus(null), 3000)
+    } catch {
+      setCopyStatus(t('geo.urlsCopyFailed'))
+    }
+  }
 
   return (
     <AdminShell
@@ -246,18 +262,20 @@ export default function AdminGeoPage() {
         {/* Status banner */}
         <section
           className={`rounded-2xl border p-5 ${
-            okCount === 6
+            okCount === CRAWLER_FILE_COUNT
               ? 'border-emerald-200 bg-emerald-50/80'
               : 'border-amber-200 bg-amber-50/80'
           }`}
         >
           <div className="flex flex-wrap items-start gap-3">
             <CheckCircle2
-              className={`mt-0.5 h-5 w-5 shrink-0 ${okCount === 6 ? 'text-emerald-600' : 'text-amber-600'}`}
+              className={`mt-0.5 h-5 w-5 shrink-0 ${okCount === CRAWLER_FILE_COUNT ? 'text-emerald-600' : 'text-amber-600'}`}
             />
             <div>
               <p className="font-semibold text-navy">
-                {okCount === 6 ? t('geo.allOk') : t('geo.partialOk', { ok: okCount })}
+                {okCount === CRAWLER_FILE_COUNT
+                  ? t('geo.allOk', { count: CRAWLER_FILE_COUNT })
+                  : t('geo.partialOk', { ok: okCount, total: CRAWLER_FILE_COUNT })}
               </p>
               <p className="mt-1 text-sm text-muted-foreground">{t('geo.shouldShowOk')}</p>
             </div>
@@ -268,7 +286,9 @@ export default function AdminGeoPage() {
         <div className="grid gap-4 md:grid-cols-3">
           <div className="rounded-2xl border border-border bg-white p-5 shadow-sm">
             <p className="text-xs font-bold tracking-wide text-primary">{t('geo.crawlerFiles')}</p>
-            <p className="mt-2 text-3xl font-extrabold text-navy">{okCount}/6</p>
+            <p className="mt-2 text-3xl font-extrabold text-navy">
+              {okCount}/{CRAWLER_FILE_COUNT}
+            </p>
             <p className="mt-1 text-sm text-muted-foreground">{t('geo.liveEndpoints')}</p>
           </div>
           <div className="rounded-2xl border border-border bg-white p-5 shadow-sm">
@@ -376,6 +396,49 @@ export default function AdminGeoPage() {
             <p className="mt-3">{t('geo.googleSiteAuthHelp')}</p>
             <p className="mt-3">{t('geo.bingHelp')}</p>
             <p className="mt-3">{t('geo.googleHelp')}</p>
+          </div>
+
+          <div className="mt-6">
+            <h3 className="text-sm font-extrabold text-navy">{t('geo.bingUrlsTitle')}</h3>
+            <p className="mt-1 text-sm text-muted-foreground">{t('geo.bingUrlsBody')}</p>
+            <p className="mt-3 text-sm text-muted-foreground">
+              {t('geo.bingSitemapSubmit')}:{' '}
+              <a
+                className="font-medium text-navy underline-offset-2 hover:underline"
+                href={meta?.sitemapUrl || `${siteUrl}/sitemap.xml`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {meta?.sitemapUrl || `${siteUrl}/sitemap.xml`}
+              </a>
+            </p>
+            <div className="mt-3 flex flex-wrap items-center gap-2">
+              <button
+                type="button"
+                disabled={!allUrls.length}
+                onClick={copyAllUrls}
+                className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-sm font-semibold text-navy hover:border-primary disabled:opacity-60"
+              >
+                {t('geo.copyAllUrls')} ({allUrls.length || meta?.urlCount || 0})
+              </button>
+              {copyStatus ? <span className="text-sm text-navy">{copyStatus}</span> : null}
+            </div>
+            {allUrls.length > 0 ? (
+              <ul className="mt-3 max-h-64 space-y-1 overflow-y-auto rounded-xl border border-border bg-muted/40 p-3 text-sm">
+                {allUrls.map((url) => (
+                  <li key={url}>
+                    <a
+                      href={url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="break-all text-navy underline-offset-2 hover:underline"
+                    >
+                      {url}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
           </div>
 
           <div className="mt-6">
