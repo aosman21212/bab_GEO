@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react'
 import { notFound } from 'next/navigation'
-import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import { Poppins, Cairo } from 'next/font/google'
 import { NextIntlClientProvider, hasLocale } from 'next-intl'
@@ -9,6 +8,7 @@ import { routing } from '@/i18n/routing'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
 import { MaintenanceScreen } from '@/components/maintenance-screen'
+import { GoogleAnalytics } from '@/components/google-analytics'
 import {
   buildOrganizationJsonLd,
   buildPageMetadata,
@@ -16,6 +16,7 @@ import {
   mergeGeoSettings,
   type GeoSiteSettings,
 } from '@/lib/geo-content'
+import { getGaMeasurementId } from '@/lib/analytics'
 import '../globals.css'
 
 const poppins = Poppins({
@@ -87,6 +88,7 @@ export default async function LocaleLayout({
 
   const orgLd = buildOrganizationJsonLd(siteSettings, loc)
   const webLd = buildWebSiteJsonLd(siteSettings, loc)
+  const gaId = getGaMeasurementId()
 
   return (
     <html
@@ -124,7 +126,9 @@ export default async function LocaleLayout({
             )}
           </div>
         </NextIntlClientProvider>
-        {process.env.NODE_ENV === 'production' && <Analytics />}
+        {process.env.NODE_ENV === 'production' && gaId ? (
+          <GoogleAnalytics measurementId={gaId} />
+        ) : null}
       </body>
     </html>
   )

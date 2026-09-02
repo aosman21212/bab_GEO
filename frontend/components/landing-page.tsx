@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect } from 'react'
 import { Check, Globe, Mail, MessageCircle, Phone } from 'lucide-react'
 import { useLocale, useTranslations } from 'next-intl'
 import type { PageContent } from '@/lib/site-content'
@@ -21,17 +22,29 @@ import { LandingHeader } from '@/components/landing-header'
 import { Reveal } from '@/components/reveal'
 import { SiteFooter } from '@/components/site-footer'
 import { buildLandingSlideImages } from '@/lib/landing-slides'
+import { trackEventWhenReady } from '@/lib/analytics'
+import { GoogleAnalytics } from '@/components/google-analytics'
 
 export function LandingPage({
   page,
   landingType,
+  gaMeasurementId,
 }: {
   page: PageContent
   landingType: LandingType
+  gaMeasurementId?: string
 }) {
   const locale = useLocale()
   const t = useTranslations('landingPage')
   const isAr = locale === 'ar'
+
+  useEffect(() => {
+    trackEventWhenReady('landing_page_view', {
+      source_slug: page.slug,
+      landing_type: landingType,
+      locale: isAr ? 'ar' : 'en',
+    })
+  }, [page.slug, landingType, isAr])
 
   const highlights = page.highlights?.filter(Boolean) ?? []
   const waPhone = page.whatsappPhone?.trim() || DEFAULT_WHATSAPP_PHONE
@@ -48,6 +61,9 @@ export function LandingPage({
 
   return (
     <>
+      {process.env.NODE_ENV === 'production' && gaMeasurementId ? (
+        <GoogleAnalytics measurementId={gaMeasurementId} />
+      ) : null}
       <LandingChromeHider />
       <div className="flex min-h-screen flex-col bg-[linear-gradient(180deg,#f7f6fb_0%,#ffffff_35%)]">
         <LandingHeader />
@@ -115,6 +131,12 @@ export function LandingPage({
                     href={waUrl}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={() =>
+                      trackEventWhenReady('whatsapp_click', {
+                        locale: isAr ? 'ar' : 'en',
+                        source_slug: page.slug,
+                      })
+                    }
                     className="flex w-full items-center justify-center gap-2 rounded-full bg-[#25D366] px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-[#1ebe57]"
                   >
                     <MessageCircle className="h-4 w-4" />

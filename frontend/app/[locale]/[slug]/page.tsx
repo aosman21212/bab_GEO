@@ -6,6 +6,7 @@ import { LandingPage } from '@/components/landing-page'
 import { allPages } from '@/lib/site-content'
 import { fetchCmsPage } from '@/lib/cms-pages'
 import { buildPageMetadata } from '@/lib/geo-content'
+import { getGaMeasurementId } from '@/lib/analytics'
 import { routing, type Locale } from '@/i18n/routing'
 
 export const revalidate = 60
@@ -42,7 +43,13 @@ export default async function SlugPage({
   const page = await fetchCmsPage(slug, locale as Locale)
   if (!page) notFound()
   if (page.category === 'landing' && page.landingType) {
-    return <LandingPage page={page} landingType={page.landingType} />
+    return (
+      <LandingPage
+        page={page}
+        landingType={page.landingType}
+        gaMeasurementId={getGaMeasurementId()}
+      />
+    )
   }
   return <InnerPage page={page} />
 }
