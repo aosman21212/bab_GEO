@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useLocale, useTranslations } from 'next-intl'
 import { ArrowRight } from 'lucide-react'
 import { submitInquiry } from '@/lib/api'
-import { trackEventWhenReady } from '@/lib/analytics'
+import { trackEventWhenReady, trackGenerateLead } from '@/lib/analytics'
 import { buildWhatsAppUrl, DEFAULT_WHATSAPP_PHONE } from '@/lib/landing-defaults'
 
 function fieldClass() {
@@ -57,7 +57,12 @@ export function ContactForm({
     }
     setSent(true)
     if (isLanding) {
-      trackEventWhenReady('generate_lead', eventParams)
+      trackGenerateLead({
+        sourceSlug,
+        locale: locale === 'ar' ? 'ar' : 'en',
+        formName: sourceSlug || 'landing-form',
+        method: 'form',
+      })
     }
     if (openWhatsAppAfterSubmit) {
       const message = submitLabel || (locale === 'ar' ? 'احجز عرضاً' : 'Book a demo')

@@ -19,7 +19,9 @@ export function GoogleAnalytics({ measurementId }: { measurementId: string }) {
             function gtag(){dataLayer.push(arguments);}
             window.gtag = gtag;
             gtag('js', new Date());
-            gtag('config', '${measurementId}');
+            gtag('config', '${measurementId}', {
+              send_page_view: true
+            });
           }
         `}
       </Script>

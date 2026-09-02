@@ -22,7 +22,7 @@ import { LandingHeader } from '@/components/landing-header'
 import { Reveal } from '@/components/reveal'
 import { SiteFooter } from '@/components/site-footer'
 import { buildLandingSlideImages } from '@/lib/landing-slides'
-import { trackEventWhenReady } from '@/lib/analytics'
+import { trackEventWhenReady, trackGenerateLead } from '@/lib/analytics'
 import { GoogleAnalytics } from '@/components/google-analytics'
 
 export function LandingPage({
@@ -131,12 +131,19 @@ export function LandingPage({
                     href={waUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    onClick={() =>
+                    onClick={() => {
+                      const localeCode = isAr ? 'ar' : 'en'
                       trackEventWhenReady('whatsapp_click', {
-                        locale: isAr ? 'ar' : 'en',
+                        locale: localeCode,
                         source_slug: page.slug,
                       })
-                    }
+                      trackGenerateLead({
+                        sourceSlug: page.slug,
+                        locale: localeCode,
+                        formName: page.slug,
+                        method: 'whatsapp',
+                      })
+                    }}
                     className="flex w-full items-center justify-center gap-2 rounded-full bg-[#25D366] px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-[#1ebe57]"
                   >
                     <MessageCircle className="h-4 w-4" />
