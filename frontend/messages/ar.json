@@ -555,7 +555,11 @@
       "archive": "أرشفة",
       "modalEyebrow": "تواصل معنا",
       "modalTitle": "تفاصيل الاستفسار",
-      "source": "الحملة / المصدر"
+      "source": "الحملة / المصدر",
+      "filterSource": "الحملة / المصدر",
+      "filterSourceAll": "كل المصادر",
+      "filterSourceWebsite": "الموقع (بدون حملة)",
+      "emptySourceFilter": "لا توجد استفسارات لهذه الحملة أو المصدر."
     },
     "users": {
       "title": "المستخدمون",

@@ -41,6 +41,7 @@ export default function AdminInquiriesPage() {
   const { t } = useAdminLocale()
   const [items, setItems] = useState<Inquiry[]>([])
   const [filter, setFilter] = useState<StatusFilter>('all')
+  const [sourceFilter, setSourceFilter] = useState<string>('all')
   const [selected, setSelected] = useState<Inquiry | null>(null)
 
   const statusLabel = (status: string) => {
@@ -87,10 +88,36 @@ export default function AdminInquiriesPage() {
     }
   }, [items])
 
+  const sourceOptions = useMemo(() => {
+    const slugs = new Set<string>()
+    let noSource = 0
+    for (const item of items) {
+      const slug = item.sourceSlug?.trim()
+      if (slug) slugs.add(slug)
+      else noSource += 1
+    }
+    return { slugs: [...slugs].sort(), noSource }
+  }, [items])
+
+  const matchesStatus = (item: Inquiry) => filter === 'all' || item.status === filter
+
+  const countForSource = (sourceKey: string) => {
+    return items.filter((item) => {
+      if (!matchesStatus(item)) return false
+      if (sourceKey === 'all') return true
+      if (sourceKey === '__none__') return !item.sourceSlug?.trim()
+      return item.sourceSlug === sourceKey
+    }).length
+  }
+
   const filtered = useMemo(() => {
-    if (filter === 'all') return items
-    return items.filter((i) => i.status === filter)
-  }, [items, filter])
+    return items.filter((item) => {
+      if (!matchesStatus(item)) return false
+      if (sourceFilter === 'all') return true
+      if (sourceFilter === '__none__') return !item.sourceSlug?.trim()
+      return item.sourceSlug === sourceFilter
+    })
+  }, [items, filter, sourceFilter])
 
   const setStatus = async (id: string, status: string) => {
     await fetch(withBasePath(`/api/admin/proxy/inquiries/${id}`), {
@@ -122,31 +149,56 @@ export default function AdminInquiriesPage() {
       title={t('inquiries.title')}
       description={t('inquiries.description')}
     >
-      <div className="mb-5 flex flex-wrap items-center gap-2">
-        {filters.map((f) => {
-          const active = filter === f.id
-          return (
-            <button
-              key={f.id}
-              type="button"
-              onClick={() => setFilter(f.id)}
-              className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition ${
-                active
-                  ? 'bg-primary text-primary-foreground'
-                  : 'border border-border bg-white text-navy hover:border-primary hover:text-primary'
-              }`}
-            >
-              {f.label}
-              <span
-                className={`rounded-full px-1.5 py-0.5 text-xs ${
-                  active ? 'bg-white/20' : 'bg-muted text-muted-foreground'
+      <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-end sm:justify-between">
+        <div className="flex flex-wrap items-center gap-2">
+          {filters.map((f) => {
+            const active = filter === f.id
+            return (
+              <button
+                key={f.id}
+                type="button"
+                onClick={() => setFilter(f.id)}
+                className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition ${
+                  active
+                    ? 'bg-primary text-primary-foreground'
+                    : 'border border-border bg-white text-navy hover:border-primary hover:text-primary'
                 }`}
               >
-                {counts[f.id]}
-              </span>
-            </button>
-          )
-        })}
+                {f.label}
+                <span
+                  className={`rounded-full px-1.5 py-0.5 text-xs ${
+                    active ? 'bg-white/20' : 'bg-muted text-muted-foreground'
+                  }`}
+                >
+                  {counts[f.id]}
+                </span>
+              </button>
+            )
+          })}
+        </div>
+
+        <label className="flex min-w-[220px] flex-col gap-1.5 text-sm font-semibold text-navy">
+          {t('inquiries.filterSource')}
+          <select
+            className={fieldClass()}
+            value={sourceFilter}
+            onChange={(e) => setSourceFilter(e.target.value)}
+          >
+            <option value="all">
+              {t('inquiries.filterSourceAll')} ({countForSource('all')})
+            </option>
+            {sourceOptions.noSource > 0 ? (
+              <option value="__none__">
+                {t('inquiries.filterSourceWebsite')} ({countForSource('__none__')})
+              </option>
+            ) : null}
+            {sourceOptions.slugs.map((slug) => (
+              <option key={slug} value={slug}>
+                {slug} ({countForSource(slug)})
+              </option>
+            ))}
+          </select>
+        </label>
       </div>
 
       <div className="overflow-hidden rounded-2xl border border-border bg-white shadow-sm">
@@ -171,9 +223,11 @@ export default function AdminInquiriesPage() {
                 <tr>
                   <td colSpan={10} className="px-4 py-12 text-center text-muted-foreground">
                     <Mail className="mx-auto mb-2 h-8 w-8 opacity-40" />
-                    {filter === 'all'
+                    {filter === 'all' && sourceFilter === 'all'
                       ? t('inquiries.emptyAll')
-                      : t('inquiries.emptyFilter', { status: statusLabel(filter) })}
+                      : sourceFilter !== 'all'
+                        ? t('inquiries.emptySourceFilter')
+                        : t('inquiries.emptyFilter', { status: statusLabel(filter) })}
                   </td>
                 </tr>
               ) : (

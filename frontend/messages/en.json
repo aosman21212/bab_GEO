@@ -555,7 +555,11 @@
       "archive": "Archive",
       "modalEyebrow": "CONTACT US",
       "modalTitle": "Inquiry details",
-      "source": "Campaign / source"
+      "source": "Campaign / source",
+      "filterSource": "Campaign / source",
+      "filterSourceAll": "All sources",
+      "filterSourceWebsite": "Website (no campaign)",
+      "emptySourceFilter": "No inquiries for this campaign or source."
     },
     "users": {
       "title": "Users",
