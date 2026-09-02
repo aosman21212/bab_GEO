@@ -17,11 +17,10 @@ import {
 } from '@/lib/landing-defaults'
 import { ContactForm } from '@/components/contact-form'
 import { LandingChromeHider } from '@/components/landing-chrome-hider'
-import { LandingImageSlider } from '@/components/landing-image-slider'
+import { LandingPartnersSlider } from '@/components/landing-partners-slider'
 import { LandingHeader } from '@/components/landing-header'
 import { Reveal } from '@/components/reveal'
 import { SiteFooter } from '@/components/site-footer'
-import { buildLandingSlideImages } from '@/lib/landing-slides'
 import { trackEventWhenReady, trackGenerateLead } from '@/lib/analytics'
 import { GoogleAnalytics } from '@/components/google-analytics'
 
@@ -57,7 +56,6 @@ export function LandingPage({
   const waMessage = page.ctaLabel?.trim() || t('defaultCtaLabel')
   const waUrl = buildWhatsAppUrl(waPhone, waMessage)
   const isWhatsApp = landingType === 'whatsapp'
-  const slideImages = buildLandingSlideImages(page)
 
   return (
     <>
@@ -198,7 +196,7 @@ export function LandingPage({
             </Reveal>
           </section>
 
-          {slideImages.length > 0 ? <LandingImageSlider images={slideImages} /> : null}
+          <LandingPartnersSlider />
         </main>
 
         <SiteFooter />
