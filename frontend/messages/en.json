@@ -261,6 +261,8 @@
     "sitemap": "Sitemap"
   },
   "about": {
+    "metaTitle": "About Us",
+    "metaDescription": "Learn about BAB International Corp — Riyadh-based experts in omnichannel CX, contact centers, and AI solutions since 1999.",
     "title": "Pioneering Change",
     "intro": "At Bab International, we redefine the way businesses connect, communicate, and grow. Since 1999, we have been at the forefront of digital transformation, delivering cutting-edge IT and communication solutions tailored to our clients' unique needs.",
     "contact": "Contact Us",
@@ -297,6 +299,8 @@
     "v4Body": "Impact through actions, not just words. We focus on creating meaningful change, internally and externally."
   },
   "contactPage": {
+    "metaTitle": "Contact Us",
+    "metaDescription": "Contact BAB International Corp in Riyadh for demos, partnerships, and omnichannel or contact-center solutions in Saudi Arabia.",
     "title": "Get in Touch With Us!",
     "body": "Reach out for questions, demos or partnerships.",
     "info": "Contact Information",
@@ -310,6 +314,8 @@
     "brand": "BAB"
   },
   "sitemapPage": {
+    "metaTitle": "Sitemap",
+    "metaDescription": "Browse every public page on bab.com.sa — solutions, industries, articles, careers, and company information.",
     "title": "Sitemap",
     "body": "Browse every public page on bab.com.sa in one place.",
     "root": "BAB",
@@ -320,7 +326,11 @@
   },
   "legal": {
     "privacyTitle": "Privacy Policy",
+    "privacyMetaTitle": "Privacy Policy",
+    "privacyMetaDescription": "Read how BAB International Corp collects, uses, and protects your personal information on bab.com.sa.",
     "termsTitle": "Terms & Conditions",
+    "termsMetaTitle": "Terms & Conditions",
+    "termsMetaDescription": "Terms and conditions for using the BAB International Corp website and services in Saudi Arabia.",
     "privacyBody": "BAB International Corp respects your privacy. We collect and use personal information only as needed to provide our services, respond to inquiries, and improve your experience. We do not sell your data to third parties. For questions about this policy, contact info@bab.com.sa.",
     "termsBody": "By using this website and our services, you agree to these terms. Content on this site is owned by BAB International Corp. Services are provided subject to applicable contracts and Saudi law. Contact us for full commercial terms."
   },
@@ -339,8 +349,8 @@
     "addressAr": "الياسمين، طريق الملك عبدالعزيز، الرياض، المملكة العربية السعودية",
     "seoTitleEn": "BAB International Corp | Omnichannel & Contact Center in KSA",
     "seoTitleAr": "باب الدولية | قنوات متعددة ومراكز اتصال في السعودية",
-    "seoDescriptionEn": "Saudi enterprise partner for seamless connectivity and intelligent CX: omnichannel engagement, AI and voice bots, and contact-center platforms across Saudi Arabia and the MENA region.",
-    "seoDescriptionAr": "شريك مؤسسي سعودي للاتصال السلس وتجربة العملاء الذكية: تفاعل متعدد القنوات، وروبوتات صوتية وذكاء اصطناعي، ومنصات مراكز اتصال في المملكة ومنطقة الشرق الأوسط وشمال أفريقيا.",
+    "seoDescriptionEn": "Saudi enterprise partner for omnichannel CX, AI voice bots, and contact-center platforms across Saudi Arabia and the MENA region.",
+    "seoDescriptionAr": "شريك مؤسسي سعودي لتجربة العملاء: قنوات متعددة، روبوتات صوتية وذكاء اصطناعي، ومنصات مراكز اتصال في السعودية والمنطقة.",
     "homepageFaqsEn": [
       {
         "question": "What does BAB International Corp offer?",

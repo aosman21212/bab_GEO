@@ -11,7 +11,7 @@ import { MaintenanceScreen } from '@/components/maintenance-screen'
 import { GoogleAnalytics } from '@/components/google-analytics'
 import {
   buildOrganizationJsonLd,
-  buildPageMetadata,
+  buildSiteMetadata,
   buildWebSiteJsonLd,
   mergeGeoSettings,
   type GeoSiteSettings,
@@ -64,7 +64,7 @@ export async function generateMetadata({
     (locale === 'ar' ? siteSettings.seoDescriptionAr : siteSettings.seoDescriptionEn) ||
     'Empower your business with seamless connectivity and intelligent solutions.'
 
-  return buildPageMetadata({ locale, title, description })
+  return buildSiteMetadata({ locale, title, description })
 }
 
 export default async function LocaleLayout({

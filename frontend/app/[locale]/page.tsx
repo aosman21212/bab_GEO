@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { getMessages, setRequestLocale } from 'next-intl/server'
 import { HeroSection } from '@/components/hero-section'
 import { OurWorksSection } from '@/components/our-works-section'
@@ -12,10 +13,38 @@ import { ImpactSection } from '@/components/impact-section'
 import { CtaContactSection } from '@/components/cta-contact-section'
 import {
   buildFaqPageJsonLd,
+  buildPageMetadata,
   faqsForLocale,
   mergeGeoSettings,
   type GeoSiteSettings,
 } from '@/lib/geo-content'
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  setRequestLocale(locale)
+  const messages = await getMessages()
+  const siteSettings = mergeGeoSettings(
+    (messages as { siteSettings?: GeoSiteSettings }).siteSettings,
+  )
+  const title =
+    (locale === 'ar' ? siteSettings.seoTitleAr : siteSettings.seoTitleEn) ||
+    'BAB International Corp'
+  const description =
+    (locale === 'ar' ? siteSettings.seoDescriptionAr : siteSettings.seoDescriptionEn) ||
+    'Empower your business with seamless connectivity and intelligent solutions.'
+
+  return buildPageMetadata({
+    locale,
+    title,
+    description,
+    path: '',
+    absoluteTitle: true,
+  })
+}
 
 export default async function Page({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params

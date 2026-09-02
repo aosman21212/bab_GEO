@@ -16,7 +16,7 @@ export async function generateMetadata({
   const t = await getTranslations({ locale, namespace: 'careersPage' })
   return buildPageMetadata({
     locale,
-    title: `${t('metaTitle')} — BAB International Corp`,
+    title: t('metaTitle'),
     description: t('metaDescription'),
     path: 'careers',
   })

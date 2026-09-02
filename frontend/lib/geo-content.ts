@@ -5,6 +5,38 @@ import { fetchSiteContent, getApiUrl } from '@/lib/api'
 import { BAB_SOCIAL_URLS } from '@/lib/social-profiles'
 import { basePath } from '@/lib/base-path'
 
+export const SEO_TITLE_MAX = 70
+export const SEO_DESCRIPTION_MAX = 160
+export const SEO_TITLE_SUFFIX = ' | BAB'
+export const SEO_TITLE_SEGMENT_MAX = SEO_TITLE_MAX - SEO_TITLE_SUFFIX.length
+
+export function formatSeoTitle(title: string, max = SEO_TITLE_MAX): string {
+  const trimmed = title.trim()
+  if (trimmed.length <= max) return trimmed
+  const slice = trimmed.slice(0, max)
+  const lastSpace = slice.lastIndexOf(' ')
+  if (lastSpace > max * 0.6) return slice.slice(0, lastSpace).trimEnd()
+  return slice.trimEnd()
+}
+
+export function formatSeoDescription(description: string): string {
+  return formatSeoTitle(description, SEO_DESCRIPTION_MAX)
+}
+
+export function formatSeoSegment(title: string): string {
+  return formatSeoTitle(title, SEO_TITLE_SEGMENT_MAX)
+}
+
+export function resolvePageTitle(title: string, absolute = false) {
+  if (absolute) {
+    const full = formatSeoTitle(title)
+    return { title: full, fullTitle: full }
+  }
+  const segment = formatSeoSegment(title)
+  const fullTitle = formatSeoTitle(`${segment}${SEO_TITLE_SUFFIX}`)
+  return { title: segment, fullTitle }
+}
+
 export type GeoFaq = { question: string; answer: string }
 
 export type GeoSiteSettings = {
@@ -119,9 +151,9 @@ const fallbackSettings: GeoSiteSettings = {
     'BAB International Corp | Omnichannel & Contact Center in KSA',
   seoTitleAr: 'باب الدولية | قنوات متعددة ومراكز اتصال في السعودية',
   seoDescriptionEn:
-    'Saudi enterprise partner for seamless connectivity and intelligent CX: omnichannel engagement, AI and voice bots, and contact-center platforms across Saudi Arabia and the MENA region.',
+    'Saudi enterprise partner for omnichannel CX, AI voice bots, and contact-center platforms across Saudi Arabia and the MENA region.',
   seoDescriptionAr:
-    'شريك مؤسسي سعودي للاتصال السلس وتجربة العملاء الذكية: تفاعل متعدد القنوات، وروبوتات صوتية وذكاء اصطناعي، ومنصات مراكز اتصال في المملكة ومنطقة الشرق الأوسط وشمال أفريقيا.',
+    'شريك مؤسسي سعودي لتجربة العملاء: قنوات متعددة، روبوتات صوتية وذكاء اصطناعي، ومنصات مراكز اتصال في السعودية والمنطقة.',
   geoAboutEn: DEFAULT_GEO_ABOUT_EN,
   geoAboutAr: DEFAULT_GEO_ABOUT_AR,
   geoCitationNote: DEFAULT_GEO_CITATION_NOTE,
@@ -525,11 +557,39 @@ export function buildFaqPageJsonLd(faqs: GeoFaq[]) {
   }
 }
 
+export function buildSiteMetadata(opts: {
+  locale: string
+  title: string
+  description: string
+}): Metadata {
+  const locale = opts.locale === 'ar' ? 'ar' : 'en'
+  const site = getSiteUrl()
+  const defaultTitle = formatSeoTitle(opts.title)
+  const description = formatSeoDescription(opts.description)
+  const googleCode = getGoogleSiteVerification()
+  const bingCode = getBingSiteAuthCode()
+  const verification = {
+    ...(googleCode ? { google: googleCode } : {}),
+    ...(bingCode ? { other: { 'msvalidate.01': bingCode } } : {}),
+  }
+
+  return {
+    metadataBase: new URL(site),
+    title: {
+      default: defaultTitle,
+      template: `%s${SEO_TITLE_SUFFIX}`,
+    },
+    description,
+    ...(Object.keys(verification).length ? { verification } : {}),
+  }
+}
+
 export function buildPageMetadata(opts: {
   locale: string
   title: string
   description: string
   path?: string
+  absoluteTitle?: boolean
 }): Metadata {
   const locale = opts.locale === 'ar' ? 'ar' : 'en'
   const site = getSiteUrl()
@@ -547,11 +607,13 @@ export function buildPageMetadata(opts: {
     ...(googleCode ? { google: googleCode } : {}),
     ...(bingCode ? { other: { 'msvalidate.01': bingCode } } : {}),
   }
+  const { title, fullTitle } = resolvePageTitle(opts.title, opts.absoluteTitle)
+  const description = formatSeoDescription(opts.description)
 
   return {
     metadataBase: new URL(site),
-    title: opts.title,
-    description: opts.description,
+    title,
+    description,
     ...(Object.keys(verification).length ? { verification } : {}),
     alternates: {
       canonical,
@@ -562,8 +624,8 @@ export function buildPageMetadata(opts: {
       },
     },
     openGraph: {
-      title: opts.title,
-      description: opts.description,
+      title: fullTitle,
+      description,
       url: canonical,
       siteName: 'BAB International Corp',
       locale: locale === 'ar' ? 'ar_SA' : 'en_US',
@@ -573,8 +635,8 @@ export function buildPageMetadata(opts: {
     },
     twitter: {
       card: 'summary_large_image',
-      title: opts.title,
-      description: opts.description,
+      title: fullTitle,
+      description,
       images: [ogImage],
     },
   }

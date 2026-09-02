@@ -7,6 +7,20 @@ import { AdminGalleryImagesField } from '@/components/admin-gallery-images-field
 import { AdminImagePicker } from '@/components/admin-image-picker'
 import { AdminMediaPreview } from '@/components/admin-media-preview'
 import type { PageCategory, LandingType } from '@/lib/page-categories'
+import { SEO_DESCRIPTION_MAX, SEO_TITLE_SEGMENT_MAX } from '@/lib/geo-content'
+
+function SeoFieldHint({ value, max }: { value: string; max: number }) {
+  const length = value.length
+  const overLimit = length > max
+  return (
+    <span
+      className={`text-xs font-normal ${overLimit ? 'text-red-600' : 'text-muted-foreground'}`}
+    >
+      {length}/{max} characters
+      {overLimit ? ' — may be truncated in search results' : ''}
+    </span>
+  )
+}
 
 export type FeatureCardForm = {
   accent: string
@@ -370,6 +384,7 @@ export function AdminPageForm({
             value={value.metaTitle}
             onChange={(e) => set('metaTitle', e.target.value)}
           />
+          <SeoFieldHint value={value.metaTitle} max={SEO_TITLE_SEGMENT_MAX} />
         </Label>
         <Label label={t('pageForm.metaDescription')} dir={dir}>
           <textarea
@@ -377,6 +392,7 @@ export function AdminPageForm({
             value={value.metaDescription}
             onChange={(e) => set('metaDescription', e.target.value)}
           />
+          <SeoFieldHint value={value.metaDescription} max={SEO_DESCRIPTION_MAX} />
         </Label>
       </Card>
 

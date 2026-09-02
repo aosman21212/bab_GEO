@@ -27,7 +27,7 @@ export async function generateMetadata({
   if (!page) return {}
   return buildPageMetadata({
     locale,
-    title: `${page.metaTitle} — BAB International Corp`,
+    title: page.metaTitle,
     description: page.metaDescription,
     path: slug,
   })

@@ -9,6 +9,7 @@ import {
   DEFAULT_GEO_ABOUT_AR,
   DEFAULT_GEO_ABOUT_EN,
   DEFAULT_GEO_CITATION_NOTE,
+  SEO_DESCRIPTION_MAX,
 } from '@/lib/geo-content'
 import { Mail, Plus, Trash2 } from 'lucide-react'
 import { withBasePath } from '@/lib/base-path'
@@ -54,9 +55,9 @@ const defaults: SiteSettings = {
   seoTitleAr:
     'باب الدولية | قنوات متعددة ومراكز اتصال في السعودية',
   seoDescriptionEn:
-    'Saudi enterprise partner for seamless connectivity and intelligent CX: omnichannel engagement, AI and voice bots, and contact-center platforms across Saudi Arabia and the MENA region.',
+    'Saudi enterprise partner for omnichannel CX, AI voice bots, and contact-center platforms across Saudi Arabia and the MENA region.',
   seoDescriptionAr:
-    'شريك مؤسسي سعودي للاتصال السلس وتجربة العملاء الذكية: تفاعل متعدد القنوات، وروبوتات صوتية وذكاء اصطناعي، ومنصات مراكز اتصال في المملكة ومنطقة الشرق الأوسط وشمال أفريقيا.',
+    'شريك مؤسسي سعودي لتجربة العملاء: قنوات متعددة، روبوتات صوتية وذكاء اصطناعي، ومنصات مراكز اتصال في السعودية والمنطقة.',
   geoAboutEn: DEFAULT_GEO_ABOUT_EN,
   geoAboutAr: DEFAULT_GEO_ABOUT_AR,
   geoCitationNote: DEFAULT_GEO_CITATION_NOTE,
@@ -140,6 +141,19 @@ function SeoTitleLengthHint({ value }: { value: string }) {
     >
       {length}/{SEO_TITLE_MAX} characters
       {overLimit ? ' — title may be truncated in search results' : ''}
+    </span>
+  )
+}
+
+function SeoDescriptionLengthHint({ value }: { value: string }) {
+  const length = value.length
+  const overLimit = length > SEO_DESCRIPTION_MAX
+  return (
+    <span
+      className={`text-xs font-normal ${overLimit ? 'text-red-600' : 'text-muted-foreground'}`}
+    >
+      {length}/{SEO_DESCRIPTION_MAX} characters
+      {overLimit ? ' — description may be truncated in search results' : ''}
     </span>
   )
 }
@@ -369,6 +383,7 @@ export default function AdminSettingsPage() {
                   value={settings.seoDescriptionEn}
                   onChange={(e) => set('seoDescriptionEn', e.target.value)}
                 />
+                <SeoDescriptionLengthHint value={settings.seoDescriptionEn} />
               </label>
               <label className="flex flex-col gap-2 text-sm font-semibold text-navy">
                 {t('settings.seoTitleAr')}
@@ -388,6 +403,7 @@ export default function AdminSettingsPage() {
                   value={settings.seoDescriptionAr}
                   onChange={(e) => set('seoDescriptionAr', e.target.value)}
                 />
+                <SeoDescriptionLengthHint value={settings.seoDescriptionAr} />
               </label>
             </div>
           </section>
