@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from 'next-intl'
 import { MapPin, Phone, Mail, Clock, MessageCircle } from 'lucide-react'
 import { ContactForm } from '@/components/contact-form'
 import { Reveal } from '@/components/reveal'
+import { trackBookDemoClick } from '@/lib/analytics'
 
 const BOOK_DEMO_WHATSAPP =
   'https://api.whatsapp.com/send?phone=966920035161&text=Book+a+demo'
@@ -22,6 +23,11 @@ export default function ContactPage() {
   const phone = s('phone')
   const email = CONTACT_SALES_EMAIL
   const phoneHref = `tel:${phone.replace(/[^\d+]/g, '')}`
+  const localeCode = locale === 'ar' ? 'ar' : 'en'
+
+  const trackBookDemo = (buttonLocation: string) => {
+    trackBookDemoClick({ buttonLocation, locale: localeCode, method: 'whatsapp' })
+  }
 
   return (
     <div className="flex flex-col">
@@ -56,6 +62,7 @@ export default function ContactPage() {
                   href={BOOK_DEMO_WHATSAPP}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => trackBookDemo('contact-hero')}
                   className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90"
                 >
                   <MessageCircle className="h-4 w-4" />
@@ -140,6 +147,7 @@ export default function ContactPage() {
                 href={BOOK_DEMO_WHATSAPP}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackBookDemo('contact-sidebar')}
                 className="mt-auto inline-flex items-center justify-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90"
               >
                 <MessageCircle className="h-4 w-4" />

@@ -31,6 +31,23 @@ export type GenerateLeadParams = {
   value?: number
 }
 
+export type BookDemoClickParams = {
+  buttonLocation: string
+  locale: string
+  method?: 'form' | 'whatsapp'
+  sourceSlug?: string
+}
+
+/** Tracks Book a demo button clicks across the site */
+export function trackBookDemoClick(params: BookDemoClickParams) {
+  trackEventWhenReady('book_demo_click', {
+    button_location: params.buttonLocation,
+    method: params.method || 'whatsapp',
+    locale: params.locale,
+    ...(params.sourceSlug ? { source_slug: params.sourceSlug } : {}),
+  })
+}
+
 /** GA4 recommended event — populates Reports → Generate leads / Lead acquisition */
 export function trackGenerateLead(params: GenerateLeadParams) {
   trackEventWhenReady('generate_lead', {

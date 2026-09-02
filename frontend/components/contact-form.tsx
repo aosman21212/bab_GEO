@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useLocale, useTranslations } from 'next-intl'
 import { ArrowRight } from 'lucide-react'
 import { submitInquiry } from '@/lib/api'
-import { trackEventWhenReady, trackGenerateLead } from '@/lib/analytics'
+import { trackBookDemoClick, trackEventWhenReady, trackGenerateLead } from '@/lib/analytics'
 import { buildWhatsAppUrl, DEFAULT_WHATSAPP_PHONE } from '@/lib/landing-defaults'
 
 function fieldClass() {
@@ -37,6 +37,12 @@ export function ContactForm({
       ...(sourceSlug ? { source_slug: sourceSlug } : {}),
     }
     if (isLanding) {
+      trackBookDemoClick({
+        buttonLocation: 'book-demo-form',
+        locale: eventParams.locale,
+        method: 'form',
+        sourceSlug,
+      })
       trackEventWhenReady('form_submit', eventParams)
     }
     setPending(true)

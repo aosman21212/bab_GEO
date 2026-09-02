@@ -4,7 +4,8 @@ import { useState } from 'react'
 import Image from '@/components/app-image'
 import { AnimatePresence, motion } from 'motion/react'
 import { ArrowRight } from 'lucide-react'
-import { useTranslations } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
+import { trackBookDemoClick } from '@/lib/analytics'
 import { Reveal, StaggerGroup, StaggerItem } from './reveal'
 import { CountUp } from './motion-utils'
 
@@ -31,6 +32,7 @@ const milestones = [
 export function IndustriesSection() {
   const t = useTranslations('industries')
   const ts = useTranslations('stats')
+  const locale = useLocale()
   const [active, setActive] = useState<(typeof industryMeta)[number]['id']>('food')
   const current = industryMeta.find((i) => i.id === active) ?? industryMeta[0]
 
@@ -81,6 +83,13 @@ export function IndustriesSection() {
                   href={BOOK_DEMO_WHATSAPP}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() =>
+                    trackBookDemoClick({
+                      buttonLocation: 'homepage-industries',
+                      locale: locale === 'ar' ? 'ar' : 'en',
+                      method: 'whatsapp',
+                    })
+                  }
                   className="mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
                 >
                   {t('bookDemo')} <ArrowRight className="h-4 w-4 rtl:rotate-180" />
