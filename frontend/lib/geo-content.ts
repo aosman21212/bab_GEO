@@ -606,6 +606,14 @@ export function buildSiteMetadata(opts: {
       template: `%s${SEO_TITLE_SUFFIX}`,
     },
     description,
+    icons: {
+      icon: [
+        { url: '/favicon.ico', sizes: 'any' },
+        { url: '/icon.svg', type: 'image/svg+xml' },
+      ],
+      shortcut: '/favicon.ico',
+      apple: '/icon.svg',
+    },
     ...(Object.keys(verification).length ? { verification } : {}),
   }
 }
@@ -640,6 +648,14 @@ export function buildPageMetadata(opts: {
     metadataBase: new URL(site),
     title,
     description,
+    icons: {
+      icon: [
+        { url: '/favicon.ico', sizes: 'any' },
+        { url: '/icon.svg', type: 'image/svg+xml' },
+      ],
+      shortcut: '/favicon.ico',
+      apple: '/icon.svg',
+    },
     ...(Object.keys(verification).length ? { verification } : {}),
     alternates: {
       canonical,
