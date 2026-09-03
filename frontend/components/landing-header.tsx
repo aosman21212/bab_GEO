@@ -50,7 +50,8 @@ export function LandingHeader() {
             type="button"
             onClick={switchLocale}
             disabled={isPending}
-            className="rounded-full border border-border px-3 py-2 text-xs font-semibold text-navy transition hover:border-primary hover:text-primary disabled:opacity-60 sm:px-4 sm:text-sm"
+            aria-busy={isPending}
+            className="rounded-full border border-border px-3 py-2 text-xs font-semibold text-navy transition hover:border-primary hover:text-primary disabled:cursor-wait disabled:opacity-60 sm:px-4 sm:text-sm"
             aria-label={tNav('language')}
           >
             {tNav('language')}

@@ -64,7 +64,7 @@ export function partitionCmsNavExtras(
 export async function fetchCmsNavExtras(locale: string): Promise<CmsNavExtras> {
   try {
     const res = await fetch(withBasePath('/api/cms/published-pages'), {
-      cache: 'no-store',
+      next: { revalidate: 120 },
     })
     if (!res.ok) return emptyCmsNavExtras()
     const data = (await res.json()) as PublishedMeta[]

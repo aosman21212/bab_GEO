@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { cache } from 'react'
 import { notFound, redirect } from 'next/navigation'
 import { setRequestLocale } from 'next-intl/server'
 import { InnerPage } from '@/components/inner-page'
@@ -12,6 +13,8 @@ import { HOME_PAGE_SLUG } from '@/lib/page-categories'
 import { getPathname } from '@/i18n/navigation'
 
 export const revalidate = 60
+
+const getCmsPage = cache(async (slug: string, locale: Locale) => fetchCmsPage(slug, locale))
 
 export function generateStaticParams() {
   return routing.locales.flatMap((locale) =>
@@ -28,7 +31,7 @@ export async function generateMetadata({
   if (slug === HOME_PAGE_SLUG) {
     redirect(getPathname({ locale: locale as Locale, href: '/' }))
   }
-  const page = await fetchCmsPage(slug, locale as Locale)
+  const page = await getCmsPage(slug, locale as Locale)
   if (!page) return {}
   return buildPageMetadata({
     locale,
@@ -48,7 +51,7 @@ export default async function SlugPage({
     redirect(getPathname({ locale: locale as Locale, href: '/' }))
   }
   setRequestLocale(locale)
-  const page = await fetchCmsPage(slug, locale as Locale)
+  const page = await getCmsPage(slug, locale as Locale)
   if (!page) notFound()
   if (page.category === 'landing' && page.landingType) {
     return (

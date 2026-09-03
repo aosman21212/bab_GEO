@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { cache } from 'react'
 import { getMessages, setRequestLocale } from 'next-intl/server'
 import { HeroSection } from '@/components/hero-section'
 import { OurWorksSection } from '@/components/our-works-section'
@@ -20,6 +21,8 @@ import {
 } from '@/lib/geo-content'
 import { fetchHomepageContent } from '@/lib/homepage-cms'
 
+const getHomepageContent = cache(async (locale: 'en' | 'ar') => fetchHomepageContent(locale))
+
 export async function generateMetadata({
   params,
 }: {
@@ -30,7 +33,7 @@ export async function generateMetadata({
   const loc = locale === 'ar' ? 'ar' : 'en'
   const [messages, home] = await Promise.all([
     getMessages(),
-    fetchHomepageContent(loc),
+    getHomepageContent(loc),
   ])
   const siteSettings = mergeGeoSettings(
     (messages as { siteSettings?: GeoSiteSettings }).siteSettings,
@@ -60,7 +63,7 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
   const loc = locale === 'ar' ? 'ar' : 'en'
   const [messages, home] = await Promise.all([
     getMessages(),
-    fetchHomepageContent(loc),
+    getHomepageContent(loc),
   ])
   const siteSettings = mergeGeoSettings(
     (messages as { siteSettings?: GeoSiteSettings }).siteSettings,

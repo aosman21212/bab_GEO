@@ -24,6 +24,7 @@ const menuSlides = [
 ] as const
 
 const SPAM_PDF = withBasePath('/docs/ar_spam_policy.pdf')
+const cmsExtrasCache = new Map<string, CmsNavExtras>()
 
 function navLinkClass(active: boolean) {
   return `text-[13px] font-medium tracking-wide transition-colors hover:text-primary md:text-sm ${
@@ -45,9 +46,18 @@ export function SiteHeader() {
   const [cmsExtras, setCmsExtras] = useState<CmsNavExtras>(emptyCmsNavExtras)
 
   useEffect(() => {
+    const cached = cmsExtrasCache.get(locale)
+    if (cached) {
+      setCmsExtras(cached)
+      return
+    }
+
     let cancelled = false
     fetchCmsNavExtras(locale).then((extras) => {
-      if (!cancelled) setCmsExtras(extras)
+      if (!cancelled) {
+        cmsExtrasCache.set(locale, extras)
+        setCmsExtras(extras)
+      }
     })
     return () => {
       cancelled = true
@@ -233,9 +243,10 @@ export function SiteHeader() {
             type="button"
             onClick={switchLocale}
             disabled={isPending}
+            aria-busy={isPending}
             dir={locale === 'ar' ? 'ltr' : 'rtl'}
             style={locale === 'en' ? { fontFamily: 'var(--font-cairo)' } : undefined}
-            className={navLinkClass(false)}
+            className={`${navLinkClass(false)} ${isPending ? 'cursor-wait opacity-70' : ''}`}
           >
             {t('language')}
           </button>

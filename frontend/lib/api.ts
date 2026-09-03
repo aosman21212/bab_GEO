@@ -81,16 +81,16 @@ export type ApiTestimonial = {
 }
 
 export async function fetchSiteContent(locale: string) {
-  return apiFetch<Record<string, unknown>>(`/api/content/${locale}`, { cache: 'no-store' })
+  return apiFetch<Record<string, unknown>>(`/api/content/${locale}`)
 }
 
 export async function fetchPartners() {
-  return apiFetch<ApiPartner[]>('/api/partners', { cache: 'no-store' })
+  return apiFetch<ApiPartner[]>('/api/partners')
 }
 
 export async function fetchTestimonials(locale?: string) {
   const q = locale ? `?locale=${locale}` : ''
-  return apiFetch<ApiTestimonial[]>(`/api/testimonials${q}`, { cache: 'no-store' })
+  return apiFetch<ApiTestimonial[]>(`/api/testimonials${q}`)
 }
 
 export async function submitInquiry(body: {
@@ -140,7 +140,7 @@ export type ApiJob = {
 }
 
 export async function fetchOpenJobs() {
-  return apiFetch<ApiJob[]>('/api/jobs', { cache: 'no-store' })
+  return apiFetch<ApiJob[]>('/api/jobs')
 }
 
 export async function submitJobApplication(formData: FormData) {
