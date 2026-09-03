@@ -42,38 +42,64 @@ export default function AdminLibraryPage() {
       router.push('/admin')
       return
     }
-    setPages(await res.json())
+    const data = await res.json().catch(() => [])
+    setPages(Array.isArray(data) ? data : [])
   }
 
   useEffect(() => {
     load()
   }, [])
 
-  const counts = useMemo(() => {
-    const next: Record<string, number> = { all: pages.length }
-    for (const cat of PAGE_CATEGORIES) {
-      next[cat] = pages.filter((p) => p.category === cat).length
+  const listed = useMemo(() => {
+    const hasHome = pages.some((p) => p.slug === 'home' || p.category === 'home')
+    const next = [...pages]
+    if (!hasHome) {
+      next.unshift({
+        _id: 'home',
+        slug: 'home',
+        category: 'home',
+        status: 'published',
+        locales: {
+          en: { metaTitle: 'Home' },
+          ar: { metaTitle: 'الرئيسية' },
+        },
+      })
     }
+    next.sort((a, b) => {
+      const ah = a.slug === 'home' || a.category === 'home' ? 0 : 1
+      const bh = b.slug === 'home' || b.category === 'home' ? 0 : 1
+      return ah - bh
+    })
     return next
   }, [pages])
 
+  const counts = useMemo(() => {
+    const next: Record<string, number> = { all: listed.length }
+    for (const cat of PAGE_CATEGORIES) {
+      next[cat] = listed.filter((p) => p.category === cat).length
+    }
+    return next
+  }, [listed])
+
   const filtered = useMemo(() => {
     const query = q.trim().toLowerCase()
-    return pages.filter((p) => {
+    return listed.filter((p) => {
       if (filter !== 'all' && p.category !== filter) return false
       if (!query) return true
       const homeTitles = homepageTitleFromLocales(p.locales)
-      const en =
-        String(p.locales?.en?.metaTitle || p.locales?.en?.heroHeading || homeTitles.en || '')
-      const ar =
-        String(p.locales?.ar?.metaTitle || p.locales?.ar?.heroHeading || homeTitles.ar || '')
+      const en = String(
+        p.locales?.en?.metaTitle || p.locales?.en?.heroHeading || homeTitles.en || '',
+      )
+      const ar = String(
+        p.locales?.ar?.metaTitle || p.locales?.ar?.heroHeading || homeTitles.ar || '',
+      )
       return (
         p.slug.toLowerCase().includes(query) ||
         en.toLowerCase().includes(query) ||
         ar.toLowerCase().includes(query)
       )
     })
-  }, [pages, filter, q])
+  }, [listed, filter, q])
 
   const pills: { id: Filter; label: string; count: number }[] = [
     { id: 'all', label: t('common.all'), count: counts.all },
@@ -91,12 +117,20 @@ export default function AdminLibraryPage() {
       title={t('library.title')}
       description={t('library.description')}
       actions={
-        <Link
-          href="/admin/library/new"
-          className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground"
-        >
-          <Plus className="h-4 w-4" /> {t('library.addContent')}
-        </Link>
+        <div className="flex flex-wrap items-center gap-2">
+          <Link
+            href="/admin/library/home"
+            className="inline-flex items-center gap-2 rounded-full border border-navy/20 bg-white px-5 py-2.5 text-sm font-semibold text-navy hover:border-primary hover:text-primary"
+          >
+            <Pencil className="h-4 w-4" /> {t('library.editHomepage')}
+          </Link>
+          <Link
+            href="/admin/library/new"
+            className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground"
+          >
+            <Plus className="h-4 w-4" /> {t('library.addContent')}
+          </Link>
+        </div>
       }
     >
       <div className="mb-5 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">

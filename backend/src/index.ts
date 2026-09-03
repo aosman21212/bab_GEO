@@ -15,10 +15,16 @@ import { uploadsRouter } from './routes/uploads.js'
 import { jobsRouter } from './routes/jobs.js'
 import { jobApplicationsRouter } from './routes/job-applications.js'
 import { usersRouter } from './routes/users.js'
+import { ensureHomePage } from './homepage.js'
 
 async function main() {
   await connectMongo()
   await ensureRedis()
+  try {
+    await ensureHomePage()
+  } catch (err) {
+    console.error('[api] ensureHomePage failed', err)
+  }
 
   const app = express()
   app.set('trust proxy', 1)
@@ -29,7 +35,7 @@ async function main() {
       credentials: true,
     })
   )
-  app.use(express.json({ limit: '1mb' }))
+  app.use(express.json({ limit: '2mb' }))
   app.use(morgan('dev'))
 
   app.get('/api/health', (_req, res) => {

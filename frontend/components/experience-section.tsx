@@ -28,10 +28,10 @@ export function ExperienceSection({
           {WORK_IDS.map((key) => (
             <StaggerItem key={key} className="text-center md:text-start">
               <h3 className="text-base font-bold text-primary md:text-lg">
-                {works?.items[key].title || tw(`items.${key}.title`)}
+                {works?.items?.[key]?.title || tw(`items.${key}.title`)}
               </h3>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                {works?.items[key].body || tw(`items.${key}.body`)}
+                {works?.items?.[key]?.body || tw(`items.${key}.body`)}
               </p>
             </StaggerItem>
           ))}

@@ -64,9 +64,82 @@ function industry(value: unknown, image: string) {
   }
 }
 
-export function loadFrontendMessages(locale: 'en' | 'ar'): MessageTree {
-  const file = path.join(root, 'frontend', 'messages', `${locale}.json`)
-  return JSON.parse(fs.readFileSync(file, 'utf8')) as MessageTree
+export function loadFrontendMessages(locale: 'en' | 'ar'): MessageTree | null {
+  const candidates = [
+    path.join(root, 'frontend', 'messages', `${locale}.json`),
+    path.resolve(__dirname, '../../../frontend/messages', `${locale}.json`),
+    path.resolve(process.cwd(), '../frontend/messages', `${locale}.json`),
+    path.resolve(process.cwd(), 'frontend/messages', `${locale}.json`),
+    `/app/frontend/messages/${locale}.json`,
+  ]
+  for (const file of candidates) {
+    try {
+      if (fs.existsSync(file)) {
+        return JSON.parse(fs.readFileSync(file, 'utf8')) as MessageTree
+      }
+    } catch (err) {
+      console.error(`[homepage] failed to read ${file}`, err)
+    }
+  }
+  return null
+}
+
+function fallbackHomepageLocale(locale: 'en' | 'ar') {
+  const isAr = locale === 'ar'
+  const emptyPair = { title: '', body: '' }
+  const emptyPillar = { label: '', title: '', body: '' }
+  return {
+    metaTitle: isAr ? 'الرئيسية' : 'Home',
+    metaDescription: '',
+    hero: {
+      title: isAr ? 'الرئيسية' : 'Home',
+      body: '',
+      cta: isAr ? 'تواصل معنا' : 'Contact Us',
+      slides: [...DEFAULT_HERO_SLIDES],
+    },
+    works: {
+      title: '',
+      items: { productivity: emptyPair, experience: emptyPair, reporting: emptyPair },
+    },
+    experience: {
+      eyebrow: '',
+      title: '',
+      watermark: '',
+      connect: emptyPillar,
+      engage: emptyPillar,
+      analyze: emptyPillar,
+    },
+    industries: {
+      eyebrow: '',
+      title: '',
+      bookDemo: '',
+      food: { tab: '', title: '', body: '', image: DEFAULT_INDUSTRY_IMAGES.food },
+      government: { tab: '', title: '', body: '', image: DEFAULT_INDUSTRY_IMAGES.government },
+      healthcare: { tab: '', title: '', body: '', image: DEFAULT_INDUSTRY_IMAGES.healthcare },
+      insurance: { tab: '', title: '', body: '', image: DEFAULT_INDUSTRY_IMAGES.insurance },
+      retail: { tab: '', title: '', body: '', image: DEFAULT_INDUSTRY_IMAGES.retail },
+    },
+    stats: { sms: '', vas: '', language: '', ott: '', nlu: '', genai: '' },
+    transformation: {
+      badge: '',
+      title: '',
+      body: '',
+      cta: '',
+      image: DEFAULT_TRANSFORMATION_IMAGE,
+    },
+    channels: { headline: '', body: '' },
+    partners: { title: '', body: '', cta: '' },
+    testimonials: { title: '' },
+    faq: { eyebrow: '', title: '', items: [] as { question: string; answer: string }[] },
+    impact: {
+      eyebrow: '',
+      title: '',
+      body: '',
+      cta: '',
+      image: DEFAULT_IMPACT_IMAGE,
+    },
+    cta: { title: '', body: '' },
+  }
 }
 
 export function homepageLocaleFromMessages(messages: MessageTree, locale: 'en' | 'ar') {
@@ -180,14 +253,29 @@ export async function ensureHomePage() {
     return existing
   }
 
-  const en = homepageLocaleFromMessages(loadFrontendMessages('en'), 'en')
-  const ar = homepageLocaleFromMessages(loadFrontendMessages('ar'), 'ar')
-  const page = await Page.create({
-    slug: HOME_PAGE_SLUG,
-    category: 'home',
-    status: 'published',
-    locales: { en, ar },
-  })
-  await cacheDel(`page:${HOME_PAGE_SLUG}:en`, `page:${HOME_PAGE_SLUG}:ar`)
-  return page
+  const enMessages = loadFrontendMessages('en')
+  const arMessages = loadFrontendMessages('ar')
+  const en = enMessages
+    ? homepageLocaleFromMessages(enMessages, 'en')
+    : fallbackHomepageLocale('en')
+  const ar = arMessages
+    ? homepageLocaleFromMessages(arMessages, 'ar')
+    : fallbackHomepageLocale('ar')
+
+  try {
+    const page = await Page.create({
+      slug: HOME_PAGE_SLUG,
+      category: 'home',
+      status: 'published',
+      locales: { en, ar },
+    })
+    await cacheDel(`page:${HOME_PAGE_SLUG}:en`, `page:${HOME_PAGE_SLUG}:ar`)
+    console.log('[homepage] created reserved home page')
+    return page
+  } catch (err) {
+    const raced = await Page.findOne({ slug: HOME_PAGE_SLUG })
+    if (raced) return raced
+    console.error('[homepage] create failed', err)
+    throw err
+  }
 }

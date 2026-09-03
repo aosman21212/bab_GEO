@@ -69,7 +69,7 @@ export function IndustriesSection({
                       : 'border-transparent text-muted-foreground hover:text-navy'
                   }`}
                 >
-                  {industries?.[id].tab || t(`${id}.tab`)}
+                  {industries?.[id]?.tab || t(`${id}.tab`)}
                 </button>
               )
             })}

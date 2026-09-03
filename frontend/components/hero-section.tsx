@@ -60,7 +60,6 @@ function HeroImageCarousel({ images }: { images: string[] }) {
               sizes="100vw"
               className="object-cover object-center grayscale"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-navy/25 via-transparent to-transparent" />
           </div>
         ))}
 

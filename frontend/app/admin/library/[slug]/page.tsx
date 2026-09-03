@@ -63,6 +63,18 @@ export default function AdminLibraryEditPage() {
         return
       }
       if (!res.ok) {
+        if (isHomePage(slug)) {
+          setPage({
+            slug: 'home',
+            category: 'home',
+            status: 'published',
+            locales: {},
+          })
+          setMeta({ slug: 'home', category: 'home', status: 'published' })
+          setEnHome(homepageLocaleFromApi(undefined, 'en'))
+          setArHome(homepageLocaleFromApi(undefined, 'ar'))
+          return
+        }
         setMessage(t('common.pageNotFound'))
         return
       }

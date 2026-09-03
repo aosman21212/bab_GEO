@@ -175,6 +175,13 @@ pagesRouter.get('/:slug', async (req, res) => {
 })
 
 pagesRouter.put('/:slug', requireAuth, async (req, res) => {
+  if (req.params.slug === HOME_PAGE_SLUG) {
+    try {
+      await ensureHomePage()
+    } catch (err) {
+      console.error('[pages] ensureHomePage failed', err)
+    }
+  }
   const parsed = z
     .object({
       category: pageCategorySchema.optional(),

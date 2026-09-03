@@ -665,6 +665,7 @@
       "title": "Content Library",
       "description": "Manage the homepage, solutions, industries, products, case studies, articles, and campaign landing pages.",
       "addContent": "Add content",
+      "editHomepage": "Edit homepage",
       "home": "Home",
       "solutions": "Solutions",
       "industries": "Industries",
