@@ -137,3 +137,74 @@ export async function rateLimit(key: string, max: number, windowSeconds: number)
     return { ok: true, remaining: max }
   }
 }
+
+export type MfaChallengeRecord = {
+  challengeId: string
+  userId: string
+  email: string
+  codeHmac: string
+  attempts: number
+  locked: boolean
+  expiresAt: number // epoch ms
+  resendCooldownUntil: number // epoch ms
+}
+
+export const MFA_CHALLENGE_TTL_SECONDS = 100 * 60 // 100 minutes
+export const MFA_RESEND_COOLDOWN_SECONDS = 60 // 60 seconds
+export const MFA_MAX_ATTEMPTS = 5
+
+function mfaKey(challengeId: string) {
+  return `admin:mfa:${challengeId}`
+}
+
+export async function storeMfaChallenge(record: MfaChallengeRecord): Promise<boolean> {
+  if (!redisAvailable) return false
+  try {
+    await getRedis().set(
+      mfaKey(record.challengeId),
+      JSON.stringify(record),
+      'EX',
+      MFA_CHALLENGE_TTL_SECONDS,
+    )
+    return true
+  } catch {
+    return false
+  }
+}
+
+export async function getMfaChallenge(
+  challengeId: string,
+): Promise<MfaChallengeRecord | null> {
+  if (!redisAvailable) return null
+  try {
+    const raw = await getRedis().get(mfaKey(challengeId))
+    return raw ? (JSON.parse(raw) as MfaChallengeRecord) : null
+  } catch {
+    return null
+  }
+}
+
+export async function updateMfaChallenge(
+  record: MfaChallengeRecord,
+): Promise<boolean> {
+  if (!redisAvailable) return false
+  try {
+    const key = mfaKey(record.challengeId)
+    const client = getRedis()
+    const ttl = await client.ttl(key)
+    const safeTtl = ttl > 0 ? ttl : MFA_CHALLENGE_TTL_SECONDS
+    await client.set(key, JSON.stringify(record), 'EX', safeTtl)
+    return true
+  } catch {
+    return false
+  }
+}
+
+export async function deleteMfaChallenge(challengeId: string): Promise<void> {
+  if (!redisAvailable) return
+  try {
+    await getRedis().del(mfaKey(challengeId))
+  } catch {
+    /* ignore */
+  }
+}

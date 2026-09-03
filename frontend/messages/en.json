@@ -522,7 +522,17 @@
       "signIn": "Sign in",
       "signingIn": "Signing in…",
       "failed": "Login failed",
-      "sessionExpired": "Your session expired due to inactivity. Please sign in again."
+      "sessionExpired": "Your session expired due to inactivity. Please sign in again.",
+      "mfaTitle": "Two-Step Verification",
+      "mfaSubtitle": "A 6-digit verification code has been sent to {email}.",
+      "enterCode": "Verification code",
+      "verifyCode": "Verify & sign in",
+      "verifying": "Verifying code…",
+      "resendCode": "Resend code",
+      "resending": "Resending code…",
+      "cooldownMsg": "Resend available in {seconds}s",
+      "backToLogin": "Back to login",
+      "codeSent": "A new verification code has been sent to your email."
     },
     "settings": {
       "title": "Site Settings",

@@ -10,7 +10,7 @@ export async function POST(req: Request) {
     ''
   const userAgent = req.headers.get('user-agent') || ''
 
-  const res = await fetch(`${getApiUrl()}/api/auth/login`, {
+  const res = await fetch(`${getApiUrl()}/api/auth/mfa/verify`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -22,16 +22,6 @@ export async function POST(req: Request) {
   const data = await res.json().catch(() => ({}))
   if (!res.ok) {
     return NextResponse.json(data, { status: res.status })
-  }
-
-  if (data.mfaRequired) {
-    return NextResponse.json({
-      mfaRequired: true,
-      mfaToken: data.mfaToken,
-      email: data.email,
-      expiresAt: data.expiresAt,
-      resendCooldownSeconds: data.resendCooldownSeconds,
-    })
   }
 
   const response = NextResponse.json({ ok: true, user: data.user })

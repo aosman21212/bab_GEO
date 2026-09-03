@@ -3,11 +3,28 @@ import jwt from 'jsonwebtoken'
 import { env } from '../config.js'
 import { isSessionDenied } from '../cache.js'
 
-export type AuthPayload = { sub: string; email: string; role: string; sid: string }
+export type AuthPayload = {
+  sub: string
+  email: string
+  role: string
+  sid: string
+  mfaVerified?: boolean
+}
+
+export type MfaPendingPayload = {
+  sub: string
+  email: string
+  role: string
+  challengeId: string
+  purpose: 'mfa_pending'
+}
 
 /** Must stay aligned with frontend ADMIN_SESSION_COOKIE_MAX_AGE (20 minutes). */
 export const ADMIN_JWT_EXPIRES_IN = '20m'
 export const ADMIN_JWT_EXPIRES_SECONDS = 20 * 60
+
+/** Intermediate MFA verification token valid for 10 minutes. */
+export const MFA_PENDING_EXPIRES_IN = '10m'
 
 export const ADMIN_REFRESH_TOKEN_HEADER = 'x-admin-token'
 
@@ -17,8 +34,35 @@ export function signToken(payload: Omit<AuthPayload, 'sid'> & { sid?: string }) 
     email: payload.email,
     role: payload.role,
     sid: payload.sid || crypto.randomUUID(),
+    mfaVerified: true,
   }
   return jwt.sign(body, env.jwtSecret, { expiresIn: ADMIN_JWT_EXPIRES_IN })
+}
+
+export function signMfaPendingToken(payload: {
+  sub: string
+  email: string
+  role: string
+  challengeId: string
+}): string {
+  const body: MfaPendingPayload = {
+    sub: payload.sub,
+    email: payload.email,
+    role: payload.role,
+    challengeId: payload.challengeId,
+    purpose: 'mfa_pending',
+  }
+  return jwt.sign(body, env.jwtSecret, { expiresIn: MFA_PENDING_EXPIRES_IN })
+}
+
+export function verifyMfaPendingToken(token: string): MfaPendingPayload | null {
+  try {
+    const decoded = jwt.verify(token, env.jwtSecret) as MfaPendingPayload
+    if (decoded.purpose !== 'mfa_pending' || !decoded.challengeId) return null
+    return decoded
+  } catch {
+    return null
+  }
 }
 
 function payloadFromDecoded(decoded: AuthPayload): AuthPayload {
@@ -27,6 +71,7 @@ function payloadFromDecoded(decoded: AuthPayload): AuthPayload {
     email: decoded.email,
     role: decoded.role,
     sid: decoded.sid || crypto.randomUUID(),
+    mfaVerified: decoded.mfaVerified === true,
   }
 }
 
@@ -51,6 +96,9 @@ export async function requireAuth(req: Request, res: Response, next: NextFunctio
   try {
     const token = header.slice(7)
     const decoded = jwt.verify(token, env.jwtSecret) as AuthPayload
+    if (decoded.mfaVerified !== true) {
+      return res.status(401).json({ error: 'MFA verification required' })
+    }
     if (await isSessionDenied(decoded.sid)) {
       return res.status(401).json({ error: 'Unauthorized' })
     }

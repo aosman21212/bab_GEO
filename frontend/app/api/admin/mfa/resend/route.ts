@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server'
 import { getApiUrl } from '@/lib/api'
-import { setAdminSessionCookie } from '@/lib/admin-session'
 
 export async function POST(req: Request) {
   const body = await req.json()
@@ -10,7 +9,7 @@ export async function POST(req: Request) {
     ''
   const userAgent = req.headers.get('user-agent') || ''
 
-  const res = await fetch(`${getApiUrl()}/api/auth/login`, {
+  const res = await fetch(`${getApiUrl()}/api/auth/mfa/resend`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -20,21 +19,5 @@ export async function POST(req: Request) {
     body: JSON.stringify(body),
   })
   const data = await res.json().catch(() => ({}))
-  if (!res.ok) {
-    return NextResponse.json(data, { status: res.status })
-  }
-
-  if (data.mfaRequired) {
-    return NextResponse.json({
-      mfaRequired: true,
-      mfaToken: data.mfaToken,
-      email: data.email,
-      expiresAt: data.expiresAt,
-      resendCooldownSeconds: data.resendCooldownSeconds,
-    })
-  }
-
-  const response = NextResponse.json({ ok: true, user: data.user })
-  setAdminSessionCookie(response, data.token)
-  return response
+  return NextResponse.json(data, { status: res.status })
 }
