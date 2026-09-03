@@ -11,6 +11,10 @@ function isLoginPage(pathname: string) {
   return pathname === '/admin' || pathname.endsWith('/admin')
 }
 
+/**
+ * Client idle logout (UX). Server-side enforcement is the short-lived JWT + cookie maxAge
+ * (see admin-security-findings #1 / #4): tokens expire ~20m even if this timer never runs.
+ */
 export function AdminSessionGuard({ children }: { children: ReactNode }) {
   const pathname = usePathname()
   const router = useRouter()
@@ -20,7 +24,11 @@ export function AdminSessionGuard({ children }: { children: ReactNode }) {
     if (isLoginPage(pathname)) return
 
     const logout = async () => {
-      await fetch(withBasePath('/api/admin/logout'), { method: 'POST' })
+      try {
+        await fetch(withBasePath('/api/admin/logout'), { method: 'POST' })
+      } catch {
+        /* still redirect to login */
+      }
       router.push('/admin?reason=idle')
     }
 
@@ -31,17 +39,24 @@ export function AdminSessionGuard({ children }: { children: ReactNode }) {
       }, ADMIN_SESSION_IDLE_MS)
     }
 
+    const onVisibility = () => {
+      // Pausing the tab still counts toward idle; resume resets when the user returns.
+      if (document.visibilityState === 'visible') resetTimer()
+    }
+
     resetTimer()
 
     for (const event of ACTIVITY_EVENTS) {
       window.addEventListener(event, resetTimer, { passive: true })
     }
+    document.addEventListener('visibilitychange', onVisibility)
 
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current)
       for (const event of ACTIVITY_EVENTS) {
         window.removeEventListener(event, resetTimer)
       }
+      document.removeEventListener('visibilitychange', onVisibility)
     }
   }, [pathname, router])
 

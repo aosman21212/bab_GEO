@@ -42,6 +42,10 @@ function slideSession(response: NextResponse, token: string) {
   return response
 }
 
+function tokenForSlide(upstream: Response, fallback: string) {
+  return upstream.headers.get('x-admin-token') || fallback
+}
+
 async function proxy(req: Request, ctx: Ctx, method: string) {
   const { path } = await ctx.params
   const jar = await cookies()
@@ -63,12 +67,13 @@ async function proxy(req: Request, ctx: Ctx, method: string) {
   const res = await fetch(target, { method, headers, body })
   const contentType = res.headers.get('Content-Type') || 'application/json'
   const disposition = res.headers.get('Content-Disposition')
+  const nextToken = tokenForSlide(res, token)
 
   if (isBinaryContentType(contentType) || disposition?.includes('attachment')) {
     const buf = await res.arrayBuffer()
     const outHeaders: HeadersInit = { 'Content-Type': contentType }
     if (disposition) outHeaders['Content-Disposition'] = disposition
-    return slideSession(new NextResponse(buf, { status: res.status, headers: outHeaders }), token)
+    return slideSession(new NextResponse(buf, { status: res.status, headers: outHeaders }), nextToken)
   }
 
   const text = await res.text()
@@ -77,6 +82,6 @@ async function proxy(req: Request, ctx: Ctx, method: string) {
       status: res.status,
       headers: { 'Content-Type': contentType },
     }),
-    token,
+    nextToken,
   )
 }

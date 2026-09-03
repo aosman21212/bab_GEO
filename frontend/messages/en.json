@@ -595,7 +595,15 @@
       "deleted": "User deleted",
       "empty": "No admin users found.",
       "role": "Role",
-      "you": "You"
+      "you": "You",
+      "tabUsers": "Users",
+      "tabActivity": "Activity",
+      "activityEmpty": "No login activity yet.",
+      "activityIp": "IP",
+      "activityLocation": "Location",
+      "activityDevice": "Device",
+      "activityTime": "Time",
+      "activityLoadFailed": "Could not load activity"
     },
     "partners": {
       "title": "Partners",

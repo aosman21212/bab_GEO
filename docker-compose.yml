@@ -37,10 +37,10 @@ services:
       PORT: '4001'
       MONGODB_URI: mongodb://mongo:27017/bab_cms
       REDIS_URL: redis://redis:6379
-      JWT_SECRET: ${JWT_SECRET:-change-me-in-production-bab-cms}
+      JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in .env — 24+ characters}
       CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:3003}
       ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@bab.com.sa}
-      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-Admin123!}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?Set ADMIN_PASSWORD in .env — 12+ characters}
       INQUIRY_NOTIFY_TO: ${INQUIRY_NOTIFY_TO:-sales@bab.com.sa}
       SMTP_HOST: ${SMTP_HOST:-}
       SMTP_PORT: ${SMTP_PORT:-587}
@@ -66,7 +66,7 @@ services:
         NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3003}
         NEXT_PUBLIC_BASE_PATH: ${NEXT_PUBLIC_BASE_PATH:-}
         INDEXNOW_KEY: ${INDEXNOW_KEY:-a0d1d00c073c48c2b85694d1a36ccfbf}
-        BING_SITE_AUTH_CODE: ${BING_SITE_AUTH_CODE:-877C499DA34F5945E4D93D5E4A752DA4}
+        BING_SITE_AUTH_CODE: ${BING_SITE_AUTH_CODE:-}
         GOOGLE_SITE_VERIFICATION: ${GOOGLE_SITE_VERIFICATION:-googled43fdb9897d9f8a7}
     restart: unless-stopped
     ports:
@@ -78,7 +78,7 @@ services:
       NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3003}
       NEXT_PUBLIC_BASE_PATH: ${NEXT_PUBLIC_BASE_PATH:-}
       INDEXNOW_KEY: ${INDEXNOW_KEY:-a0d1d00c073c48c2b85694d1a36ccfbf}
-      BING_SITE_AUTH_CODE: ${BING_SITE_AUTH_CODE:-877C499DA34F5945E4D93D5E4A752DA4}
+      BING_SITE_AUTH_CODE: ${BING_SITE_AUTH_CODE:-}
       GOOGLE_SITE_VERIFICATION: ${GOOGLE_SITE_VERIFICATION:-googled43fdb9897d9f8a7}
       GA_MEASUREMENT_ID: ${GA_MEASUREMENT_ID:-G-BCLTJXVS8F}
       GA_LEAD_CURRENCY: ${GA_LEAD_CURRENCY:-SAR}
@@ -96,10 +96,10 @@ services:
     environment:
       MONGODB_URI: mongodb://mongo:27017/bab_cms
       REDIS_URL: redis://redis:6379
-      JWT_SECRET: ${JWT_SECRET:-change-me-in-production-bab-cms}
+      JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in .env — 24+ characters}
       CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:3003}
       ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@bab.com.sa}
-      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-Admin123!}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?Set ADMIN_PASSWORD in .env — 12+ characters}
     volumes:
       - uploads:/app/frontend/public/uploads
     depends_on:

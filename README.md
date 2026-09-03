@@ -20,16 +20,16 @@ npm run docker:seed
 
 Stop: `npm run docker:down`
 
-Optional env (compose substitutes from shell or a root `.env`):
+Optional env (compose reads from a root `.env` — **required** for Docker):
 
-| Variable | Default |
-|----------|---------|
-| `NEXT_PUBLIC_API_URL` | `http://localhost:4001` |
-| `NEXT_PUBLIC_SITE_URL` | `http://localhost:3003` |
-| `NEXT_PUBLIC_BASE_PATH` | empty (domain root) |
-| `INDEXNOW_KEY` | empty |
-| `JWT_SECRET` | `change-me-in-production-bab-cms` |
-| `ADMIN_EMAIL` / `ADMIN_PASSWORD` | `admin@bab.com.sa` / `Admin123!` |
+| Variable | Notes |
+|----------|--------|
+| `NEXT_PUBLIC_API_URL` | Default `http://localhost:4001` |
+| `NEXT_PUBLIC_SITE_URL` | Default `http://localhost:3003` |
+| `JWT_SECRET` | **Required** — 24+ char secret (production rejects weak known values) |
+| `ADMIN_EMAIL` / `ADMIN_PASSWORD` | **Password required** — 12+ chars; set in `.env`, not committed |
+
+After setting `ADMIN_PASSWORD`, run `npm run docker:seed` so the admin user matches.
 
 Inside Docker, the frontend uses `API_URL=http://backend:4001` for server-side fetches while the browser still calls `NEXT_PUBLIC_API_URL`.
 

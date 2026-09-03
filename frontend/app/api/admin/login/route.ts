@@ -4,9 +4,19 @@ import { setAdminSessionCookie } from '@/lib/admin-session'
 
 export async function POST(req: Request) {
   const body = await req.json()
+  const forwardedFor =
+    req.headers.get('x-forwarded-for') ||
+    req.headers.get('x-real-ip') ||
+    ''
+  const userAgent = req.headers.get('user-agent') || ''
+
   const res = await fetch(`${getApiUrl()}/api/auth/login`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      ...(forwardedFor ? { 'x-forwarded-for': forwardedFor } : {}),
+      ...(userAgent ? { 'user-agent': userAgent } : {}),
+    },
     body: JSON.stringify(body),
   })
   const data = await res.json().catch(() => ({}))

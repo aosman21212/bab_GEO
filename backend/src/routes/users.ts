@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import bcrypt from 'bcryptjs'
 import { z } from 'zod'
-import { User } from '../models.js'
+import { LoginActivity, User } from '../models.js'
 import { getUser, requireAuth } from '../middleware/auth.js'
 
 export const usersRouter = Router()
@@ -16,6 +16,25 @@ function publicUser(u: { _id: unknown; email: string; role: string; createdAt?: 
 }
 
 usersRouter.use(requireAuth)
+
+usersRouter.get('/activity', async (_req, res) => {
+  const items = await LoginActivity.find()
+    .sort({ createdAt: -1 })
+    .limit(200)
+    .lean()
+
+  return res.json(
+    items.map((row) => ({
+      _id: String(row._id),
+      email: row.email,
+      ip: row.ip || '',
+      userAgent: row.userAgent || '',
+      city: row.city || '',
+      country: row.country || '',
+      createdAt: row.createdAt,
+    })),
+  )
+})
 
 usersRouter.get('/', async (_req, res) => {
   const users = await User.find().sort({ createdAt: 1 }).select('-passwordHash').lean()

@@ -11,6 +11,21 @@ const userSchema = new Schema(
 
 export const User = mongoose.model('User', userSchema)
 
+const loginActivitySchema = new Schema(
+  {
+    userId: { type: Schema.Types.ObjectId, ref: 'User', required: true, index: true },
+    email: { type: String, required: true, trim: true, lowercase: true },
+    ip: { type: String, default: '' },
+    userAgent: { type: String, default: '' },
+    city: { type: String, default: '' },
+    country: { type: String, default: '' },
+  },
+  { timestamps: true },
+)
+loginActivitySchema.index({ createdAt: -1 })
+
+export const LoginActivity = mongoose.model('LoginActivity', loginActivitySchema)
+
 const siteContentSchema = new Schema(
   {
     key: { type: String, required: true, trim: true },

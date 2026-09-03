@@ -38,10 +38,8 @@ npm run dev:server
 npm run dev:all
 ```
 
-Default admin (from `.env`):
-
-- Email: `admin@bab.com.sa`
-- Password: `Admin123!`
+Default admin comes from `.env` (`ADMIN_EMAIL` / `ADMIN_PASSWORD`). Set them before `npm run seed`.  
+In production (`NODE_ENV=production`), weak passwords such as `Admin123!` are rejected at API boot.
 
 ## Main routes
 

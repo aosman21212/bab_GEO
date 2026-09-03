@@ -595,7 +595,15 @@
       "deleted": "تم حذف المستخدم",
       "empty": "لا يوجد مستخدمون.",
       "role": "الدور",
-      "you": "أنت"
+      "you": "أنت",
+      "tabUsers": "المستخدمون",
+      "tabActivity": "النشاط",
+      "activityEmpty": "لا يوجد نشاط تسجيل دخول بعد.",
+      "activityIp": "عنوان IP",
+      "activityLocation": "الموقع",
+      "activityDevice": "الجهاز",
+      "activityTime": "الوقت",
+      "activityLoadFailed": "تعذر تحميل النشاط"
     },
     "partners": {
       "title": "الشركاء",

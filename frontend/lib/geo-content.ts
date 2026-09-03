@@ -137,10 +137,8 @@ export async function resolveIndexNowKey(): Promise<string> {
 
 export const INDEXNOW_KEY_PATTERN = /^[a-zA-Z0-9-]{8,128}$/
 
-const DEFAULT_BING_SITE_AUTH_CODE = '877C499DA34F5945E4D93D5E4A752DA4'
-
 export function getBingSiteAuthCode() {
-  return process.env.BING_SITE_AUTH_CODE?.trim() || DEFAULT_BING_SITE_AUTH_CODE
+  return process.env.BING_SITE_AUTH_CODE?.trim() || ''
 }
 
 export function bingSiteAuthXml(code: string) {

@@ -17,7 +17,7 @@ This document lists every place you need to change URLs and environment settings
 | Base path | empty (domain root) | empty (domain root) |
 | Site origin (env) | `http://localhost:3003` | `https://bab.com.sa` |
 | CORS origin | `http://localhost:3003` | `https://bab.com.sa` |
-| Admin login | `admin@bab.com.sa` / `Admin123!` | same (change password in prod) |
+| Admin login | Set `ADMIN_EMAIL` / `ADMIN_PASSWORD` in `.env`, then seed | Strong unique password (never ship `Admin123!`) |
 
 ---
 
@@ -64,18 +64,18 @@ Copy to `frontend/.env.local` and adjust values.
 PORT=4001
 MONGODB_URI=mongodb://127.0.0.1:27018/bab_cms
 REDIS_URL=redis://127.0.0.1:6379
-JWT_SECRET=your-secret-here
+JWT_SECRET=your-secret-here-at-least-24-chars
 CORS_ORIGIN=http://localhost:3003
 ADMIN_EMAIL=admin@bab.com.sa
-ADMIN_PASSWORD=Admin123!
+ADMIN_PASSWORD=your-local-password-12+
 ```
 
 | Variable | Local | Production |
 |----------|-------|------------|
 | `CORS_ORIGIN` | `http://localhost:3003` | `https://bab.com.sa` |
-| `JWT_SECRET` | dev value | strong random secret |
+| `JWT_SECRET` | any 24+ string (or code fallback when not `NODE_ENV=production`) | strong random secret — weak values rejected at boot |
 | `MONGODB_URI` | `127.0.0.1:27018` (host) | your MongoDB URL |
-| `ADMIN_PASSWORD` | `Admin123!` | strong password |
+| `ADMIN_PASSWORD` | local-only password in `.env` | strong password (12+) — `Admin123!` rejected in production |
 
 > **Important:** `CORS_ORIGIN` must match the frontend **origin** (scheme + host + port). Use port **3003**, not 3000.
 

@@ -10,13 +10,17 @@ export default function AdminLoginPage() {
   const router = useRouter()
   const { t, uiLocale, setUiLocale } = useAdminLocale()
   const [sessionExpired, setSessionExpired] = useState(false)
-  const [email, setEmail] = useState('admin@bab.com.sa')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [pending, setPending] = useState(false)
 
   useEffect(() => {
-    setSessionExpired(new URLSearchParams(window.location.search).get('reason') === 'idle')
+    const idle = new URLSearchParams(window.location.search).get('reason') === 'idle'
+    setSessionExpired(idle)
+    // Always require a fresh email + password (no default / autofill leftovers).
+    setEmail('')
+    setPassword('')
   }, [])
 
   const onSubmit = async (e: React.FormEvent) => {
@@ -71,14 +75,20 @@ export default function AdminLoginPage() {
           </p>
         ) : null}
 
-        <form onSubmit={onSubmit} className="mt-8 flex flex-col gap-4">
+        <form
+          onSubmit={onSubmit}
+          className="mt-8 flex flex-col gap-4"
+          autoComplete="off"
+        >
           <label className="flex flex-col gap-1.5 text-sm font-medium text-navy">
             {t('common.email')}
             <input
               className="rounded-xl border border-border bg-[#f6f5fb] px-3 py-2.5 text-sm outline-none focus:border-primary focus:bg-white"
               type="email"
+              name="admin-email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              autoComplete="off"
               required
             />
           </label>
@@ -87,8 +97,10 @@ export default function AdminLoginPage() {
             <input
               className="rounded-xl border border-border bg-[#f6f5fb] px-3 py-2.5 text-sm outline-none focus:border-primary focus:bg-white"
               type="password"
+              name="admin-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              autoComplete="new-password"
               required
             />
           </label>
