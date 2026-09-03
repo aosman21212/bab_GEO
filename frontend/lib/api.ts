@@ -1,11 +1,41 @@
 import { withBasePath } from '@/lib/base-path'
 
+function isLocalHostname(hostname: string) {
+  return hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1'
+}
+
+function hostnameOf(raw: string | undefined) {
+  if (!raw?.trim()) return ''
+  try {
+    return new URL(raw).hostname
+  } catch {
+    return ''
+  }
+}
+
+/**
+ * Server-side API base URL. Prefer API_URL (Docker: http://backend:4001).
+ * Avoid falling back to localhost when the public site URL is a real host.
+ */
 export function getApiUrl() {
-  return (
-    process.env.API_URL ||
-    process.env.NEXT_PUBLIC_API_URL ||
-    'http://localhost:4001'
-  )
+  const explicit = process.env.API_URL?.trim()
+  if (explicit) return explicit.replace(/\/$/, '')
+
+  const publicUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4001').replace(/\/$/, '')
+
+  if (typeof window === 'undefined') {
+    const apiHost = hostnameOf(publicUrl)
+    const siteHost =
+      hostnameOf(process.env.SITE_URL) || hostnameOf(process.env.NEXT_PUBLIC_SITE_URL)
+    if (apiHost && isLocalHostname(apiHost) && siteHost && !isLocalHostname(siteHost)) {
+      console.error(
+        `[api] NEXT_PUBLIC_API_URL points at ${apiHost} but site is ${siteHost}; using http://backend:4001. Set API_URL explicitly.`,
+      )
+      return 'http://backend:4001'
+    }
+  }
+
+  return publicUrl
 }
 
 async function apiFetch<T>(path: string, init?: RequestInit, timeoutMs = 4000): Promise<T | null> {

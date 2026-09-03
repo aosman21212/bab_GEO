@@ -3,18 +3,39 @@ import { getApiUrl } from '@/lib/api'
 
 export const dynamic = 'force-dynamic'
 
+function upstreamHost(url: string) {
+  try {
+    return new URL(url).host
+  } catch {
+    return '(invalid-url)'
+  }
+}
+
 /** Public proxy so the browser can load CMS nav extras same-origin. */
 export async function GET() {
+  const base = getApiUrl()
+  const upstream = `${base}/api/pages/meta/published`
+  const controller = new AbortController()
+  const timer = setTimeout(() => controller.abort(), 5000)
+
   try {
-    const res = await fetch(`${getApiUrl()}/api/pages/meta/published`, {
+    const res = await fetch(upstream, {
       cache: 'no-store',
+      signal: controller.signal,
     })
     if (!res.ok) {
-      return NextResponse.json({ error: 'Upstream error' }, { status: res.status })
+      console.error(
+        `[cms/published-pages] upstream ${upstreamHost(upstream)} returned ${res.status}`,
+      )
+      return NextResponse.json([])
     }
     const data = await res.json()
-    return NextResponse.json(data)
-  } catch {
-    return NextResponse.json({ error: 'Failed to load published pages' }, { status: 502 })
+    return NextResponse.json(Array.isArray(data) ? data : [])
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err)
+    console.error(`[cms/published-pages] fetch failed host=${upstreamHost(upstream)}: ${message}`)
+    return NextResponse.json([])
+  } finally {
+    clearTimeout(timer)
   }
 }
