@@ -97,6 +97,34 @@ export async function cacheDelPattern(pattern: string) {
   }
 }
 
+const SESSION_DENY_PREFIX = 'admin:deny:'
+const SESSION_DENY_TTL = 20 * 60
+
+function denyKey(sid: string) {
+  return `${SESSION_DENY_PREFIX}${sid}`
+}
+
+/** Denylist an admin session id (logout / idle). No-op if Redis is down. */
+export async function denySession(sid: string | undefined, ttlSeconds = SESSION_DENY_TTL) {
+  if (!sid || !redisAvailable) return
+  try {
+    await getRedis().set(denyKey(sid), '1', 'EX', ttlSeconds)
+  } catch {
+    /* ignore */
+  }
+}
+
+/** True if this session was logged out. Fail-open if Redis is down (JWT exp still applies). */
+export async function isSessionDenied(sid: string | undefined) {
+  if (!sid || !redisAvailable) return false
+  try {
+    const hit = await getRedis().get(denyKey(sid))
+    return hit !== null
+  } catch {
+    return false
+  }
+}
+
 /** Simple Redis rate limit: max N hits per windowSeconds for a key. */
 export async function rateLimit(key: string, max: number, windowSeconds: number) {
   if (!redisAvailable) return { ok: true, remaining: max }

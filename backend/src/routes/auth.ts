@@ -2,9 +2,15 @@ import { Router } from 'express'
 import bcrypt from 'bcryptjs'
 import { z } from 'zod'
 import { User } from '../models.js'
-import { getUser, requireAuth, signToken } from '../middleware/auth.js'
+import {
+  ADMIN_JWT_EXPIRES_SECONDS,
+  getUser,
+  readBearerPayload,
+  requireAuth,
+  signToken,
+} from '../middleware/auth.js'
 import { recordLoginActivity, clientIpFromRequest } from '../login-activity.js'
-import { rateLimit } from '../cache.js'
+import { denySession, rateLimit } from '../cache.js'
 
 export const authRouter = Router()
 
@@ -49,6 +55,14 @@ authRouter.post('/login', async (req, res) => {
   })
 
   return res.json({ token, user: { email: user.email, role: user.role } })
+})
+
+authRouter.post('/logout', async (req, res) => {
+  const payload = readBearerPayload(req, { ignoreExpiration: true })
+  if (payload?.sid) {
+    await denySession(payload.sid, ADMIN_JWT_EXPIRES_SECONDS)
+  }
+  return res.json({ ok: true })
 })
 
 authRouter.get('/me', requireAuth, async (req, res) => {

@@ -1,7 +1,7 @@
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 import { getApiUrl } from '@/lib/api'
-import { ADMIN_SESSION_COOKIE, setAdminSessionCookie } from '@/lib/admin-session'
+import { ADMIN_SESSION_COOKIE, clearAdminSessionCookie, setAdminSessionCookie } from '@/lib/admin-session'
 
 type Ctx = { params: Promise<{ path: string[] }> }
 
@@ -36,6 +36,10 @@ function isBinaryContentType(contentType: string | null) {
 }
 
 function slideSession(response: NextResponse, token: string) {
+  if (response.status === 401) {
+    clearAdminSessionCookie(response)
+    return response
+  }
   if (response.status >= 200 && response.status < 300) {
     setAdminSessionCookie(response, token)
   }

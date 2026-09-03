@@ -12,13 +12,14 @@ function isLoginPage(pathname: string) {
 }
 
 /**
- * Client idle logout (UX). Server-side enforcement is the short-lived JWT + cookie maxAge
- * (see admin-security-findings #1 / #4): tokens expire ~20m even if this timer never runs.
+ * Client idle logout (UX). Server-side enforcement is JWT expiry + Redis session denylist
+ * on logout (admin-security-findings #1 / #4). Hidden-tab time counts toward idle.
  */
 export function AdminSessionGuard({ children }: { children: ReactNode }) {
   const pathname = usePathname()
   const router = useRouter()
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const lastActivityAt = useRef(Date.now())
 
   useEffect(() => {
     if (isLoginPage(pathname)) return
@@ -32,29 +33,40 @@ export function AdminSessionGuard({ children }: { children: ReactNode }) {
       router.push('/admin?reason=idle')
     }
 
-    const resetTimer = () => {
+    const schedule = (delayMs: number) => {
       if (timerRef.current) clearTimeout(timerRef.current)
       timerRef.current = setTimeout(() => {
         void logout()
-      }, ADMIN_SESSION_IDLE_MS)
+      }, delayMs)
+    }
+
+    const markActivity = () => {
+      lastActivityAt.current = Date.now()
+      schedule(ADMIN_SESSION_IDLE_MS)
     }
 
     const onVisibility = () => {
-      // Pausing the tab still counts toward idle; resume resets when the user returns.
-      if (document.visibilityState === 'visible') resetTimer()
+      if (document.visibilityState !== 'visible') return
+      const elapsed = Date.now() - lastActivityAt.current
+      if (elapsed >= ADMIN_SESSION_IDLE_MS) {
+        void logout()
+        return
+      }
+      schedule(ADMIN_SESSION_IDLE_MS - elapsed)
     }
 
-    resetTimer()
+    lastActivityAt.current = Date.now()
+    schedule(ADMIN_SESSION_IDLE_MS)
 
     for (const event of ACTIVITY_EVENTS) {
-      window.addEventListener(event, resetTimer, { passive: true })
+      window.addEventListener(event, markActivity, { passive: true })
     }
     document.addEventListener('visibilitychange', onVisibility)
 
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current)
       for (const event of ACTIVITY_EVENTS) {
-        window.removeEventListener(event, resetTimer)
+        window.removeEventListener(event, markActivity)
       }
       document.removeEventListener('visibilitychange', onVisibility)
     }

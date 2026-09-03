@@ -45,13 +45,17 @@ Redis rate limit: **10 attempts / 60s** per IP and per email. Exceeding returns 
 
 ## #4 — Medium: Idle timeout is client-only
 
-**Status:** mitigated  
+**Status:** fixed  
 
 **Files:**
-- [`frontend/components/admin-session-guard.tsx`](../frontend/components/admin-session-guard.tsx)
+- [`backend/src/middleware/auth.ts`](../backend/src/middleware/auth.ts) — stable JWT `sid`; denylist check in `requireAuth`
+- [`backend/src/cache.ts`](../backend/src/cache.ts) — Redis `admin:deny:{sid}`
+- [`backend/src/routes/auth.ts`](../backend/src/routes/auth.ts) — `POST /api/auth/logout`
+- [`frontend/app/api/admin/logout/route.ts`](../frontend/app/api/admin/logout/route.ts) — forwards token to backend, then clears cookie
+- [`frontend/components/admin-session-guard.tsx`](../frontend/components/admin-session-guard.tsx) — hidden-tab time counts toward idle
 
 **Fix applied:**  
-After #1, server-side JWT/cookie expiry (~20m) enforces logout even if the tab is closed or the idle timer never fires. Guard still clears the cookie on idle and resets the timer when the tab becomes visible again. Full server denylist remains out of scope.
+Logout and idle denylist the JWT session id in Redis so a copied cookie cannot be reused. Hidden tabs count toward the 20-minute idle window. If Redis is down, JWT/cookie expiry (~20m) remains the fallback.
 
 ---
 
@@ -96,7 +100,7 @@ Invalid email and wrong password both return `Invalid email or password`.
 2. ~~`#3` Login rate limiting~~ **done**
 3. ~~`#2` Insecure production fallbacks~~ **done**
 4. ~~`#5` Documented / compose defaults~~ **done**
-5. ~~`#4` Client-only idle~~ **mitigated**
+5. ~~`#4` Client-only idle~~ **done**
 
 ---
 
