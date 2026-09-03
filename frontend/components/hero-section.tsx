@@ -58,7 +58,7 @@ function HeroImageCarousel({ images }: { images: string[] }) {
               fill
               priority={i === 0}
               sizes="100vw"
-              className="object-cover object-center grayscale"
+              className="object-cover object-center"
             />
           </div>
         ))}
