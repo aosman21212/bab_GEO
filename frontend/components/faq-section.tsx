@@ -6,7 +6,15 @@ import { useTranslations } from 'next-intl'
 import { Reveal } from './reveal'
 import type { GeoFaq } from '@/lib/geo-content'
 
-export function FaqSection({ faqs }: { faqs: GeoFaq[] }) {
+export function FaqSection({
+  faqs,
+  eyebrow,
+  title,
+}: {
+  faqs: GeoFaq[]
+  eyebrow?: string
+  title?: string
+}) {
   const t = useTranslations('faq')
   const [open, setOpen] = useState(0)
 
@@ -16,9 +24,11 @@ export function FaqSection({ faqs }: { faqs: GeoFaq[] }) {
     <section className="py-16 md:py-24" aria-labelledby="faq-heading">
       <div className="mx-auto max-w-3xl px-4 sm:px-6">
         <Reveal>
-          <p className="text-sm font-semibold uppercase tracking-wide text-primary">{t('eyebrow')}</p>
+          <p className="text-sm font-semibold uppercase tracking-wide text-primary">
+            {eyebrow || t('eyebrow')}
+          </p>
           <h2 id="faq-heading" className="mt-2 text-3xl font-extrabold text-navy md:text-4xl">
-            {t('title')}
+            {title || t('title')}
           </h2>
         </Reveal>
 

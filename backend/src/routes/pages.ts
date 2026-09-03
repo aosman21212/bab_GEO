@@ -3,10 +3,26 @@ import { z } from 'zod'
 import { Page } from '../models.js'
 import { cacheDel, cacheGet, cacheSet } from '../cache.js'
 import { requireAuth } from '../middleware/auth.js'
+import { HOME_PAGE_SLUG, ensureHomePage } from '../homepage.js'
 
 export const pagesRouter = Router()
 
+const pageCategorySchema = z.enum([
+  'home',
+  'solution',
+  'industry',
+  'product',
+  'case-study',
+  'article',
+  'landing',
+])
+
 pagesRouter.get('/', requireAuth, async (_req, res) => {
+  try {
+    await ensureHomePage()
+  } catch (err) {
+    console.error('[pages] ensureHomePage failed', err)
+  }
   const pages = await Page.find().sort({ updatedAt: -1 }).lean()
   return res.json(pages)
 })
@@ -32,6 +48,10 @@ pagesRouter.post('/', requireAuth, async (req, res) => {
     return res.status(400).json({ error: parsed.error.flatten() })
   }
 
+  if (parsed.data.slug === HOME_PAGE_SLUG) {
+    return res.status(400).json({ error: 'Home page cannot be created from this endpoint' })
+  }
+
   if (parsed.data.category === 'landing' && !parsed.data.landingType) {
     return res.status(400).json({ error: 'landingType is required for landing pages' })
   }
@@ -50,6 +70,13 @@ pagesRouter.post('/', requireAuth, async (req, res) => {
 })
 
 pagesRouter.get('/by-id/:slug', requireAuth, async (req, res) => {
+  if (req.params.slug === HOME_PAGE_SLUG) {
+    try {
+      await ensureHomePage()
+    } catch (err) {
+      console.error('[pages] ensureHomePage failed', err)
+    }
+  }
   const page = await Page.findOne({ slug: req.params.slug }).lean()
   if (!page) return res.status(404).json({ error: 'Not found' })
   return res.json(page)
@@ -57,7 +84,11 @@ pagesRouter.get('/by-id/:slug', requireAuth, async (req, res) => {
 
 /** Public catalog of published pages for sitemap / GEO llms.txt / nav / Success Stories */
 pagesRouter.get('/meta/published', async (_req, res) => {
-  const pages = await Page.find({ status: 'published' })
+  const pages = await Page.find({
+    status: 'published',
+    slug: { $ne: HOME_PAGE_SLUG },
+    category: { $ne: 'home' },
+  })
     .select(
       'slug category locales.en.metaTitle locales.en.heroHeading locales.en.heroDescription locales.en.eyebrow locales.en.image locales.en.metaDescription locales.ar.metaTitle locales.ar.heroHeading locales.ar.heroDescription locales.ar.eyebrow locales.ar.image locales.ar.metaDescription updatedAt',
     )
@@ -146,7 +177,7 @@ pagesRouter.get('/:slug', async (req, res) => {
 pagesRouter.put('/:slug', requireAuth, async (req, res) => {
   const parsed = z
     .object({
-      category: z.enum(['solution', 'industry', 'product', 'case-study', 'article', 'landing']).optional(),
+      category: pageCategorySchema.optional(),
       landingType: z.enum(['lead-form', 'whatsapp']).optional(),
       status: z.enum(['published', 'draft']).optional(),
       locales: z
@@ -159,13 +190,27 @@ pagesRouter.put('/:slug', requireAuth, async (req, res) => {
     .safeParse(req.body)
   if (!parsed.success) return res.status(400).json({ error: parsed.error.flatten() })
 
+  const existing = await Page.findOne({ slug: req.params.slug }).lean()
+  if (!existing) return res.status(404).json({ error: 'Not found' })
+
+  const isHome = existing.slug === HOME_PAGE_SLUG || existing.category === 'home'
+  if (isHome && parsed.data.category && parsed.data.category !== 'home') {
+    return res.status(400).json({ error: 'Home page category cannot be changed' })
+  }
+  if (!isHome && parsed.data.category === 'home') {
+    return res.status(400).json({ error: 'Only the reserved home page can use the home category' })
+  }
+
   const update: Record<string, unknown> = { ...parsed.data }
+  if (isHome) {
+    update.category = 'home'
+    update.landingType = undefined
+  }
   if (update.category && update.category !== 'landing') {
     update.landingType = undefined
   }
   if (update.category === 'landing' && !update.landingType) {
-    const existing = await Page.findOne({ slug: req.params.slug }).lean()
-    if (!existing?.landingType) {
+    if (!existing.landingType) {
       return res.status(400).json({ error: 'landingType is required for landing pages' })
     }
   }
@@ -181,6 +226,9 @@ pagesRouter.put('/:slug', requireAuth, async (req, res) => {
 })
 
 pagesRouter.delete('/:slug', requireAuth, async (req, res) => {
+  if (req.params.slug === HOME_PAGE_SLUG) {
+    return res.status(400).json({ error: 'Home page cannot be deleted' })
+  }
   const page = await Page.findOneAndDelete({ slug: req.params.slug })
   if (!page) return res.status(404).json({ error: 'Not found' })
   await cacheDel(`page:${req.params.slug}:en`, `page:${req.params.slug}:ar`)

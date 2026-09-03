@@ -18,6 +18,7 @@ import {
   mergeGeoSettings,
   type GeoSiteSettings,
 } from '@/lib/geo-content'
+import { fetchHomepageContent } from '@/lib/homepage-cms'
 
 export async function generateMetadata({
   params,
@@ -26,15 +27,21 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params
   setRequestLocale(locale)
-  const messages = await getMessages()
+  const loc = locale === 'ar' ? 'ar' : 'en'
+  const [messages, home] = await Promise.all([
+    getMessages(),
+    fetchHomepageContent(loc),
+  ])
   const siteSettings = mergeGeoSettings(
     (messages as { siteSettings?: GeoSiteSettings }).siteSettings,
   )
   const title =
-    (locale === 'ar' ? siteSettings.seoTitleAr : siteSettings.seoTitleEn) ||
+    home.metaTitle ||
+    (loc === 'ar' ? siteSettings.seoTitleAr : siteSettings.seoTitleEn) ||
     'BAB International Corp'
   const description =
-    (locale === 'ar' ? siteSettings.seoDescriptionAr : siteSettings.seoDescriptionEn) ||
+    home.metaDescription ||
+    (loc === 'ar' ? siteSettings.seoDescriptionAr : siteSettings.seoDescriptionEn) ||
     'Empower your business with seamless connectivity and intelligent solutions.'
 
   return buildPageMetadata({
@@ -50,12 +57,15 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
   const { locale } = await params
   setRequestLocale(locale)
 
-  const messages = await getMessages()
+  const loc = locale === 'ar' ? 'ar' : 'en'
+  const [messages, home] = await Promise.all([
+    getMessages(),
+    fetchHomepageContent(loc),
+  ])
   const siteSettings = mergeGeoSettings(
     (messages as { siteSettings?: GeoSiteSettings }).siteSettings,
   )
-  const loc = locale === 'ar' ? 'ar' : 'en'
-  const faqs = faqsForLocale(siteSettings, loc)
+  const faqs = home.faq.items.length ? home.faq.items : faqsForLocale(siteSettings, loc)
   const faqLd = buildFaqPageJsonLd(faqs)
 
   return (
@@ -66,17 +76,17 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }}
         />
       ) : null}
-      <HeroSection />
-      <OurWorksSection />
-      <ExperienceSection />
-      <IndustriesSection />
-      <TransformationSection />
-      <ChannelsSection />
-      <PartnersSection />
-      <TestimonialsSection />
-      <FaqSection faqs={faqs} />
-      <ImpactSection />
-      <CtaContactSection />
+      <HeroSection content={home.hero} />
+      <OurWorksSection title={home.works.title} />
+      <ExperienceSection works={home.works} experience={home.experience} />
+      <IndustriesSection industries={home.industries} stats={home.stats} />
+      <TransformationSection content={home.transformation} />
+      <ChannelsSection content={home.channels} />
+      <PartnersSection content={home.partners} />
+      <TestimonialsSection title={home.testimonials.title} />
+      <FaqSection faqs={faqs} eyebrow={home.faq.eyebrow} title={home.faq.title} />
+      <ImpactSection content={home.impact} />
+      <CtaContactSection content={home.cta} />
     </>
   )
 }

@@ -11,6 +11,7 @@ import {
   PAGE_CATEGORIES,
   type PageCategory,
 } from '@/lib/page-categories'
+import { homepageTitleFromLocales } from '@/lib/homepage-content'
 import { cmsPublicPagePath } from '@/lib/public-urls'
 import { withBasePath } from '@/lib/base-path'
 
@@ -21,8 +22,8 @@ type PageDoc = {
   landingType?: string
   status?: 'published' | 'draft'
   locales: {
-    en?: { metaTitle?: string; heroHeading?: string; eyebrow?: string }
-    ar?: { metaTitle?: string; heroHeading?: string; eyebrow?: string }
+    en?: Record<string, unknown>
+    ar?: Record<string, unknown>
   }
 }
 
@@ -61,8 +62,11 @@ export default function AdminLibraryPage() {
     return pages.filter((p) => {
       if (filter !== 'all' && p.category !== filter) return false
       if (!query) return true
-      const en = p.locales?.en?.metaTitle || p.locales?.en?.heroHeading || ''
-      const ar = p.locales?.ar?.metaTitle || p.locales?.ar?.heroHeading || ''
+      const homeTitles = homepageTitleFromLocales(p.locales)
+      const en =
+        String(p.locales?.en?.metaTitle || p.locales?.en?.heroHeading || homeTitles.en || '')
+      const ar =
+        String(p.locales?.ar?.metaTitle || p.locales?.ar?.heroHeading || homeTitles.ar || '')
       return (
         p.slug.toLowerCase().includes(query) ||
         en.toLowerCase().includes(query) ||
@@ -73,6 +77,7 @@ export default function AdminLibraryPage() {
 
   const pills: { id: Filter; label: string; count: number }[] = [
     { id: 'all', label: t('common.all'), count: counts.all },
+    { id: 'home', label: t('library.home'), count: counts.home ?? 0 },
     { id: 'solution', label: t('library.solutions'), count: counts.solution },
     { id: 'industry', label: t('library.industries'), count: counts.industry },
     { id: 'product', label: t('library.products'), count: counts.product },
@@ -135,10 +140,22 @@ export default function AdminLibraryPage() {
           </thead>
           <tbody>
             {filtered.map((p) => {
+              const homeTitles = homepageTitleFromLocales(p.locales)
               const enTitle =
-                p.locales?.en?.metaTitle || p.locales?.en?.heroHeading || p.slug
+                String(
+                  p.locales?.en?.metaTitle ||
+                    p.locales?.en?.heroHeading ||
+                    homeTitles.en ||
+                    p.slug,
+                )
               const arTitle =
-                p.locales?.ar?.metaTitle || p.locales?.ar?.heroHeading || p.locales?.ar?.eyebrow
+                String(
+                  p.locales?.ar?.metaTitle ||
+                    p.locales?.ar?.heroHeading ||
+                    p.locales?.ar?.eyebrow ||
+                    homeTitles.ar ||
+                    '',
+                )
               const status = p.status || 'published'
               return (
                 <tr key={p._id} className="border-t border-border">

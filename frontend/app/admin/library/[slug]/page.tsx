@@ -13,7 +13,13 @@ import {
   type LocaleFormData,
   type PageMetaForm,
 } from '@/components/admin-page-form'
-import type { PageCategory, LandingType } from '@/lib/page-categories'
+import { AdminHomepageForm } from '@/components/admin-homepage-form'
+import { isHomePage, type PageCategory, type LandingType } from '@/lib/page-categories'
+import {
+  emptyHomepageLocale,
+  type HomepageLocaleData,
+} from '@/lib/homepage-content'
+import { homepageLocaleFromApi } from '@/lib/homepage-cms'
 import { cmsPublicPagePath } from '@/lib/public-urls'
 import { withBasePath } from '@/lib/base-path'
 
@@ -42,8 +48,12 @@ export default function AdminLibraryEditPage() {
   })
   const [enForm, setEnForm] = useState<LocaleFormData>(emptyLocaleForm())
   const [arForm, setArForm] = useState<LocaleFormData>(emptyLocaleForm())
+  const [enHome, setEnHome] = useState<HomepageLocaleData>(emptyHomepageLocale())
+  const [arHome, setArHome] = useState<HomepageLocaleData>(emptyHomepageLocale())
   const [message, setMessage] = useState<string | null>(null)
   const [pending, setPending] = useState(false)
+
+  const home = isHomePage(slug, meta.category)
 
   useEffect(() => {
     const load = async () => {
@@ -64,29 +74,35 @@ export default function AdminLibraryEditPage() {
         landingType: data.landingType || 'lead-form',
         status: data.status || 'published',
       })
-      setEnForm(localeFromApi(data.locales?.en))
-      setArForm(localeFromApi(data.locales?.ar))
+      if (isHomePage(data.slug, data.category)) {
+        setEnHome(homepageLocaleFromApi(data.locales?.en, 'en'))
+        setArHome(homepageLocaleFromApi(data.locales?.ar, 'ar'))
+      } else {
+        setEnForm(localeFromApi(data.locales?.en))
+        setArForm(localeFromApi(data.locales?.ar))
+      }
     }
     load()
   }, [slug, router, t])
 
   const activeForm = locale === 'ar' ? arForm : enForm
   const setActiveForm = locale === 'ar' ? setArForm : setEnForm
+  const activeHome = locale === 'ar' ? arHome : enHome
+  const setActiveHome = locale === 'ar' ? setArHome : setEnHome
 
   const save = async () => {
     setPending(true)
     setMessage(null)
-    const locales = {
-      en: localeToApi(enForm),
-      ar: localeToApi(arForm),
-    }
+    const locales = home
+      ? { en: enHome, ar: arHome }
+      : { en: localeToApi(enForm), ar: localeToApi(arForm) }
     const res = await fetch(withBasePath(`/api/admin/proxy/pages/${slug}`), {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        category: meta.category,
-        landingType: meta.category === 'landing' ? meta.landingType || 'lead-form' : undefined,
-        status: meta.status,
+        category: home ? 'home' : meta.category,
+        landingType: !home && meta.category === 'landing' ? meta.landingType || 'lead-form' : undefined,
+        status: home ? 'published' : meta.status,
         locales,
       }),
     })
@@ -101,6 +117,10 @@ export default function AdminLibraryEditPage() {
   }
 
   const remove = async () => {
+    if (home) {
+      setMessage(t('library.cannotDeleteHome'))
+      return
+    }
     if (!confirm(t('library.deleteConfirm'))) return
     const res = await fetch(withBasePath(`/api/admin/proxy/pages/${slug}`), { method: 'DELETE' })
     if (res.ok) router.push('/admin/library')
@@ -109,7 +129,7 @@ export default function AdminLibraryEditPage() {
   if (!page && !message) {
     return (
       <AdminShell
-        title={t('library.editTitle')}
+        title={t(home ? 'library.editHomeTitle' : 'library.editTitle')}
         description={t('library.loadingDescription', { slug })}
       >
         <p className="text-sm text-muted-foreground">{t('common.loading')}</p>
@@ -119,8 +139,12 @@ export default function AdminLibraryEditPage() {
 
   return (
     <AdminShell
-      title={t('library.editTitle')}
-      description={t('library.editDescription', { slug })}
+      title={t(home ? 'library.editHomeTitle' : 'library.editTitle')}
+      description={
+        home
+          ? t('library.editHomeDescription')
+          : t('library.editDescription', { slug })
+      }
       locale={locale}
       onLocaleChange={setLocale}
       actions={
@@ -135,13 +159,15 @@ export default function AdminLibraryEditPage() {
               <ExternalLink className="h-3.5 w-3.5" /> {t('library.viewPage')}
             </a>
           ) : null}
-          <button
-            type="button"
-            onClick={remove}
-            className="rounded-full border border-red-200 px-4 py-2 text-sm font-semibold text-red-600"
-          >
-            {t('common.delete')}
-          </button>
+          {home ? null : (
+            <button
+              type="button"
+              onClick={remove}
+              className="rounded-full border border-red-200 px-4 py-2 text-sm font-semibold text-red-600"
+            >
+              {t('common.delete')}
+            </button>
+          )}
           <button
             type="button"
             disabled={pending}
@@ -154,14 +180,18 @@ export default function AdminLibraryEditPage() {
       }
     >
       {message ? <p className="mb-4 text-sm text-muted-foreground">{message}</p> : null}
-      <AdminPageForm
-        locale={locale}
-        meta={meta}
-        onMetaChange={setMeta}
-        value={activeForm}
-        onChange={setActiveForm}
-        slugEditable={false}
-      />
+      {home ? (
+        <AdminHomepageForm locale={locale} value={activeHome} onChange={setActiveHome} />
+      ) : (
+        <AdminPageForm
+          locale={locale}
+          meta={meta}
+          onMetaChange={setMeta}
+          value={activeForm}
+          onChange={setActiveForm}
+          slugEditable={false}
+        />
+      )}
     </AdminShell>
   )
 }

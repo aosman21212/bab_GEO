@@ -8,6 +8,7 @@ import { env } from './config.js'
 import { User, SiteContent, Partner, Testimonial, Page, Job } from './models.js'
 import { cacheDel } from './cache.js'
 import { ensureRedis } from './cache.js'
+import { ensureHomePage } from './homepage.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const root = path.resolve(__dirname, '../..')
@@ -140,6 +141,16 @@ async function seedTestimonials() {
   console.log(`[seed] testimonials: ${testimonialsSeed.length}`)
 }
 
+async function seedHomePage() {
+  const existing = await Page.findOne({ slug: 'home' }).lean()
+  if (existing) {
+    console.log('[seed] homepage: already exists (left unchanged)')
+    return
+  }
+  await ensureHomePage()
+  console.log('[seed] homepage: created from messages')
+}
+
 async function seedPages() {
   // Lightweight page stubs from message-driven navigation; full EN body seeded as slug metadata.
   // Prefer reading a generated JSON if present.
@@ -256,6 +267,7 @@ async function main() {
   await seedPartners()
   await seedTestimonials()
   await seedPages()
+  await seedHomePage()
   await seedJobs()
   console.log('[seed] done')
   process.exit(0)

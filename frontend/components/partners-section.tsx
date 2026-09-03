@@ -8,6 +8,7 @@ import { Link } from '@/i18n/navigation'
 import { Reveal } from './reveal'
 import { usePrefersReducedMotion } from './motion-utils'
 import { fetchPartners, type ApiPartner } from '@/lib/api'
+import type { HomepageLocaleData } from '@/lib/homepage-content'
 
 const fallbackSlugs = [
   'meta',
@@ -109,7 +110,7 @@ function toItems(partners: ApiPartner[] | null) {
   }))
 }
 
-export function PartnersSection() {
+export function PartnersSection({ content }: { content?: HomepageLocaleData['partners'] }) {
   const t = useTranslations('partners')
   const [partners, setPartners] = useState<ApiPartner[] | null>(null)
 
@@ -128,13 +129,17 @@ export function PartnersSection() {
         <Reveal className="overflow-hidden rounded-3xl bg-primary p-6 text-primary-foreground sm:p-8 md:p-12">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:items-center lg:gap-10">
             <div className="min-w-0">
-              <h2 className="text-2xl font-extrabold leading-tight md:text-3xl">{t('title')}</h2>
-              <p className="mt-4 max-w-xl leading-relaxed text-primary-foreground/90">{t('body')}</p>
+              <h2 className="text-2xl font-extrabold leading-tight md:text-3xl">
+                {content?.title || t('title')}
+              </h2>
+              <p className="mt-4 max-w-xl leading-relaxed text-primary-foreground/90">
+                {content?.body || t('body')}
+              </p>
               <Link
                 href="/contact-us"
                 className="mt-8 inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-primary transition-colors hover:bg-white/90"
               >
-                {t('cta')} <ArrowRight className="h-4 w-4 rtl:rotate-180" />
+                {content?.cta || t('cta')} <ArrowRight className="h-4 w-4 rtl:rotate-180" />
               </Link>
             </div>
             <div className="flex min-w-0 max-w-full flex-col gap-2.5 overflow-hidden sm:gap-3">

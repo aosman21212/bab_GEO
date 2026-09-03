@@ -3,6 +3,8 @@
 import Image from '@/components/app-image'
 import { useTranslations } from 'next-intl'
 import { Reveal, StaggerGroup, StaggerItem } from './reveal'
+import { HomeRichText } from './home-rich-text'
+import type { HomepageLocaleData } from '@/lib/homepage-content'
 
 const channelKeys = [
   { key: 'sms', icon: '/images/channels/sms.svg' },
@@ -19,7 +21,7 @@ const channelKeys = [
   { key: 'apple', icon: '/images/channels/sms.svg' },
 ] as const
 
-export function ChannelsSection() {
+export function ChannelsSection({ content }: { content?: HomepageLocaleData['channels'] }) {
   const t = useTranslations('channels')
 
   return (
@@ -27,13 +29,19 @@ export function ChannelsSection() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <Reveal className="mx-auto max-w-3xl text-center">
           <h2 className="text-3xl font-extrabold leading-tight text-navy md:text-4xl lg:text-5xl">
-            {t.rich('headline', {
-              accent: (chunks) => <span className="text-primary">{chunks}</span>,
-              muted: (chunks) => <span className="text-navy">{chunks}</span>,
-              br: () => <br />,
-            })}
+            {content?.headline ? (
+              <HomeRichText text={content.headline} />
+            ) : (
+              t.rich('headline', {
+                accent: (chunks) => <span className="text-primary">{chunks}</span>,
+                muted: (chunks) => <span className="text-navy">{chunks}</span>,
+                br: () => <br />,
+              })
+            )}
           </h2>
-          <p className="mt-4 text-base leading-relaxed text-muted-foreground">{t('body')}</p>
+          <p className="mt-4 text-base leading-relaxed text-muted-foreground">
+            {content?.body || t('body')}
+          </p>
         </Reveal>
 
         <StaggerGroup className="mt-12 grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-6 md:gap-4">

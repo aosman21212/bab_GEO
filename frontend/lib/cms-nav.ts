@@ -49,6 +49,7 @@ export function partitionCmsNavExtras(
       label,
       category,
     }
+    if (category === 'home' || page.slug === 'home') continue
     if (category === 'industry') extras.industries.push(link)
     else if (category === 'product') extras.products.push(link)
     else if (category === 'case-study') extras.caseStudies.push(link)

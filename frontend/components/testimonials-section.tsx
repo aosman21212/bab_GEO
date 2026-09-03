@@ -8,6 +8,8 @@ import { useLocale, useTranslations } from 'next-intl'
 import { Reveal } from './reveal'
 import { usePrefersReducedMotion } from './motion-utils'
 import { fetchTestimonials, type ApiTestimonial } from '@/lib/api'
+import { HomeRichText } from './home-rich-text'
+import type { HomepageLocaleData } from '@/lib/homepage-content'
 
 const fallbackTestimonials: ApiTestimonial[] = [
   {
@@ -79,7 +81,11 @@ const fallbackTestimonials: ApiTestimonial[] = [
   },
 ]
 
-export function TestimonialsSection() {
+export function TestimonialsSection({
+  title,
+}: {
+  title?: HomepageLocaleData['testimonials']['title']
+}) {
   const t = useTranslations('testimonials')
   const locale = useLocale()
   const reduced = usePrefersReducedMotion()
@@ -105,9 +111,13 @@ export function TestimonialsSection() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <Reveal className="pb-10 text-center">
           <h2 className="text-3xl font-extrabold text-navy md:text-4xl">
-            {t.rich('title', {
-              accent: (chunks) => <span className="text-primary">{chunks}</span>,
-            })}
+            {title ? (
+              <HomeRichText text={title} />
+            ) : (
+              t.rich('title', {
+                accent: (chunks) => <span className="text-primary">{chunks}</span>,
+              })
+            )}
           </h2>
         </Reveal>
 

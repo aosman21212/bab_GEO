@@ -2,6 +2,7 @@ import type { Locale } from '@/i18n/routing'
 import type { PageContent } from '@/lib/site-content'
 import { getLocalizedPage } from '@/lib/localized-content'
 import { getApiUrl } from '@/lib/api'
+import { HOME_PAGE_SLUG } from '@/lib/page-categories'
 
 const arabicRe = /[\u0600-\u06FF]/
 
@@ -11,6 +12,7 @@ function hasArabic(value: unknown): boolean {
 
 function mapToPageContent(raw: Record<string, unknown>, slug: string): PageContent | null {
   if (raw.status === 'draft') return null
+  if (slug === HOME_PAGE_SLUG || raw.category === 'home') return null
 
   const impact = (raw.impact as { heading?: string; text?: string } | undefined) ?? {
     heading: '',
@@ -107,6 +109,7 @@ export async function fetchCmsPage(
   locale: Locale,
   timeoutMs = 4000
 ): Promise<PageContent | undefined> {
+  if (slug === HOME_PAGE_SLUG) return undefined
   const fallback = getLocalizedPage(slug, locale)
   const controller = new AbortController()
   const timer = setTimeout(() => controller.abort(), timeoutMs)

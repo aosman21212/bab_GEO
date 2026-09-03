@@ -41,14 +41,16 @@ function LogosMarquee() {
   )
 }
 
-export function OurWorksSection() {
+export function OurWorksSection({ title }: { title?: string }) {
   const t = useTranslations('works')
 
   return (
     <section className="py-16 md:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <Reveal>
-          <h2 className="text-center text-3xl font-extrabold text-navy md:text-4xl">{t('title')}</h2>
+          <h2 className="text-center text-3xl font-extrabold text-navy md:text-4xl">
+            {title || t('title')}
+          </h2>
         </Reveal>
 
         <Reveal className="mt-10 overflow-hidden rounded-2xl border border-border/70 bg-background px-4 py-5 sm:px-6 sm:py-6 md:mt-12">
