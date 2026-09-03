@@ -236,7 +236,7 @@ Used by:
 
 ```ts
 const COOKIE_PATH = basePath || '/'
-export const ADMIN_SESSION_IDLE_MS = 5 * 60 * 1000   // 5 min
+export const ADMIN_SESSION_IDLE_MS = 20 * 60 * 1000   // 20 min
 ```
 
 Used by: `login/route.ts`, `logout/route.ts`, `proxy/route.ts`, `upload/route.ts`, `indexnow/route.ts`

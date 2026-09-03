@@ -2,8 +2,8 @@ import type { NextResponse } from 'next/server'
 import { basePath } from '@/lib/base-path'
 
 export const ADMIN_SESSION_COOKIE = 'bab_admin_token'
-export const ADMIN_SESSION_IDLE_MS = 5 * 60 * 1000
-export const ADMIN_SESSION_COOKIE_MAX_AGE = 5 * 60
+export const ADMIN_SESSION_IDLE_MS = 20 * 60 * 1000
+export const ADMIN_SESSION_COOKIE_MAX_AGE = 20 * 60
 
 const COOKIE_PATH = basePath || '/'
 
