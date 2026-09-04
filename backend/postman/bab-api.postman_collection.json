@@ -1,0 +1,881 @@
+{
+  "info": {
+    "name": "BAB CMS API (backend)",
+    "_postman_id": "b7a1c3d0-4f21-4a8e-9c31-bab0cms00001",
+    "description": "Express API for the BAB CMS.\n\n## Setup\n\n1. Import this collection and `bab-api.local.postman_environment.json`.\n2. Select the environment and check `baseUrl` (default `http://localhost:4001`).\n3. Set `adminEmail` / `adminPassword` to match your seeded admin.\n\n## Getting a token\n\nTwo options:\n\n**Real flow (matches production):** run `Auth / 1. Login` — it stores `mfaToken` and emails a 6-digit code. Put that code in the `mfaCode` variable, then run `Auth / 2. Verify MFA code`, which stores `token`. Requires working SMTP.\n\n**Dev shortcut (no email):** run `Auth / Mint dev token (bypass MFA)`. It signs a `mfaVerified` JWT locally with `jwtSecret` and stores it in `token`. Only works when `jwtSecret` matches the server's `JWT_SECRET`.\n\nProtected requests inherit `Bearer {{token}}` from the collection. `requireAuth` re-issues the JWT on every response via the `x-admin-token` header, and a collection-level test script keeps `token` refreshed automatically, mirroring the 20-minute sliding session.\n\n## Production note\n\nPort 4001 is not exposed publicly — nginx only proxies the Next.js frontend. To hit production, run Postman on the server with `baseUrl=http://localhost:4001`, or open an SSH tunnel (`ssh -L 4001:localhost:4001 user@host`).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// requireAuth re-issues the session JWT on every authenticated response.",
+          "// Keep {{token}} fresh so the 20-minute sliding window never expires mid-run.",
+          "const refreshed = pm.response.headers.get('x-admin-token');",
+          "if (refreshed) {",
+          "  pm.collectionVariables.set('token', refreshed);",
+          "}",
+          "",
+          "if (pm.response.code === 401) {",
+          "  console.warn('401 - run \"Mint dev token\" or the Login + Verify MFA pair to refresh {{token}}.');",
+          "}"
+        ]
+      }
+    }
+  ],
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:4001", "type": "string" },
+    { "key": "adminEmail", "value": "admin@bab.com.sa", "type": "string" },
+    { "key": "adminPassword", "value": "", "type": "string" },
+    { "key": "jwtSecret", "value": "", "type": "string" },
+    { "key": "token", "value": "", "type": "string" },
+    { "key": "mfaToken", "value": "", "type": "string" },
+    { "key": "mfaCode", "value": "", "type": "string" },
+    { "key": "adminUserId", "value": "", "type": "string" },
+    { "key": "userId", "value": "", "type": "string" },
+    { "key": "partnerId", "value": "", "type": "string" },
+    { "key": "testimonialId", "value": "", "type": "string" },
+    { "key": "jobId", "value": "", "type": "string" },
+    { "key": "inquiryId", "value": "", "type": "string" },
+    { "key": "applicationId", "value": "", "type": "string" },
+    { "key": "pageSlug", "value": "omnichannel", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "GET /api/health",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/health",
+            "description": "Liveness probe. Also used by the compose healthcheck and the frontend diagnostics endpoint."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('service is bab-cms-api', () => pm.expect(pm.response.json().service).to.eql('bab-cms-api'));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Mint dev token (bypass MFA)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/users",
+            "description": "Signs an `mfaVerified` JWT locally with {{jwtSecret}} and stores it in {{token}}, skipping the email code. Calls GET /api/users to prove the token works and to capture a real user _id into {{adminUserId}} (needed by GET /api/auth/me, which looks the id up in Mongo).\n\nFails with 401 if {{jwtSecret}} does not match the server's JWT_SECRET."
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Postman predefines CryptoJS as a sandbox global; do not redeclare it.",
+                  "function b64url(input) {",
+                  "  const words = typeof input === 'string' ? CryptoJS.enc.Utf8.parse(input) : input;",
+                  "  return CryptoJS.enc.Base64.stringify(words)",
+                  "    .replace(/=+$/, '')",
+                  "    .replace(/\\+/g, '-')",
+                  "    .replace(/\\//g, '_');",
+                  "}",
+                  "",
+                  "// pm.variables resolves environment, collection and global scopes.",
+                  "const secret = pm.variables.get('jwtSecret');",
+                  "if (!secret) { throw new Error('Set the jwtSecret variable to the server JWT_SECRET'); }",
+                  "",
+                  "const now = Math.floor(Date.now() / 1000);",
+                  "const header = b64url(JSON.stringify({ alg: 'HS256', typ: 'JWT' }));",
+                  "const payload = b64url(JSON.stringify({",
+                  "  sub: pm.variables.get('adminUserId') || '000000000000000000000000',",
+                  "  email: pm.variables.get('adminEmail'),",
+                  "  role: 'admin',",
+                  "  sid: 'postman-' + now,",
+                  "  mfaVerified: true,",
+                  "  iat: now,",
+                  "  exp: now + 20 * 60",
+                  "}));",
+                  "const signature = b64url(CryptoJS.HmacSHA256(header + '.' + payload, secret));",
+                  "",
+                  "pm.collectionVariables.set('token', header + '.' + payload + '.' + signature);"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('minted token is accepted', () => pm.response.to.have.status(200));",
+                  "",
+                  "if (pm.response.code === 200) {",
+                  "  const users = pm.response.json();",
+                  "  if (Array.isArray(users) && users.length) {",
+                  "    const match = users.find((u) => u.email === pm.variables.get('adminEmail')) || users[0];",
+                  "    pm.collectionVariables.set('adminUserId', match._id);",
+                  "",
+                  "    // Re-mint bound to a real _id, otherwise GET /api/auth/me cannot resolve the user.",
+                  "    const b64url = (input) => CryptoJS.enc.Base64",
+                  "      .stringify(typeof input === 'string' ? CryptoJS.enc.Utf8.parse(input) : input)",
+                  "      .replace(/=+$/, '').replace(/\\+/g, '-').replace(/\\//g, '_');",
+                  "",
+                  "    const now = Math.floor(Date.now() / 1000);",
+                  "    const header = b64url(JSON.stringify({ alg: 'HS256', typ: 'JWT' }));",
+                  "    const payload = b64url(JSON.stringify({",
+                  "      sub: match._id,",
+                  "      email: match.email,",
+                  "      role: match.role || 'admin',",
+                  "      sid: 'postman-' + now,",
+                  "      mfaVerified: true,",
+                  "      iat: now,",
+                  "      exp: now + 20 * 60",
+                  "    }));",
+                  "    const signature = b64url(CryptoJS.HmacSHA256(header + '.' + payload, pm.variables.get('jwtSecret')));",
+                  "    pm.collectionVariables.set('token', header + '.' + payload + '.' + signature);",
+                  "    console.log('token bound to ' + match.email + ' (' + match._id + ')');",
+                  "  }",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "1. Login",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "options": { "raw": { "language": "json" } },
+              "raw": "{\n  \"email\": \"{{adminEmail}}\",\n  \"password\": \"{{adminPassword}}\",\n  \"locale\": \"en\"\n}"
+            },
+            "url": "{{baseUrl}}/api/auth/login",
+            "description": "Step 1 of 2. Validates credentials, stores an MFA challenge and emails a 6-digit code. Returns `mfaRequired: true` plus a 10-minute `mfaToken` — not a session token.\n\nRate limited to 10 attempts per minute per IP and per email.\n\nReturns 503 if SMTP is not configured, since the code cannot be delivered."
+            },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.response.to.have.status(200));",
+                  "",
+                  "if (pm.response.code === 200) {",
+                  "  const body = pm.response.json();",
+                  "  pm.test('MFA is required', () => pm.expect(body.mfaRequired).to.be.true);",
+                  "  pm.collectionVariables.set('mfaToken', body.mfaToken);",
+                  "  console.log('Check ' + body.email + ' for the 6-digit code, put it in the mfaCode variable, then run \"2. Verify MFA code\".');",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "2. Verify MFA code",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "options": { "raw": { "language": "json" } },
+              "raw": "{\n  \"mfaToken\": \"{{mfaToken}}\",\n  \"code\": \"{{mfaCode}}\"\n}"
+            },
+            "url": "{{baseUrl}}/api/auth/mfa/verify",
+            "description": "Step 2 of 2. Exchanges the emailed code for a 20-minute session JWT and stores it in {{token}}.\n\nFive wrong attempts lock the challenge (429) and you must start again at Login."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.response.to.have.status(200));",
+                  "",
+                  "if (pm.response.code === 200) {",
+                  "  const body = pm.response.json();",
+                  "  pm.test('session token returned', () => pm.expect(body.token).to.be.a('string'));",
+                  "  pm.collectionVariables.set('token', body.token);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Resend MFA code",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "options": { "raw": { "language": "json" } },
+              "raw": "{\n  \"mfaToken\": \"{{mfaToken}}\",\n  \"locale\": \"en\"\n}"
+            },
+            "url": "{{baseUrl}}/api/auth/mfa/resend",
+            "description": "Issues a fresh code for the existing challenge. Subject to a 60-second cooldown, which returns 429 with `secondsRemaining`."
+          }
+        },
+        {
+          "name": "GET /api/auth/me",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/auth/me",
+            "description": "Current admin. Resolves {{token}}'s `sub` against Mongo, so a minted token needs {{adminUserId}} to be a real user _id."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": ["pm.test('200 OK', () => pm.response.to.have.status(200));"]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login - wrong password (expect 401)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "options": { "raw": { "language": "json" } },
+              "raw": "{\n  \"email\": \"{{adminEmail}}\",\n  \"password\": \"definitely-not-the-password\"\n}"
+            },
+            "url": "{{baseUrl}}/api/auth/login",
+            "description": "Negative check. A 503 here instead of 401 means the API could not be reached or SMTP failed, not that the credentials were wrong."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('401 Unauthorized', () => pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "GET /api/users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/users",
+            "description": "All admins, password hashes stripped."
+          }
+        },
+        {
+          "name": "GET /api/users/activity",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/users/activity",
+            "description": "Last 200 login events with ip, user agent and geo, newest first."
+          }
+        },
+        {
+          "name": "POST /api/users",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "options": { "raw": { "language": "json" } },
+              "raw": "{\n  \"email\": \"postman.admin.{{$timestamp}}@bab.com.sa\",\n  \"password\": \"ChangeMe123!\"\n}"
+            },
+            "url": "{{baseUrl}}/api/users",
+            "description": "Creates an admin. Password minimum 8 characters, duplicate email returns 409. The email is timestamped so repeat runs never collide, and the new _id is stored in {{userId}} for the PATCH and DELETE below.\n\n{{userId}} is only ever set from a successful create here, so the DELETE cannot target a pre-existing admin."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('201 Created', () => pm.response.to.have.status(201));",
+                  "",
+                  "if (pm.response.code === 201) {",
+                  "  pm.collectionVariables.set('userId', pm.response.json()._id);",
+                  "} else {",
+                  "  // Never leave a stale id behind - the DELETE below would target a real admin.",
+                  "  pm.collectionVariables.set('userId', '');",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PATCH /api/users/:id",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "options": { "raw": { "language": "json" } },
+              "raw": "{\n  \"password\": \"RotatedPass123!\"\n}"
+            },
+            "url": "{{baseUrl}}/api/users/{{userId}}",
+            "description": "Updates email and/or password. Sending neither returns 400."
+          }
+        },
+        {
+          "name": "DELETE /api/users/:id",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/api/users/{{userId}}",
+            "description": "Refuses to delete your own account or the last remaining admin (400)."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Content",
+      "item": [
+        {
+          "name": "GET /api/content/:locale (public)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/content/en",
+            "description": "Public site content keyed by section, Redis cached for 5 minutes. Locale must be `en` or `ar`."
+          }
+        },
+        {
+          "name": "GET /api/content/admin/:locale",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/content/admin/en",
+            "description": "Raw content documents for the admin editor, uncached."
+          }
+        },
+        {
+          "name": "PUT /api/content/:locale/:key",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "options": { "raw": { "language": "json" } },
+              "raw": "{\n  \"data\": {\n    \"headline\": \"Updated from Postman\"\n  }\n}"
+            },
+            "url": "{{baseUrl}}/api/content/en/postman_test_key",
+            "description": "Upserts one content section and invalidates the locale cache.\n\nThis REPLACES the whole section rather than merging into it, so the key is deliberately the throwaway `postman_test_key`. Point it at a real key such as `siteSettings` or `hero` only when you intend to overwrite that section wholesale — sending a partial body there will drop every field you omitted, and `siteSettings` in particular feeds the homepage SEO title, description and FAQ list."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Partners",
+      "item": [
+        {
+          "name": "GET /api/partners (public)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/partners",
+            "description": "Active partners only, ordered by `order`, Redis cached."
+          }
+        },
+        {
+          "name": "GET /api/partners/admin/all",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/partners/admin/all",
+            "description": "Includes inactive partners."
+          }
+        },
+        {
+          "name": "POST /api/partners",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "options": { "raw": { "language": "json" } },
+              "raw": "{\n  \"slug\": \"postman-partner\",\n  \"name\": \"Postman Partner\",\n  \"logoUrl\": \"/images/partners/placeholder.png\",\n  \"websiteUrl\": \"https://example.com\",\n  \"order\": 99,\n  \"active\": true\n}"
+            },
+            "url": "{{baseUrl}}/api/partners"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "  pm.collectionVariables.set('partnerId', pm.response.json()._id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PUT /api/partners/:id",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "options": { "raw": { "language": "json" } },
+              "raw": "{\n  \"name\": \"Postman Partner (renamed)\",\n  \"active\": false\n}"
+            },
+            "url": "{{baseUrl}}/api/partners/{{partnerId}}"
+          }
+        },
+        {
+          "name": "DELETE /api/partners/:id",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/api/partners/{{partnerId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Testimonials",
+      "item": [
+        {
+          "name": "GET /api/testimonials (public)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/testimonials?locale=en",
+            "description": "Active testimonials. Omit `locale` for all locales; `en` or `ar` also includes entries marked `all`."
+          }
+        },
+        {
+          "name": "GET /api/testimonials/admin/all",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/testimonials/admin/all"
+          }
+        },
+        {
+          "name": "POST /api/testimonials",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "options": { "raw": { "language": "json" } },
+              "raw": "{\n  \"name\": \"Postman Reviewer\",\n  \"role\": \"QA Engineer\",\n  \"quote\": \"Created from the Postman collection.\",\n  \"logoUrl\": \"/images/partners/placeholder.png\",\n  \"locale\": \"all\",\n  \"order\": 99,\n  \"active\": true\n}"
+            },
+            "url": "{{baseUrl}}/api/testimonials"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "  pm.collectionVariables.set('testimonialId', pm.response.json()._id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PUT /api/testimonials/:id",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "options": { "raw": { "language": "json" } },
+              "raw": "{\n  \"quote\": \"Updated from the Postman collection.\"\n}"
+            },
+            "url": "{{baseUrl}}/api/testimonials/{{testimonialId}}"
+          }
+        },
+        {
+          "name": "DELETE /api/testimonials/:id",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/api/testimonials/{{testimonialId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Pages",
+      "item": [
+        {
+          "name": "GET /api/pages/meta/published (public)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/pages/meta/published",
+            "description": "Published page catalog used by the sitemap, nav and llms.txt. Excludes the reserved home page."
+          }
+        },
+        {
+          "name": "GET /api/pages/:slug (public)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/pages/{{pageSlug}}?locale=en",
+            "description": "Rendered page payload for one locale, Redis cached. Draft pages return 404."
+          }
+        },
+        {
+          "name": "GET /api/pages",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/pages",
+            "description": "All pages including drafts, newest first."
+          }
+        },
+        {
+          "name": "GET /api/pages/by-id/:slug",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/pages/by-id/{{pageSlug}}",
+            "description": "Full document for the admin editor, drafts included."
+          }
+        },
+        {
+          "name": "POST /api/pages",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "options": { "raw": { "language": "json" } },
+              "raw": "{\n  \"slug\": \"postman-test-page\",\n  \"category\": \"solution\",\n  \"status\": \"draft\",\n  \"locales\": {\n    \"en\": {\n      \"metaTitle\": \"Postman Test Page\",\n      \"heroHeading\": \"Created from Postman\",\n      \"heroDescription\": \"Safe to delete.\"\n    }\n  }\n}"
+            },
+            "url": "{{baseUrl}}/api/pages",
+            "description": "Slug must be lowercase kebab-case. `category` is one of solution, industry, product, case-study, article, landing — `landing` also requires `landingType`. Duplicate slug returns 409."
+          }
+        },
+        {
+          "name": "PUT /api/pages/:slug",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "options": { "raw": { "language": "json" } },
+              "raw": "{\n  \"status\": \"published\"\n}"
+            },
+            "url": "{{baseUrl}}/api/pages/postman-test-page",
+            "description": "The reserved home page cannot change category."
+          }
+        },
+        {
+          "name": "DELETE /api/pages/:slug",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/api/pages/postman-test-page",
+            "description": "The reserved home page cannot be deleted (400)."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Inquiries",
+      "item": [
+        {
+          "name": "POST /api/inquiries (public)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "options": { "raw": { "language": "json" } },
+              "raw": "{\n  \"name\": \"Postman Lead\",\n  \"company\": \"Postman\",\n  \"phone\": \"+966500000000\",\n  \"email\": \"postman.lead@example.com\",\n  \"project\": \"Submitted from the Postman collection.\",\n  \"locale\": \"en\"\n}"
+            },
+            "url": "{{baseUrl}}/api/inquiries",
+            "description": "Contact form submission. Rate limited to 5 per minute per IP. Emails INQUIRY_NOTIFY_TO, so avoid running this repeatedly against production."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "  pm.collectionVariables.set('inquiryId', pm.response.json().id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /api/inquiries",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/inquiries?status=new",
+            "description": "Latest 200 inquiries. Drop the query to list every status."
+          }
+        },
+        {
+          "name": "PATCH /api/inquiries/:id",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "options": { "raw": { "language": "json" } },
+              "raw": "{\n  \"status\": \"read\"\n}"
+            },
+            "url": "{{baseUrl}}/api/inquiries/{{inquiryId}}",
+            "description": "Status is one of new, read, archived."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Jobs",
+      "item": [
+        {
+          "name": "GET /api/jobs (public)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/jobs",
+            "description": "Open roles only, Redis cached."
+          }
+        },
+        {
+          "name": "GET /api/jobs/admin/all",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/jobs/admin/all",
+            "description": "Includes closed roles."
+          }
+        },
+        {
+          "name": "POST /api/jobs",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "options": { "raw": { "language": "json" } },
+              "raw": "{\n  \"slug\": \"postman-test-role\",\n  \"titleEn\": \"Postman Test Role\",\n  \"titleAr\": \"وظيفة اختبار\",\n  \"departmentEn\": \"Engineering\",\n  \"locationEn\": \"Riyadh\",\n  \"employmentType\": \"full-time\",\n  \"status\": \"open\",\n  \"order\": 99\n}"
+            },
+            "url": "{{baseUrl}}/api/jobs",
+            "description": "`employmentType` is one of full-time, part-time, contract, internship. Duplicate slug returns 409."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "  pm.collectionVariables.set('jobId', pm.response.json()._id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PUT /api/jobs/:id",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "options": { "raw": { "language": "json" } },
+              "raw": "{\n  \"status\": \"closed\"\n}"
+            },
+            "url": "{{baseUrl}}/api/jobs/{{jobId}}"
+          }
+        },
+        {
+          "name": "DELETE /api/jobs/:id",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/api/jobs/{{jobId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Job applications",
+      "item": [
+        {
+          "name": "POST /api/job-applications (public)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "cv", "type": "file", "src": [], "description": "Required. PDF, DOC or DOCX, max 5 MB." },
+                { "key": "name", "value": "Postman Applicant", "type": "text" },
+                { "key": "email", "value": "postman.applicant@example.com", "type": "text" },
+                { "key": "phone", "value": "+966500000000", "type": "text" },
+                { "key": "coverLetter", "value": "Submitted from the Postman collection.", "type": "text" },
+                { "key": "jobId", "value": "{{jobId}}", "type": "text", "description": "Optional. Must reference an open job, otherwise 400." },
+                { "key": "locale", "value": "en", "type": "text" }
+              ]
+            },
+            "url": "{{baseUrl}}/api/job-applications",
+            "description": "Multipart upload. Attach a file to the `cv` row before sending — Postman cannot store the file path in an exported collection. Rate limited to 5 per minute per IP.\n\nDo not set Content-Type manually; Postman adds the multipart boundary."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "  pm.collectionVariables.set('applicationId', pm.response.json().id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /api/job-applications",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/job-applications?status=new",
+            "description": "Latest 200 applications. Drop the query to list every status."
+          }
+        },
+        {
+          "name": "PATCH /api/job-applications/:id",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "options": { "raw": { "language": "json" } },
+              "raw": "{\n  \"status\": \"read\"\n}"
+            },
+            "url": "{{baseUrl}}/api/job-applications/{{applicationId}}"
+          }
+        },
+        {
+          "name": "GET /api/job-applications/:id/cv",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/job-applications/{{applicationId}}/cv",
+            "description": "Downloads the stored CV as an attachment. Use Send and Download to save it."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Uploads",
+      "item": [
+        {
+          "name": "POST /api/uploads",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "file", "type": "file", "src": [], "description": "Required. Images only, max 5 MB." }
+              ]
+            },
+            "url": "{{baseUrl}}/api/uploads",
+            "description": "Stores an image in the shared uploads volume and returns its public `url`. Attach a file to the `file` row before sending."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Session teardown",
+      "description": "Kept last on purpose. Logout denylists the session id in Redis, so running it earlier would 401 every request that follows it in a collection run.",
+      "item": [
+        {
+          "name": "POST /api/auth/logout",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": "{{baseUrl}}/api/auth/logout",
+            "description": "Denylists the current session id for the remainder of its 20-minute lifetime, then clears {{token}}. Accepts expired tokens.\n\n{{token}} is dead afterwards — mint or log in again before running anything else."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.response.to.have.status(200));",
+                  "",
+                  "// The sid is denylisted now, so do not leave a dead token behind.",
+                  "pm.collectionVariables.set('token', '');"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
