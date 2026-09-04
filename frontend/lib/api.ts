@@ -38,11 +38,47 @@ export function getApiUrl() {
   return publicUrl
 }
 
+/**
+ * Executes a fetch request to the Express backend with automatic host fallback.
+ * Tries the primary URL from `getApiUrl()`, and if a connection/DNS network failure occurs
+ * (e.g. ENOTFOUND backend, ECONNREFUSED), attempts candidate fallback URLs
+ * (http://127.0.0.1:4001, http://localhost:4001, http://backend:4001).
+ */
+export async function fetchBackend(path: string, init?: RequestInit): Promise<Response> {
+  const primaryBase = getApiUrl().replace(/\/$/, '')
+  const candidates = [
+    primaryBase,
+    'http://127.0.0.1:4001',
+    'http://localhost:4001',
+    'http://backend:4001',
+  ].filter((url, index, self) => self.indexOf(url) === index)
+
+  const normalizedPath = path.startsWith('/') ? path : `/${path}`
+  let lastError: unknown = null
+
+  for (const baseUrl of candidates) {
+    try {
+      return await fetch(`${baseUrl}${normalizedPath}`, init)
+    } catch (err) {
+      lastError = err
+      if (init?.signal?.aborted) {
+        throw err
+      }
+      console.warn(
+        `[api] fetchBackend host failed (${baseUrl}${normalizedPath}):`,
+        (err as Error)?.message || err,
+      )
+    }
+  }
+
+  throw lastError || new Error(`Failed to reach backend at any candidate host for ${path}`)
+}
+
 async function apiFetch<T>(path: string, init?: RequestInit, timeoutMs = 4000): Promise<T | null> {
   const controller = new AbortController()
   const timer = setTimeout(() => controller.abort(), timeoutMs)
   try {
-    const res = await fetch(`${getApiUrl()}${path}`, {
+    const res = await fetchBackend(path, {
       ...init,
       signal: controller.signal,
       headers: {

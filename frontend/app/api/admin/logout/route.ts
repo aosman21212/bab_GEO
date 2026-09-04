@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
-import { getApiUrl } from '@/lib/api'
+import { fetchBackend } from '@/lib/api'
 import { ADMIN_SESSION_COOKIE, clearAdminSessionCookie } from '@/lib/admin-session'
 
 export async function POST() {
@@ -8,7 +8,7 @@ export async function POST() {
   const token = jar.get(ADMIN_SESSION_COOKIE)?.value
   if (token) {
     try {
-      await fetch(`${getApiUrl()}/api/auth/logout`, {
+      await fetchBackend('/api/auth/logout', {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
       })

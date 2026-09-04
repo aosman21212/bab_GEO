@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
-import { getApiUrl } from '@/lib/api'
+import { fetchBackend } from '@/lib/api'
 import { ADMIN_SESSION_COOKIE, clearAdminSessionCookie, setAdminSessionCookie } from '@/lib/admin-session'
 
 type Ctx = { params: Promise<{ path: string[] }> }
@@ -51,41 +51,49 @@ function tokenForSlide(upstream: Response, fallback: string) {
 }
 
 async function proxy(req: Request, ctx: Ctx, method: string) {
-  const { path } = await ctx.params
-  const jar = await cookies()
-  const token = jar.get(ADMIN_SESSION_COOKIE)?.value
-  if (!token) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  try {
+    const { path } = await ctx.params
+    const jar = await cookies()
+    const token = jar.get(ADMIN_SESSION_COOKIE)?.value
+    if (!token) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-  const url = new URL(req.url)
-  const target = `${getApiUrl()}/api/${path.join('/')}${url.search}`
+    const url = new URL(req.url)
+    const targetPath = `/api/${path.join('/')}${url.search}`
 
-  const headers: HeadersInit = {
-    Authorization: `Bearer ${token}`,
+    const headers: HeadersInit = {
+      Authorization: `Bearer ${token}`,
+    }
+    let body: string | undefined
+    if (method !== 'GET' && method !== 'DELETE') {
+      headers['Content-Type'] = 'application/json'
+      body = await req.text()
+    }
+
+    const res = await fetchBackend(targetPath, { method, headers, body })
+    const contentType = res.headers.get('Content-Type') || 'application/json'
+    const disposition = res.headers.get('Content-Disposition')
+    const nextToken = tokenForSlide(res, token)
+
+    if (isBinaryContentType(contentType) || disposition?.includes('attachment')) {
+      const buf = await res.arrayBuffer()
+      const outHeaders: HeadersInit = { 'Content-Type': contentType }
+      if (disposition) outHeaders['Content-Disposition'] = disposition
+      return slideSession(new NextResponse(buf, { status: res.status, headers: outHeaders }), nextToken)
+    }
+
+    const text = await res.text()
+    return slideSession(
+      new NextResponse(text, {
+        status: res.status,
+        headers: { 'Content-Type': contentType },
+      }),
+      nextToken,
+    )
+  } catch (err) {
+    console.error('[admin/proxy] connection error:', (err as Error)?.message || err)
+    return NextResponse.json(
+      { error: 'Backend service temporarily unavailable.' },
+      { status: 503 },
+    )
   }
-  let body: string | undefined
-  if (method !== 'GET' && method !== 'DELETE') {
-    headers['Content-Type'] = 'application/json'
-    body = await req.text()
-  }
-
-  const res = await fetch(target, { method, headers, body })
-  const contentType = res.headers.get('Content-Type') || 'application/json'
-  const disposition = res.headers.get('Content-Disposition')
-  const nextToken = tokenForSlide(res, token)
-
-  if (isBinaryContentType(contentType) || disposition?.includes('attachment')) {
-    const buf = await res.arrayBuffer()
-    const outHeaders: HeadersInit = { 'Content-Type': contentType }
-    if (disposition) outHeaders['Content-Disposition'] = disposition
-    return slideSession(new NextResponse(buf, { status: res.status, headers: outHeaders }), nextToken)
-  }
-
-  const text = await res.text()
-  return slideSession(
-    new NextResponse(text, {
-      status: res.status,
-      headers: { 'Content-Type': contentType },
-    }),
-    nextToken,
-  )
 }
