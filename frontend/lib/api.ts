@@ -39,39 +39,79 @@ export function getApiUrl() {
 }
 
 /**
- * Executes a fetch request to the Express backend with automatic host fallback.
- * Tries the primary URL from `getApiUrl()`, and if a connection/DNS network failure occurs
- * (e.g. ENOTFOUND backend, ECONNREFUSED), attempts candidate fallback URLs
- * (http://127.0.0.1:4001, http://localhost:4001, http://backend:4001).
+ * Every host the Express API may answer on, in priority order. Covers both topologies:
+ * all services in one Compose network (`backend`), and Express on the host with Next.js
+ * in a container (`host.docker.internal`, the default bridge gateway `172.17.0.1`).
  */
-export async function fetchBackend(path: string, init?: RequestInit): Promise<Response> {
-  const primaryBase = getApiUrl().replace(/\/$/, '')
-  const candidates = [
-    primaryBase,
+export function backendCandidateUrls() {
+  return [
+    getApiUrl().replace(/\/$/, ''),
     'http://127.0.0.1:4001',
     'http://localhost:4001',
     'http://backend:4001',
+    'http://host.docker.internal:4001',
+    'http://172.17.0.1:4001',
   ].filter((url, index, self) => self.indexOf(url) === index)
+}
 
-  const normalizedPath = path.startsWith('/') ? path : `/${path}`
-  let lastError: unknown = null
+/** Node surfaces the real network failure on `cause.code`; fetch itself only throws a generic TypeError. */
+export function backendErrorCode(err: unknown) {
+  const cause = (err as { cause?: { code?: string } })?.cause
+  return cause?.code || (err as { code?: string })?.code || 'UNKNOWN'
+}
 
-  for (const baseUrl of candidates) {
-    try {
-      return await fetch(`${baseUrl}${normalizedPath}`, init)
-    } catch (err) {
-      lastError = err
-      if (init?.signal?.aborted) {
-        throw err
-      }
-      console.warn(
-        `[api] fetchBackend host failed (${baseUrl}${normalizedPath}):`,
-        (err as Error)?.message || err,
-      )
-    }
+const HEALTH_PROBE_TIMEOUT_MS = 2000
+
+/**
+ * Bounded, side-effect-free reachability check. A dead host can otherwise burn undici's
+ * 10s connect timeout, and aborting `/api/health` is safe in a way aborting the real
+ * request would not be (a login POST may already have sent its MFA email).
+ */
+async function backendHostAnswers(baseUrl: string) {
+  try {
+    const res = await fetch(`${baseUrl}/api/health`, {
+      cache: 'no-store',
+      signal: AbortSignal.timeout(HEALTH_PROBE_TIMEOUT_MS),
+    })
+    return res.ok
+  } catch {
+    return false
   }
+}
 
-  throw lastError || new Error(`Failed to reach backend at any candidate host for ${path}`)
+/**
+ * Executes a fetch request to the Express backend with automatic host fallback.
+ * Tries the primary URL from `getApiUrl()` first. If that fails to connect
+ * (e.g. ENOTFOUND backend, ECONNREFUSED), the remaining candidates are health-probed
+ * concurrently and the request is replayed against the first one that answers.
+ */
+export async function fetchBackend(path: string, init?: RequestInit): Promise<Response> {
+  const [primary, ...fallbacks] = backendCandidateUrls()
+  const normalizedPath = path.startsWith('/') ? path : `/${path}`
+
+  try {
+    return await fetch(`${primary}${normalizedPath}`, init)
+  } catch (err) {
+    if (init?.signal?.aborted) throw err
+    console.warn(
+      `[api] fetchBackend primary host failed (${primary}${normalizedPath}) ${backendErrorCode(err)}:`,
+      (err as Error)?.message || err,
+    )
+
+    const probes = await Promise.all(
+      fallbacks.map(async (baseUrl) => ({ baseUrl, answers: await backendHostAnswers(baseUrl) })),
+    )
+    const alive = probes.find((probe) => probe.answers)
+    if (!alive) {
+      console.error(
+        `[api] fetchBackend found no reachable backend host for ${normalizedPath}; tried ${[primary, ...fallbacks].join(', ')}`,
+      )
+      throw err
+    }
+
+    console.warn(`[api] fetchBackend falling back to ${alive.baseUrl}. Set API_URL to this host.`)
+    return fetch(`${alive.baseUrl}${normalizedPath}`, init)
+  }
 }
 
 async function apiFetch<T>(path: string, init?: RequestInit, timeoutMs = 4000): Promise<T | null> {

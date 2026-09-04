@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { fetchBackend } from '@/lib/api'
+import { backendErrorCode, fetchBackend } from '@/lib/api'
 
 export async function POST(req: Request) {
   try {
@@ -22,9 +22,13 @@ export async function POST(req: Request) {
     const data = await res.json().catch(() => ({}))
     return NextResponse.json(data, { status: res.status })
   } catch (err) {
-    console.error('[admin/mfa/resend] connection error:', (err as Error)?.message || err)
+    const code = backendErrorCode(err)
+    console.error(`[admin/mfa/resend] connection error ${code}:`, (err as Error)?.message || err)
     return NextResponse.json(
-      { error: 'Authentication service temporarily unavailable. Please try again.' },
+      {
+        error: 'Authentication service temporarily unavailable. Please try again.',
+        detail: code,
+      },
       { status: 503 },
     )
   }

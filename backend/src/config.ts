@@ -28,17 +28,28 @@ function requiredSecret(name: string, devFallback?: string) {
   return fromEnv || devFallback || ''
 }
 
+/** Rejecting here exits the process before listen(), so the reason must name the fix. */
+function insecureSecretError(name: string, reason: string, requirement: string) {
+  return new Error(
+    `Insecure ${name} in production (${reason}). The API cannot start. ` +
+      `Set ${name} to ${requirement} in the root .env next to docker-compose.yml, ` +
+      'then run: docker compose up -d backend',
+  )
+}
+
 function assertProductionSecrets(jwtSecret: string, adminPassword: string) {
   if (!isProd) return
-  if (WEAK_JWT_SECRETS.has(jwtSecret) || jwtSecret.length < 24) {
-    throw new Error(
-      'Insecure JWT_SECRET in production — set a strong random secret (24+ chars) in env',
-    )
+  if (WEAK_JWT_SECRETS.has(jwtSecret)) {
+    throw insecureSecretError('JWT_SECRET', 'known placeholder value', 'a strong random secret (24+ chars)')
   }
-  if (WEAK_ADMIN_PASSWORDS.has(adminPassword) || adminPassword.length < 12) {
-    throw new Error(
-      'Insecure ADMIN_PASSWORD in production — set a strong password (12+ chars) in env',
-    )
+  if (jwtSecret.length < 24) {
+    throw insecureSecretError('JWT_SECRET', `only ${jwtSecret.length} chars`, 'a strong random secret (24+ chars)')
+  }
+  if (WEAK_ADMIN_PASSWORDS.has(adminPassword)) {
+    throw insecureSecretError('ADMIN_PASSWORD', 'known weak password', 'a strong password (12+ chars)')
+  }
+  if (adminPassword.length < 12) {
+    throw insecureSecretError('ADMIN_PASSWORD', `only ${adminPassword.length} chars`, 'a strong password (12+ chars)')
   }
 }
 

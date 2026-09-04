@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { fetchBackend } from '@/lib/api'
+import { backendErrorCode, fetchBackend } from '@/lib/api'
 import { setAdminSessionCookie } from '@/lib/admin-session'
 
 export async function POST(req: Request) {
@@ -29,9 +29,13 @@ export async function POST(req: Request) {
     setAdminSessionCookie(response, data.token)
     return response
   } catch (err) {
-    console.error('[admin/mfa/verify] connection error:', (err as Error)?.message || err)
+    const code = backendErrorCode(err)
+    console.error(`[admin/mfa/verify] connection error ${code}:`, (err as Error)?.message || err)
     return NextResponse.json(
-      { error: 'Authentication service temporarily unavailable. Please try again.' },
+      {
+        error: 'Authentication service temporarily unavailable. Please try again.',
+        detail: code,
+      },
       { status: 503 },
     )
   }
