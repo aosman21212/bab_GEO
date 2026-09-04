@@ -157,54 +157,83 @@ function mfaKey(challengeId: string) {
   return `admin:mfa:${challengeId}`
 }
 
-export async function storeMfaChallenge(record: MfaChallengeRecord): Promise<boolean> {
-  if (!redisAvailable) return false
-  try {
-    await getRedis().set(
-      mfaKey(record.challengeId),
-      JSON.stringify(record),
-      'EX',
-      MFA_CHALLENGE_TTL_SECONDS,
-    )
-    return true
-  } catch {
-    return false
+const memoryMfaStore = new Map<string, MfaChallengeRecord>()
+
+function cleanupMemoryMfaStore() {
+  const now = Date.now()
+  for (const [id, record] of memoryMfaStore.entries()) {
+    if (record.expiresAt < now) {
+      memoryMfaStore.delete(id)
+    }
   }
+}
+
+export async function storeMfaChallenge(record: MfaChallengeRecord): Promise<boolean> {
+  cleanupMemoryMfaStore()
+  memoryMfaStore.set(record.challengeId, record)
+
+  if (redisAvailable) {
+    try {
+      await getRedis().set(
+        mfaKey(record.challengeId),
+        JSON.stringify(record),
+        'EX',
+        MFA_CHALLENGE_TTL_SECONDS,
+      )
+    } catch {
+      /* fallback remains in memoryMfaStore */
+    }
+  }
+  return true
 }
 
 export async function getMfaChallenge(
   challengeId: string,
 ): Promise<MfaChallengeRecord | null> {
-  if (!redisAvailable) return null
-  try {
-    const raw = await getRedis().get(mfaKey(challengeId))
-    return raw ? (JSON.parse(raw) as MfaChallengeRecord) : null
-  } catch {
+  if (redisAvailable) {
+    try {
+      const raw = await getRedis().get(mfaKey(challengeId))
+      if (raw) return JSON.parse(raw) as MfaChallengeRecord
+    } catch {
+      /* fallback to memoryMfaStore */
+    }
+  }
+
+  const record = memoryMfaStore.get(challengeId)
+  if (!record) return null
+  if (record.expiresAt < Date.now()) {
+    memoryMfaStore.delete(challengeId)
     return null
   }
+  return record
 }
 
 export async function updateMfaChallenge(
   record: MfaChallengeRecord,
 ): Promise<boolean> {
-  if (!redisAvailable) return false
-  try {
-    const key = mfaKey(record.challengeId)
-    const client = getRedis()
-    const ttl = await client.ttl(key)
-    const safeTtl = ttl > 0 ? ttl : MFA_CHALLENGE_TTL_SECONDS
-    await client.set(key, JSON.stringify(record), 'EX', safeTtl)
-    return true
-  } catch {
-    return false
+  memoryMfaStore.set(record.challengeId, record)
+
+  if (redisAvailable) {
+    try {
+      const key = mfaKey(record.challengeId)
+      const client = getRedis()
+      const ttl = await client.ttl(key)
+      const safeTtl = ttl > 0 ? ttl : MFA_CHALLENGE_TTL_SECONDS
+      await client.set(key, JSON.stringify(record), 'EX', safeTtl)
+    } catch {
+      /* fallback remains in memoryMfaStore */
+    }
   }
+  return true
 }
 
 export async function deleteMfaChallenge(challengeId: string): Promise<void> {
-  if (!redisAvailable) return
-  try {
-    await getRedis().del(mfaKey(challengeId))
-  } catch {
-    /* ignore */
+  memoryMfaStore.delete(challengeId)
+  if (redisAvailable) {
+    try {
+      await getRedis().del(mfaKey(challengeId))
+    } catch {
+      /* ignore */
+    }
   }
 }
