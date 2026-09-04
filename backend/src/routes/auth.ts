@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import crypto from 'node:crypto'
 import bcrypt from 'bcryptjs'
+import mongoose from 'mongoose'
 import { z } from 'zod'
 import { User } from '../models.js'
 import {
@@ -277,6 +278,10 @@ authRouter.post('/logout', async (req, res) => {
 authRouter.get('/me', requireAuth, async (req, res) => {
   const auth = getUser(req)
   if (!auth) return res.status(401).json({ error: 'Unauthorized' })
+
+  if (!mongoose.Types.ObjectId.isValid(auth.sub)) {
+    return res.status(401).json({ error: 'Unauthorized' })
+  }
 
   const user = await User.findById(auth.sub).select('-passwordHash').lean()
   if (!user) return res.status(401).json({ error: 'Unauthorized' })
