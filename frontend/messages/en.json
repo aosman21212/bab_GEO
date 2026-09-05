@@ -881,7 +881,24 @@
       "tip7": "Use Submit sitemap (IndexNow) after deploy (Yandex may succeed even when Bing 403s)",
       "tip8": "Be patient — AI citations can take days or weeks",
       "submitted": "Submitted",
-      "partialFailed": "Partial/failed"
+      "partialFailed": "Partial/failed",
+      "chatTestTitle": "Test GEO in ChatGPT and other AI tools",
+      "chatTestBody": "Copy an English or Arabic prompt, open a new chat, and paste. Chatbots cannot read localhost — use the paste packs here, or the live-fetch pack if the tool can browse the public site.",
+      "chatLangEn": "English pack",
+      "chatLangAr": "Arabic pack",
+      "chatCopyLlms": "Copy ChatGPT pack (llms.txt)",
+      "chatCopyFull": "Copy FAQ pack (llms-full.txt)",
+      "chatCopyLive": "Copy live-URL pack",
+      "chatCopiedLlms": "English llms.txt pack copied — paste into a new chat.",
+      "chatCopiedLlmsAr": "Arabic llms.txt pack copied — paste into a new chat.",
+      "chatCopiedFull": "English FAQ pack copied — paste into a new chat.",
+      "chatCopiedFullAr": "Arabic FAQ pack copied — paste into a new chat.",
+      "chatCopiedLive": "English live-URL pack copied — use in Claude, Perplexity, or Copilot.",
+      "chatCopiedLiveAr": "Arabic live-URL pack copied — use in Claude, Perplexity, or Copilot.",
+      "chatCopyFailed": "Could not build the test pack. Confirm /llms.txt is online.",
+      "chatPasteOnly": "Paste pack only (cannot fetch localhost)",
+      "chatCanFetch": "Paste pack, or live URL if browsing is on",
+      "chatTestHint": "PASS if answers stay inside the pasted source. FAIL if it invents products, phones, URLs, or cities. Score details: docs/geo-chatbot-tests.md"
     }
   }
 }

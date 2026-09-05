@@ -11,6 +11,29 @@ export const SEO_TITLE_MIN = 15
 export const SEO_TITLE_SUFFIX = ' | BAB'
 export const SEO_TITLE_SEGMENT_MAX = SEO_TITLE_MAX - SEO_TITLE_SUFFIX.length
 
+export const OG_TITLE_MIN = 25
+export const OG_TITLE_MAX = 35
+export const OG_DESCRIPTION_MIN = 55
+export const OG_DESCRIPTION_MAX = 65
+export const TWITTER_DESCRIPTION_MIN = 150
+export const TWITTER_DESCRIPTION_MAX = 200
+
+export const HOMEPAGE_OG_TITLE_EN = 'BAB Omnichannel CX in KSA'
+export const HOMEPAGE_OG_TITLE_AR = 'باب | قنوات متعددة في السعودية'
+export const HOMEPAGE_OG_DESCRIPTION_EN =
+  'Saudi partner for omnichannel CX, AI bots, and contact centers.'
+export const HOMEPAGE_OG_DESCRIPTION_AR =
+  'شريك سعودي للقنوات المتعددة وروبوتات الذكاء ومراكز الاتصال.'
+export const HOMEPAGE_TWITTER_DESCRIPTION_EN =
+  'Saudi enterprise partner for omnichannel CX, AI voice bots, and contact-center platforms across Saudi Arabia and the MENA region. BAB unifies voice, digital, and social journeys.'
+export const HOMEPAGE_TWITTER_DESCRIPTION_AR =
+  'شريك مؤسسي سعودي لتجربة العملاء متعددة القنوات، وروبوتات صوتية بالذكاء الاصطناعي، ومنصات مراكز اتصال في السعودية والمنطقة. تساعد باب المؤسسات على توحيد رحلات الصوت والرقمي والاجتماعي.'
+
+const SOCIAL_PAD_EN =
+  ' BAB unifies voice, digital, and social customer journeys across Saudi Arabia and the MENA region.'
+const SOCIAL_PAD_AR =
+  ' تساعد باب المؤسسات على توحيد رحلات الصوت والرقمي والاجتماعي في السعودية والمنطقة.'
+
 const SEO_TITLE_FALLBACK = 'BAB International Corp — Omnichannel & Contact Center'
 
 export function humanizeSlug(slug: string): string {
@@ -63,6 +86,65 @@ export function resolvePageTitle(title: string, absolute = false) {
   const segment = ensureMinSeoTitle(title, false)
   const fullTitle = formatSeoTitle(`${segment}${SEO_TITLE_SUFFIX}`)
   return { title: segment, fullTitle }
+}
+
+function socialPad(locale: 'en' | 'ar') {
+  return locale === 'ar' ? SOCIAL_PAD_AR : SOCIAL_PAD_EN
+}
+
+/** Trim or pad text so its length sits between min and max. */
+export function formatSocialText(
+  text: string,
+  min: number,
+  max: number,
+  locale: 'en' | 'ar' = 'en',
+): string {
+  let trimmed = text.replace(/\s+/g, ' ').trim()
+  if (!trimmed) trimmed = locale === 'ar' ? HOMEPAGE_OG_TITLE_AR : HOMEPAGE_OG_TITLE_EN
+
+  if (trimmed.length > max) {
+    return formatSeoTitle(trimmed, max)
+  }
+
+  const pad = socialPad(locale)
+  while (trimmed.length < min) {
+    const next = `${trimmed}${pad}`.replace(/\s+/g, ' ').trim()
+    if (next.length === trimmed.length) break
+    trimmed = next
+    if (trimmed.length > max) return formatSeoTitle(trimmed, max)
+  }
+
+  return trimmed
+}
+
+export function formatOgTitle(title: string, locale: 'en' | 'ar' = 'en'): string {
+  return formatSocialText(title, OG_TITLE_MIN, OG_TITLE_MAX, locale)
+}
+
+export function formatOgDescription(description: string, locale: 'en' | 'ar' = 'en'): string {
+  return formatSocialText(description, OG_DESCRIPTION_MIN, OG_DESCRIPTION_MAX, locale)
+}
+
+export function formatTwitterDescription(
+  description: string,
+  locale: 'en' | 'ar' = 'en',
+): string {
+  return formatSocialText(description, TWITTER_DESCRIPTION_MIN, TWITTER_DESCRIPTION_MAX, locale)
+}
+
+export function homepageSocialMeta(locale: 'en' | 'ar') {
+  if (locale === 'ar') {
+    return {
+      ogTitle: HOMEPAGE_OG_TITLE_AR,
+      ogDescription: HOMEPAGE_OG_DESCRIPTION_AR,
+      twitterDescription: HOMEPAGE_TWITTER_DESCRIPTION_AR,
+    }
+  }
+  return {
+    ogTitle: HOMEPAGE_OG_TITLE_EN,
+    ogDescription: HOMEPAGE_OG_DESCRIPTION_EN,
+    twitterDescription: HOMEPAGE_TWITTER_DESCRIPTION_EN,
+  }
 }
 
 export type GeoFaq = { question: string; answer: string }
@@ -643,6 +725,14 @@ export function buildPageMetadata(opts: {
   }
   const { title, fullTitle } = resolvePageTitle(opts.title, opts.absoluteTitle)
   const description = formatSeoDescription(opts.description)
+  const isHome = !path
+  const social = isHome
+    ? homepageSocialMeta(locale)
+    : {
+        ogTitle: formatOgTitle(fullTitle, locale),
+        ogDescription: formatOgDescription(description, locale),
+        twitterDescription: formatTwitterDescription(description, locale),
+      }
 
   return {
     metadataBase: new URL(site),
@@ -666,8 +756,8 @@ export function buildPageMetadata(opts: {
       },
     },
     openGraph: {
-      title: fullTitle,
-      description,
+      title: social.ogTitle,
+      description: social.ogDescription,
       url: canonical,
       siteName: 'BAB International Corp',
       locale: locale === 'ar' ? 'ar_SA' : 'en_US',
@@ -677,8 +767,8 @@ export function buildPageMetadata(opts: {
     },
     twitter: {
       card: 'summary_large_image',
-      title: fullTitle,
-      description,
+      title: social.ogTitle,
+      description: social.twitterDescription,
       images: [ogImage],
     },
   }

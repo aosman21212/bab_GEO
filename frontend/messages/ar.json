@@ -882,7 +882,24 @@
       "tip7": "استخدم إرسال خريطة الموقع (IndexNow) بعد النشر (قد ينجح Yandex حتى مع Bing 403)",
       "tip8": "تحلَّ بالصبر — قد تستغرق إشارات الذكاء الاصطناعي أياماً أو أسابيع",
       "submitted": "تم الإرسال",
-      "partialFailed": "جزئي/فشل"
+      "partialFailed": "جزئي/فشل",
+      "chatTestTitle": "اختبار GEO في ChatGPT وأدوات الذكاء الاصطناعي",
+      "chatTestBody": "انسخ حزمة إنجليزية أو عربية، افتح محادثة جديدة، والصق. لا تستطيع الدردشات قراءة localhost — استخدم حزم اللصق هنا، أو حزمة الرابط العام إذا كانت الأداة تتصفح الويب.",
+      "chatLangEn": "الحزمة الإنجليزية",
+      "chatLangAr": "الحزمة العربية",
+      "chatCopyLlms": "نسخ حزمة ChatGPT (llms.txt)",
+      "chatCopyFull": "نسخ حزمة الأسئلة (llms-full.txt)",
+      "chatCopyLive": "نسخ حزمة الرابط العام",
+      "chatCopiedLlms": "تم نسخ حزمة llms.txt الإنجليزية — الصقها في محادثة جديدة.",
+      "chatCopiedLlmsAr": "تم نسخ حزمة llms.txt العربية — الصقها في محادثة جديدة.",
+      "chatCopiedFull": "تم نسخ حزمة الأسئلة الإنجليزية — الصقها في محادثة جديدة.",
+      "chatCopiedFullAr": "تم نسخ حزمة الأسئلة العربية — الصقها في محادثة جديدة.",
+      "chatCopiedLive": "تم نسخ حزمة الرابط العام الإنجليزية — استخدمها في Claude أو Perplexity أو Copilot.",
+      "chatCopiedLiveAr": "تم نسخ حزمة الرابط العام العربية — استخدمها في Claude أو Perplexity أو Copilot.",
+      "chatCopyFailed": "تعذّر بناء الحزمة. تأكد أن /llms.txt متاح.",
+      "chatPasteOnly": "لصق فقط (لا يقرأ localhost)",
+      "chatCanFetch": "لصق، أو رابط عام إذا كان التصفح مفعّلاً",
+      "chatTestHint": "نجاح إذا بقيت الإجابات داخل النص المصدر. فشل إذا اخترع منتجات أو هواتف أو روابط أو مدناً. التفاصيل: docs/geo-chatbot-tests.md"
     }
   }
 }

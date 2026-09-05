@@ -7,14 +7,23 @@ import { AdminShell } from '@/components/admin-shell'
 import { useAdminLocale } from '@/components/admin-locale-provider'
 import {
   CheckCircle2,
+  Copy,
   ExternalLink,
   FileText,
   Library,
+  MessageSquare,
   RefreshCw,
   Search,
   Settings2,
 } from 'lucide-react'
 import { withBasePath } from '@/lib/base-path'
+import {
+  GEO_CHATBOTS,
+  type GeoTestLocale,
+  buildLiveFetchPrompt,
+  buildLlmsFullPastePrompt,
+  buildLlmsPastePrompt,
+} from '@/lib/geo-chatbot-tests'
 
 type FileStatus = 'unknown' | 'ok' | 'error'
 
@@ -130,6 +139,8 @@ export default function AdminGeoPage() {
   const [submitStatus, setSubmitStatus] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
   const [copyStatus, setCopyStatus] = useState<string | null>(null)
+  const [chatCopyStatus, setChatCopyStatus] = useState<string | null>(null)
+  const [chatCopying, setChatCopying] = useState<string | null>(null)
 
   const okCount = useMemo(() => files.filter((f) => f.status === 'ok').length, [files])
 
@@ -230,6 +241,54 @@ export default function AdminGeoPage() {
   const siteUrl = meta?.siteUrl || 'https://bab.com.sa'
   const publicUrlConfigured = Boolean(meta?.siteUrl)
   const allUrls = meta?.allUrls ?? []
+
+  const copyText = async (label: string, text: string) => {
+    try {
+      await navigator.clipboard.writeText(text)
+      setChatCopyStatus(label)
+      setTimeout(() => setChatCopyStatus(null), 4000)
+    } catch {
+      setChatCopyStatus(t('geo.urlsCopyFailed'))
+    }
+  }
+
+  const copyChatPack = async (kind: 'llms' | 'llmsFull' | 'live', locale: GeoTestLocale) => {
+    const token = `${kind}-${locale}`
+    setChatCopying(token)
+    try {
+      if (kind === 'live') {
+        await copyText(
+          locale === 'ar' ? t('geo.chatCopiedLiveAr') : t('geo.chatCopiedLive'),
+          buildLiveFetchPrompt(siteUrl, locale),
+        )
+        return
+      }
+      const path = kind === 'llms' ? '/llms.txt' : '/llms-full.txt'
+      const res = await fetch(withBasePath(path), { cache: 'no-store' })
+      if (!res.ok) {
+        setChatCopyStatus(t('geo.chatCopyFailed'))
+        return
+      }
+      const source = await res.text()
+      const prompt =
+        kind === 'llms'
+          ? buildLlmsPastePrompt(source, locale)
+          : buildLlmsFullPastePrompt(source, locale)
+      const copied =
+        kind === 'llms'
+          ? locale === 'ar'
+            ? t('geo.chatCopiedLlmsAr')
+            : t('geo.chatCopiedLlms')
+          : locale === 'ar'
+            ? t('geo.chatCopiedFullAr')
+            : t('geo.chatCopiedFull')
+      await copyText(copied, prompt)
+    } catch {
+      setChatCopyStatus(t('geo.chatCopyFailed'))
+    } finally {
+      setChatCopying(null)
+    }
+  }
 
   const copyAllUrls = async () => {
     if (!allUrls.length) return
@@ -467,6 +526,91 @@ export default function AdminGeoPage() {
               ))}
             </ul>
           </div>
+        </section>
+
+        {/* Test in ChatGPT and other chatbots */}
+        <section className="rounded-2xl border border-border bg-white p-6 shadow-sm">
+          <div className="flex items-start gap-3">
+            <MessageSquare className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
+            <div>
+              <h2 className="text-lg font-extrabold text-navy">{t('geo.chatTestTitle')}</h2>
+              <p className="mt-1 text-sm text-muted-foreground">{t('geo.chatTestBody')}</p>
+            </div>
+          </div>
+          <div className="mt-5 grid gap-4 md:grid-cols-2">
+            {(
+              [
+                { locale: 'en' as const, title: t('geo.chatLangEn'), dir: 'ltr' as const },
+                { locale: 'ar' as const, title: t('geo.chatLangAr'), dir: 'rtl' as const },
+              ] as const
+            ).map((pack) => (
+              <div
+                key={pack.locale}
+                dir={pack.dir}
+                className="rounded-xl border border-border bg-muted/40 p-4"
+              >
+                <p className="text-sm font-extrabold text-navy">{pack.title}</p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    disabled={chatCopying !== null}
+                    onClick={() => copyChatPack('llms', pack.locale)}
+                    className="inline-flex items-center gap-2 rounded-full bg-navy px-4 py-2 text-sm font-semibold text-white hover:bg-navy/90 disabled:opacity-60"
+                  >
+                    <Copy className="h-4 w-4" />
+                    {chatCopying === `llms-${pack.locale}`
+                      ? t('common.loading')
+                      : t('geo.chatCopyLlms')}
+                  </button>
+                  <button
+                    type="button"
+                    disabled={chatCopying !== null}
+                    onClick={() => copyChatPack('llmsFull', pack.locale)}
+                    className="inline-flex items-center gap-2 rounded-full border border-border bg-white px-4 py-2 text-sm font-semibold text-navy hover:border-primary disabled:opacity-60"
+                  >
+                    <Copy className="h-4 w-4" />
+                    {chatCopying === `llmsFull-${pack.locale}`
+                      ? t('common.loading')
+                      : t('geo.chatCopyFull')}
+                  </button>
+                  <button
+                    type="button"
+                    disabled={chatCopying !== null}
+                    onClick={() => copyChatPack('live', pack.locale)}
+                    className="inline-flex items-center gap-2 rounded-full border border-border bg-white px-4 py-2 text-sm font-semibold text-navy hover:border-primary disabled:opacity-60"
+                  >
+                    <Copy className="h-4 w-4" />
+                    {chatCopying === `live-${pack.locale}`
+                      ? t('common.loading')
+                      : t('geo.chatCopyLive')}
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+          {chatCopyStatus ? (
+            <p className="mt-3 text-sm font-medium text-emerald-700">{chatCopyStatus}</p>
+          ) : null}
+          <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+            {GEO_CHATBOTS.map((bot) => (
+              <a
+                key={bot.id}
+                href={bot.url}
+                target="_blank"
+                rel="noreferrer"
+                className="flex flex-col rounded-xl border border-border p-4 transition hover:border-primary"
+              >
+                <span className="inline-flex items-center gap-1.5 font-semibold text-navy">
+                  {bot.name}
+                  <ExternalLink className="h-3.5 w-3.5" />
+                </span>
+                <span className="mt-1 text-xs text-muted-foreground">
+                  {bot.canFetchPublicUrl ? t('geo.chatCanFetch') : t('geo.chatPasteOnly')}
+                </span>
+              </a>
+            ))}
+          </div>
+          <p className="mt-4 text-xs text-muted-foreground">{t('geo.chatTestHint')}</p>
         </section>
 
         {/* What is GEO */}

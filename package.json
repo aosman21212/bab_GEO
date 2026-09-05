@@ -11,7 +11,8 @@
     "start": "npm run start --prefix frontend",
     "seo:submit-indexnow": "npm run seo:submit-indexnow --prefix frontend",
     "seo:rotate-indexnow-key": "npm run seo:rotate-indexnow-key --prefix frontend",
-    "docker:up": "docker compose up -d --build",
+    "docker:up": "docker compose up -d --build frontend backend",
+    "docker:rebuild": "docker compose up -d --build frontend backend",
     "docker:down": "docker compose down",
     "docker:seed": "docker compose --profile seed run --rm seed",
     "docker:logs": "docker compose logs -f"

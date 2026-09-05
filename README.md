@@ -8,17 +8,22 @@
 Requires Docker Desktop / Compose v2.
 
 ```bash
-# build + start mongo, redis, backend, frontend
+# rebuild frontend + backend only (mongo/redis stay as-is)
 npm run docker:up
 
-# seed CMS (admin + content + pages)
+# optional alias for the same rebuild
+npm run docker:rebuild
+
+# seed CMS (admin + content + pages) — opt-in; overwrites Mongo data
 npm run docker:seed
 ```
+
+CMS data lives in the `mongo_data` volume. `docker:up` / `docker:rebuild` start mongo/redis if they are stopped, but do not rebuild the mongo image or wipe that volume. Do not use `docker compose down -v` unless you intend to delete the database.
 
 - Web: http://localhost:3003
 - API: http://localhost:4001/api/health
 
-Stop: `npm run docker:down`
+Stop (containers only, volumes kept): `npm run docker:down`
 
 Optional env (compose reads from a root `.env` — **required** for Docker):
 

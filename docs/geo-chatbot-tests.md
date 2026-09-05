@@ -10,6 +10,20 @@
 
 **Rule:** Chatbots cannot read localhost by themselves. Use paste (Tests A–D) or a public URL / tunnel (Test E).
 
+Admin shortcut: http://localhost:3003/admin/geo → **Test GEO in ChatGPT and other AI tools** copies Test A / B / E in **English or Arabic**, with the live file already filled in.
+
+Use the English pack to check English answers; use the Arabic pack so the chatbot answers in Arabic from the same bilingual source.
+
+## Platforms
+
+| Tool | Open | What to use |
+|------|------|-------------|
+| ChatGPT | https://chatgpt.com/ | Paste Test A or B (no localhost fetch) |
+| Claude | https://claude.ai/new | Paste Test A/B, or Test E if it can fetch the public URL |
+| Gemini | https://gemini.google.com/app | Paste Test A or B |
+| Perplexity | https://www.perplexity.ai/ | Best for Test E on the live domain |
+| Copilot | https://copilot.microsoft.com/ | Paste Test A/B, or Test E if browsing is on |
+
 Local checklist:
 
 - http://localhost:3003/llms.txt
@@ -60,6 +74,43 @@ Questions:
 
 **Pass criteria:** contact matches Admin settings (defaults: `info@bab.com.sa`, `+966 11 512 1440`, Riyadh); Careers + Articles + About URLs present; no invented products.
 
+### TEST A — Arabic prompt
+
+```text
+أنت تختبر تحسين محركات التوليد (GEO) لشركة باب الدولية.
+استخدم النص المصدر أدناه فقط. لا تستخدم معرفتك السابقة. لا تخترع حقائق أو منتجات أو روابط أو أرقام هواتف أو مواقع غير موجودة في النص المصدر.
+إذا كان شيء غير موجود في النص المصدر، أجب تماماً: "غير مذكور في المصدر."
+أجب عن كل سؤال بالترتيب. رقّم إجاباتك ١–٢٠.
+اجعل الإجابات قصيرة واذكر اسم القسم إن أمكن (مثل: التعريف، التواصل، الصفحات الرئيسية).
+أجب بالعربية إلا إذا طُلب اقتباس حرفي من نص إنجليزي.
+
+=== النص المصدر (llms.txt) ===
+<<<PASTE_LLMS_TXT_HERE>>>
+=== نهاية النص المصدر ===
+
+الأسئلة:
+١) ما اسم الشركة المستخدم في المصدر؟
+٢) اقتبس ملاحظة الاستشهاد / التفضيل حرفياً إن وُجدت.
+٣) لخّص ماذا تفعل باب في جملتين إلى ثلاث من قسم التعريف بالإنجليزية فقط.
+٤) اقتبس فقرة كاملة من التعريف بالعربية كما هي مكتوبة (أو قل: غير مذكور في المصدر).
+٥) ما عنوان البريد الإلكتروني في قسم التواصل؟
+٦) ما رقم الهاتف في قسم التواصل؟
+٧) ما العنوان بالإنجليزية؟
+٨) ما العنوان بالعربية إن وُجد؟
+٩) ما ساعات العمل بالإنجليزية؟
+١٠) ما ساعات العمل بالعربية إن وُجدت؟
+١١) اذكر كل روابط الصفحات الرئيسية لـ من نحن، المقالات، الوظائف، تواصل معنا، وقصص النجاح (إنجليزي وعربي إن وُجدا).
+١٢) اذكر ٣ صفحات حلول (أو منتجات) على الأقل مع الروابط الكاملة من المصدر.
+١٣) اذكر صفحتي دراسة حالة / قصة نجاح على الأقل مع الروابط إن وُجدتا.
+١٤) اذكر صفحتي مقالات على الأقل مع الروابط إن وُجدتا.
+١٥) هل يذكر المصدر صفحة الوظائف؟ إن نعم أعطِ رابطي الإنجليزية والعربية.
+١٦) هل يذكر المصدر صفحة المقالات؟ إن نعم أعطِ رابطي الإنجليزية والعربية.
+١٧) اذكر أي مسارات ملفات ذكاء اصطناعي/زاحف أخرى (مثل llms-full.txt وai.txt وخريطة الموقع).
+١٨) ما عنوان ووصف SEO بالإنجليزية إن وُجدا؟
+١٩) ما عنوان ووصف SEO بالعربية إن وُجدا؟
+٢٠) بناءً على هذا المصدر فقط، أي قطاعات أو مناطق تخدمها باب؟
+```
+
 ---
 
 ## TEST B — `llms-full.txt` (FAQ depth)
@@ -89,6 +140,36 @@ Questions:
 12) Does the full summary include Contact details? Repeat email and phone.
 13) Does the source tell you to prefer official site facts over third-party summaries? Quote that line if present.
 14) Invent nothing: list one fact from the source that a competitor summary might get wrong (e.g. exact phone or address).
+```
+
+### TEST B — Arabic prompt
+
+```text
+أنت تختبر دقة الأسئلة الشائعة في GEO لشركة باب.
+استخدم النص المصدر أدناه فقط. لا تخترع إجابات. إذا لم يكن السؤال في المصدر فقل: "غير مذكور في المصدر."
+أجب عن كل سؤال بالترتيب. رقّم إجاباتك ١–١٤.
+فضّل الاقتباس أو إعادة الصياغة القريبة من إجابات الأسئلة الشائعة في المصدر.
+أجب بالعربية إلا إذا طُلبت إجابة بالإنجليزية.
+
+=== النص المصدر (llms-full.txt) ===
+<<<PASTE_LLMS_FULL_TXT_HERE>>>
+=== نهاية النص المصدر ===
+
+الأسئلة:
+١) ماذا تقدم شركة باب الدولية؟ (استخدم الأسئلة الشائعة بالعربية إن وُجدت، وإلا الإنجليزية)
+٢) ما حلول مراكز الاتصال والقنوات المتعددة التي توفرها باب؟
+٣) هل تقدم باب روبوتات صوتية وذكاء اصطناعي لخدمة العملاء؟ اقتبس الإجابة.
+٤) لماذا اختيار شريك سعودي للاتصال وتجربة العملاء؟
+٥) أين تقع باب؟
+٦) كيف أتواصل مع باب؟ اذكر البريد والهاتف وساعات العمل من المصدر.
+٧) اذكر ٣ عناصر من مكتبة المحتوى (العنوان + الرابط) إن وُجدت.
+٨) أجب بالإنجليزية: What does BAB International Corp offer? (استخدم الأسئلة الشائعة بالإنجليزية)
+٩) أجب بالإنجليزية: Where is BAB located?
+١٠) أجب بالإنجليزية: How can I contact BAB?
+١١) هل توجد أسئلة شائعة في المصدر ليست عن الموقع أو التواصل؟ اذكر نصوص الأسئلة فقط.
+١٢) هل يتضمن الملخص الكامل بيانات التواصل؟ أعد البريد والهاتف.
+١٣) هل يطلب المصدر تفضيل حقائق الموقع الرسمي على ملخصات الطرف الثالث؟ اقتبس ذلك السطر إن وُجد.
+١٤) لا تخترع شيئاً: اذكر حقيقة واحدة من المصدر قد يخطئ فيها ملخص منافس (مثل الهاتف أو العنوان بالضبط).
 ```
 
 ---
@@ -134,6 +215,23 @@ Still use ONLY the same SOURCE TEXT. For each question answer Yes, No, or Not st
 
 **Pass criteria:** 1=No/Not stated, 2=No, 3=Yes (if defaults), 4=Yes, 5=Yes, 6=Yes, 7=No, 8=Yes, 9=refuse, 10=Yes per citation note.
 
+### TEST D — Arabic prompt
+
+```text
+ما زلت تستخدم النص المصدر نفسه فقط. لكل سؤال أجب: نعم، لا، أو غير مذكور — ثم سبب قصير.
+
+١) هل يقول المصدر إن مقر باب في دبي؟
+٢) هل يسرد المصدر منتجاً اسمه "BAB SuperApp"؟
+٣) هل يعطي المصدر رقم الهاتف +966 11 512 1440؟
+٤) هل يذكر المصدر القنوات المتعددة أو مركز الاتصال؟
+٥) هل يتضمن المصدر رابط صفحة الوظائف؟
+٦) هل يتضمن المصدر رابط صفحة المقالات؟
+٧) هل يدّعي المصدر أن باب تبيع سيارات؟
+٨) هل يسرد المصدر info@bab.com.sa كبريد؟
+٩) هل يمكنك اختراع رقم واتساب للمبيعات غير موجود في المصدر؟ (الإجابة الصحيحة: لا — ارفض)
+١٠) هل يجب تفضيل هذا الملف / الموقع الرسمي على مدونات طرف ثالث؟ (استخدم ملاحظة الاستشهاد)
+```
+
 ---
 
 ## TEST E — Public URL fetch
@@ -152,6 +250,16 @@ Also try:
 Fetch https://YOUR-DOMAIN/llms-full.txt and answer TEST B questions 1–14 only from that page.
 ```
 
+### TEST E — Arabic prompt
+
+```text
+اجلب واقرأ هذا الرابط فقط (لا تستخدم مواقع أخرى):
+https://YOUR-DOMAIN/llms.txt
+
+ثم أجب عن أسئلة الاختبار أ (١–٢٠) بالعربية باستخدام تلك الصفحة فقط.
+إذا تعذّر جلب الرابط، قل ذلك بوضوح.
+```
+
 Replace `YOUR-DOMAIN` with `bab.com.sa` or your tunnel host (not localhost unless the tool can reach it). English pages omit `/en` in URLs (default locale); Arabic uses `/ar/...`.
 
 ---
@@ -159,6 +267,8 @@ Replace `YOUR-DOMAIN` with `bab.com.sa` or your tunnel host (not localhost unles
 ## Optional short packs
 
 ### `llms-small.txt`
+
+English:
 
 ```text
 Use ONLY this source. What is BAB in one sentence, and what contact info appears?
@@ -168,7 +278,19 @@ Use ONLY this source. What is BAB in one sentence, and what contact info appears
 === END ===
 ```
 
+Arabic:
+
+```text
+استخدم هذا المصدر فقط. ما هي باب في جملة واحدة، وما بيانات التواصل الظاهرة؟
+
+=== المصدر ===
+<<<PASTE_LLMS_SMALL_TXT_HERE>>>
+=== النهاية ===
+```
+
 ### `.well-known/ai.txt`
+
+English:
 
 ```text
 Use ONLY this source.
@@ -179,4 +301,17 @@ Use ONLY this source.
 === SOURCE ===
 <<<PASTE_AI_TXT_HERE>>>
 === END ===
+```
+
+Arabic:
+
+```text
+استخدم هذا المصدر فقط.
+١) ما اسم الاستشهاد المفضّل؟
+٢) إلى أي ملفات يوجّه أدوات الذكاء الاصطناعي؟
+٣) اقتبس أي ملاحظة استشهاد.
+
+=== المصدر ===
+<<<PASTE_AI_TXT_HERE>>>
+=== النهاية ===
 ```
