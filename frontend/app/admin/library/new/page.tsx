@@ -35,7 +35,6 @@ export default function AdminLibraryNewPage() {
   const [arForm, setArForm] = useState<LocaleFormData>(emptyLocaleForm())
   const [error, setError] = useState<string | null>(null)
   const [pending, setPending] = useState(false)
-  const [slugTouched, setSlugTouched] = useState(false)
 
   const activeForm = locale === 'ar' ? arForm : enForm
   const setActiveForm = (next: LocaleFormData) => {
@@ -44,14 +43,7 @@ export default function AdminLibraryNewPage() {
       return
     }
     setEnForm(next)
-    if (!slugTouched) {
-      setMeta((m) => ({ ...m, slug: slugify(next.heroHeading) }))
-    }
-  }
-
-  const onMetaChange = (next: PageMetaForm) => {
-    if (next.slug !== meta.slug) setSlugTouched(true)
-    setMeta(next)
+    setMeta((m) => ({ ...m, slug: slugify(next.heroHeading) }))
   }
 
   const submit = async () => {
@@ -114,7 +106,7 @@ export default function AdminLibraryNewPage() {
       <AdminPageForm
         locale={locale}
         meta={meta}
-        onMetaChange={onMetaChange}
+        onMetaChange={setMeta}
         value={activeForm}
         onChange={setActiveForm}
         slugEditable
