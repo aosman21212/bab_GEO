@@ -19,7 +19,7 @@
               "accent": "Unify",
               "title": "Multi-Channel Integration",
               "points": [
-                "Combines SMS, email, voice calls, video conferencing, instant messaging, and social media messaging.",
+                "Combines SMS, email, voice calls, video conferencing, instant messaging, WhatsApp Business, and social media messaging.",
                 "Ensures seamless communication across multiple touchpoints."
               ]
             },
@@ -112,7 +112,7 @@
               "accent": "توحيد",
               "title": "تكامل متعدد القنوات",
               "points": [
-                "يجمع الرسائل النصية والبريد الإلكتروني والمكالمات الصوتية ومؤتمرات الفيديو والرسائل الفورية ورسائل التواصل الاجتماعي.",
+                "يجمع الرسائل النصية والبريد الإلكتروني والمكالمات الصوتية ومؤتمرات الفيديو والرسائل الفورية وواتساب للأعمال ورسائل التواصل الاجتماعي.",
                 "يضمن تواصلاً سلساً عبر نقاط تواصل متعددة."
               ]
             },
@@ -837,7 +837,7 @@
         "metaDescription": "AI Voice Bot that speaks your customerâ€™s language â€” human-like conversations in Saudi dialects, anytime.",
         "eyebrow": "Voice Bot",
         "heroHeading": "Natural. Local. Instant.",
-        "heroDescription": "AI Voice Bot that speaks your customerâ€™s language â€” anytime, anywhere. Deliver human-like conversations in Saudi dialects across government, healthcare, retail, and real estate.",
+        "heroDescription": "AI Voice Bot that speaks your customerâ€™s language â€” anytime, anywhere. Deliver human-like conversations in Saudi Arabic dialects with tone and intent awareness across government, healthcare, retail, and real estate.",
         "ctaLabel": "Contact Us",
         "image": "/images/network-sphere.png",
         "features": {
@@ -905,7 +905,7 @@
         "metaDescription": "روبوت صوت بالذكاء الاصطناعي يتحدث بلغة عميلك — محادثات شبيهة بالبشر باللهجات السعودية، في أي وقت.",
         "eyebrow": "روبوت الصوت",
         "heroHeading": "طبيعي. محلي. فوري.",
-        "heroDescription": "روبوت صوت بالذكاء الاصطناعي يتحدث بلغة عميلك — في أي وقت وأي مكان. قدّم محادثات شبيهة بالبشر باللهجات السعودية عبر الحكومة والرعاية الصحية والتجزئة والعقارات.",
+        "heroDescription": "روبوت صوت بالذكاء الاصطناعي يتحدث بلغة عميلك — في أي وقت وأي مكان. قدّم محادثات شبيهة بالبشر باللهجات العربية السعودية مع فهم النبرة والنية عبر الحكومة والرعاية الصحية والتجزئة والعقارات.",
         "ctaLabel": "تواصل معنا",
         "features": {
           "eyebrow": "أضف الصوت إلى خدمتك",
@@ -2415,7 +2415,7 @@
         "metaDescription": "Connect with BAB International on WhatsApp Business for demos and sales inquiries.",
         "eyebrow": "WhatsApp Business",
         "heroHeading": "Talk to BAB on WhatsApp",
-        "heroDescription": "Get answers about contact center, AI, and digital communication solutions — message us directly.",
+        "heroDescription": "Get answers about contact center, AI, WhatsApp Business, and digital communication solutions — message us directly.",
         "ctaLabel": "Book a demo",
         "image": "/images/hero-man-phone.png",
         "galleryImages": [
@@ -2424,7 +2424,7 @@
           "/images/bab-telecom.png"
         ],
         "highlights": [
-          "Fast response from our sales team",
+          "WhatsApp Business communication with our sales team",
           "Demo scheduling via chat",
           "Official BAB International account"
         ],
@@ -2439,7 +2439,7 @@
         "metaDescription": "تواصل مع باب الدولية عبر واتساب للأعمال للعروض واستفسارات المبيعات.",
         "eyebrow": "واتساب للأعمال",
         "heroHeading": "تحدث مع باب عبر واتساب",
-        "heroDescription": "احصل على إجابات حول مراكز الاتصال والذكاء الاصطناعي وحلول الاتصالات — راسلنا مباشرة.",
+        "heroDescription": "احصل على إجابات حول مراكز الاتصال والذكاء الاصطناعي وواتساب للأعمال وحلول الاتصالات — راسلنا مباشرة.",
         "ctaLabel": "احجز عرضاً",
         "image": "/images/hero-man-phone.png",
         "galleryImages": [
@@ -2448,7 +2448,7 @@
           "/images/bab-telecom.png"
         ],
         "highlights": [
-          "استجابة سريعة من فريق المبيعات",
+          "تواصل عبر واتساب للأعمال مع فريق المبيعات",
           "جدولة العروض عبر المحادثة",
           "حساب باب الدولية الرسمي"
         ],

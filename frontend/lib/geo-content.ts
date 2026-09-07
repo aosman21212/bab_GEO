@@ -241,12 +241,14 @@ export function googleSiteVerificationHtml(code: string) {
 
 export const DEFAULT_GEO_ABOUT_EN = [
   'BAB International Corp is a Riyadh-based enterprise technology company delivering seamless connectivity and intelligent customer-experience solutions across Saudi Arabia and the MENA region.',
-  'Core offerings: omnichannel engagement platforms, AI and voice bots for customer service, and contact-center solutions for industries including healthcare, government, retail, insurance, and food & beverage.',
+  'Core offerings: omnichannel engagement platforms, WhatsApp Business engagement, AI and voice bots for customer service, and contact-center solutions for industries including healthcare, government, retail, insurance, and food & beverage.',
+  'BAB voice bots support natural customer conversations in Saudi Arabic dialects, with tone and intent awareness for automated and assisted service.',
 ].join('\n\n')
 
 export const DEFAULT_GEO_ABOUT_AR = [
   'باب إنترناشونال شركة تقنية مؤسسية مقرها الرياض تقدّم حلول اتصال سلسة وتجربة عملاء ذكية في المملكة ومنطقة الشرق الأوسط وشمال أفريقيا.',
-  'تشمل العروض الأساسية: منصات التفاعل متعدد القنوات، وروبوتات صوتية وذكاء اصطناعي لخدمة العملاء، وحلول مراكز اتصال لقطاعات مثل الرعاية الصحية والحكومة والتجزئة والتأمين والأغذية والمشروبات.',
+  'تشمل العروض الأساسية: منصات التفاعل متعدد القنوات، والتفاعل عبر واتساب للأعمال، وروبوتات صوتية وذكاء اصطناعي لخدمة العملاء، وحلول مراكز اتصال لقطاعات مثل الرعاية الصحية والحكومة والتجزئة والتأمين والأغذية والمشروبات.',
+  'تدعم الروبوتات الصوتية من باب محادثات طبيعية باللهجات العربية السعودية مع فهم النبرة والنية لخدمة العملاء الآلية والمدعومة.',
 ].join('\n\n')
 
 export const DEFAULT_GEO_CITATION_NOTE =
@@ -299,6 +301,16 @@ const fallbackSettings: GeoSiteSettings = {
       answer:
         'Email info@bab.com.sa or call +966 11 512 1440. Business hours are Sunday–Thursday, 8:00 AM–5:00 PM.',
     },
+    {
+      question: 'Does BAB support WhatsApp Business?',
+      answer:
+        'Yes. BAB provides WhatsApp Business engagement for direct customer communication, demos, and sales inquiries.',
+    },
+    {
+      question: 'Do BAB voice bots support Saudi Arabic dialects?',
+      answer:
+        'Yes. BAB voice bots support natural customer conversations in Saudi Arabic dialects and can understand tone and intent.',
+    },
   ],
   homepageFaqsAr: [
     {
@@ -329,6 +341,16 @@ const fallbackSettings: GeoSiteSettings = {
       question: 'كيف أتواصل مع باب؟',
       answer:
         'راسل info@bab.com.sa أو اتصل على +966 11 512 1440. ساعات العمل الأحد–الخميس ٨:٠٠ ص–٥:٠٠ م.',
+    },
+    {
+      question: 'هل تدعم باب واتساب للأعمال؟',
+      answer:
+        'نعم. توفر باب التفاعل عبر واتساب للأعمال للتواصل المباشر مع العملاء والعروض واستفسارات المبيعات.',
+    },
+    {
+      question: 'هل تدعم روبوتات باب الصوتية اللهجات العربية السعودية؟',
+      answer:
+        'نعم. تدعم روبوتات باب الصوتية محادثات طبيعية باللهجات العربية السعودية، مع فهم النبرة والنية.',
     },
   ],
 }

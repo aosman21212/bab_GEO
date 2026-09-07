@@ -70,7 +70,7 @@ export const solutions: PageContent[] = [
           accent: 'Unify',
           title: 'Multi-Channel Integration',
           points: [
-            'Combines SMS, email, voice calls, video conferencing, instant messaging, and social media messaging.',
+            'Combines SMS, email, voice calls, video conferencing, instant messaging, WhatsApp Business, and social media messaging.',
             'Ensures seamless communication across multiple touchpoints.',
           ],
         },
@@ -382,7 +382,7 @@ export const solutions: PageContent[] = [
     eyebrow: 'Voice Bot',
     heroHeading: 'Natural. Local. Instant.',
     heroDescription:
-      'AI Voice Bot that speaks your customerâ€™s language â€” anytime, anywhere. Deliver human-like conversations in Saudi dialects across government, healthcare, retail, and real estate.',
+      'AI Voice Bot that speaks your customerâ€™s language â€” anytime, anywhere. Deliver human-like conversations in Saudi Arabic dialects with tone and intent awareness across government, healthcare, retail, and real estate.',
     ctaLabel: 'Contact Us',
     image: '/images/network-sphere.png',
     features: {
