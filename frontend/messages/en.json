@@ -713,6 +713,7 @@
     "pageForm": {
       "page": "Page",
       "pageSubtitle": "Shared settings for this content item",
+      "slugHint": "Generated from the English heading. Edit it to set a custom slug.",
       "seo": "SEO",
       "seoSubtitle": "Search / browser title ({locale})",
       "metaTitle": "Meta title",

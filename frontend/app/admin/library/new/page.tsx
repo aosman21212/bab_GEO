@@ -44,7 +44,7 @@ export default function AdminLibraryNewPage() {
       return
     }
     setEnForm(next)
-    if (!slugTouched && next.heroHeading) {
+    if (!slugTouched) {
       setMeta((m) => ({ ...m, slug: slugify(next.heroHeading) }))
     }
   }

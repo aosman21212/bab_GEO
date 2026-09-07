@@ -308,23 +308,30 @@ export function AdminPageForm({
     <div className="space-y-6">
       <Card title={t('pageForm.page')} subtitle={t('pageForm.pageSubtitle')}>
         <div className="grid gap-4 sm:grid-cols-3">
-          <Label label={t('common.slug')}>
-            <input
-              className={`${fieldClass()} font-mono`}
-              value={meta.slug}
-              disabled={!slugEditable}
-              onChange={(e) =>
-                onMetaChange({
-                  ...meta,
-                  slug: e.target.value
-                    .toLowerCase()
-                    .replace(/[^a-z0-9-]/g, '-')
-                    .replace(/^-|-$/g, ''),
-                })
-              }
-              required
-            />
-          </Label>
+          <div>
+            <Label label={t('common.slug')}>
+              <input
+                className={`${fieldClass()} font-mono`}
+                value={meta.slug}
+                disabled={!slugEditable}
+                onChange={(e) =>
+                  onMetaChange({
+                    ...meta,
+                    slug: e.target.value
+                      .toLowerCase()
+                      .replace(/[^a-z0-9-]/g, '-')
+                      .replace(/^-|-$/g, ''),
+                  })
+                }
+                required
+              />
+            </Label>
+            {slugEditable ? (
+              <p className="mt-1.5 text-xs font-normal text-muted-foreground">
+                {t('pageForm.slugHint')}
+              </p>
+            ) : null}
+          </div>
           <Label label={t('common.type')}>
             <select
               className={fieldClass()}
