@@ -20,6 +20,8 @@ export const TWITTER_DESCRIPTION_MAX = 200
 
 export const HOMEPAGE_OG_TITLE_EN = 'BAB Omnichannel CX in KSA'
 export const HOMEPAGE_OG_TITLE_AR = 'باب | قنوات متعددة في السعودية'
+export const HOMEPAGE_TWITTER_TITLE_EN =
+  'BAB Omnichannel CX Solutions for Businesses in Saudi Arabia'
 export const HOMEPAGE_OG_DESCRIPTION_EN =
   'Saudi partner for omnichannel CX, AI bots, and contact centers.'
 export const HOMEPAGE_OG_DESCRIPTION_AR =
@@ -136,12 +138,14 @@ export function homepageSocialMeta(locale: 'en' | 'ar') {
   if (locale === 'ar') {
     return {
       ogTitle: HOMEPAGE_OG_TITLE_AR,
+      twitterTitle: HOMEPAGE_OG_TITLE_AR,
       ogDescription: HOMEPAGE_OG_DESCRIPTION_AR,
       twitterDescription: HOMEPAGE_TWITTER_DESCRIPTION_AR,
     }
   }
   return {
     ogTitle: HOMEPAGE_OG_TITLE_EN,
+    twitterTitle: HOMEPAGE_TWITTER_TITLE_EN,
     ogDescription: HOMEPAGE_OG_DESCRIPTION_EN,
     twitterDescription: HOMEPAGE_TWITTER_DESCRIPTION_EN,
   }
@@ -730,6 +734,7 @@ export function buildPageMetadata(opts: {
     ? homepageSocialMeta(locale)
     : {
         ogTitle: formatOgTitle(fullTitle, locale),
+        twitterTitle: formatOgTitle(fullTitle, locale),
         ogDescription: formatOgDescription(description, locale),
         twitterDescription: formatTwitterDescription(description, locale),
       }
@@ -767,7 +772,7 @@ export function buildPageMetadata(opts: {
     },
     twitter: {
       card: 'summary_large_image',
-      title: social.ogTitle,
+      title: social.twitterTitle,
       description: social.twitterDescription,
       images: [ogImage],
     },
