@@ -126,7 +126,7 @@ export default async function LocaleLayout({
             )}
           </div>
         </NextIntlClientProvider>
-        {process.env.NODE_ENV === 'production' && gaId ? (
+        {gaId ? (
           <GoogleAnalytics measurementId={gaId} />
         ) : null}
       </body>

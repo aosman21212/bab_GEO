@@ -12,7 +12,6 @@ export function GoogleAnalytics({ measurementId }: { measurementId: string }) {
 
   useEffect(() => {
     if (!measurementId) return
-    if (isLocalHost(window.location.hostname)) return
     setEnabled(true)
   }, [measurementId])
 
@@ -34,6 +33,7 @@ export function GoogleAnalytics({ measurementId }: { measurementId: string }) {
             gtag('js', new Date());
             gtag('config', '${measurementId}', {
               send_page_view: true,
+              debug_mode: ${isLocalHost(typeof window !== 'undefined' ? window.location.hostname : '')},
               cookie_domain: window.location.hostname,
               cookie_flags: location.protocol === 'https:' ? 'SameSite=Lax;Secure' : 'SameSite=Lax'
             });
