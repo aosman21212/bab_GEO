@@ -48,14 +48,37 @@ if (!key) {
 
 const host = new URL(site).host
 
-// Minimal URL set when Next isn't running — expand by fetching sitemap if available
+function locTags(xml) {
+  return [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1].trim())
+}
+
+function isSitemapFile(url) {
+  return /\/sitemap(\/[^/]+)?\.xml$/i.test(url)
+}
+
+async function fetchXml(url) {
+  const res = await fetch(url)
+  if (!res.ok) return null
+  return res.text()
+}
+
+/** HTML page URLs from the sitemap index (or a legacy urlset). */
 async function urlsFromSitemap() {
   try {
-    const res = await fetch(`${site}/sitemap.xml`)
-    if (!res.ok) return null
-    const xml = await res.text()
-    const matches = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1])
-    return matches.length ? matches : null
+    const indexXml = await fetchXml(`${site}/sitemap.xml`)
+    if (!indexXml) return null
+    const locs = locTags(indexXml)
+    if (indexXml.includes('<sitemapindex')) {
+      const pages = []
+      for (const child of locs.filter(isSitemapFile)) {
+        const childXml = await fetchXml(child)
+        if (!childXml) continue
+        pages.push(...locTags(childXml).filter((url) => !isSitemapFile(url)))
+      }
+      return pages.length ? Array.from(new Set(pages)) : null
+    }
+    const pages = locs.filter((url) => !isSitemapFile(url))
+    return pages.length ? pages : null
   } catch {
     return null
   }
@@ -64,7 +87,6 @@ async function urlsFromSitemap() {
 const fallback = [
   site,
   `${site}/ar`,
-  `${site}/llms.txt`,
   `${site}/about-us`,
   `${site}/contact-us`,
 ]

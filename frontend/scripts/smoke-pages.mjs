@@ -42,6 +42,8 @@ const GEO_ROUTES = [
   '/llms-small.txt',
   '/robots.txt',
   '/sitemap.xml',
+  '/sitemap/en.xml',
+  '/sitemap/ar.xml',
   '/.well-known/ai.txt',
   '/googled43fdb9897d9f8a7.html',
   '/BingSiteAuth.xml',
@@ -108,6 +110,26 @@ async function testFrontend(path, group, { optional = false } = {}) {
   return { ...result, ok, path, group }
 }
 
+async function testSitemapXml(path, expectTag) {
+  const url = `${BASE_URL}${path}`
+  try {
+    const res = await fetch(url, { redirect: 'manual' })
+    const text = await res.text()
+    const type = res.headers.get('content-type') || ''
+    const ok = res.status === 200 && /xml/i.test(type) && text.includes(expectTag)
+    return {
+      ok,
+      status: res.status,
+      url,
+      path,
+      group: 'geo',
+      error: ok ? undefined : `expected ${expectTag} in XML (content-type=${type})`,
+    }
+  } catch (err) {
+    return { ok: false, status: 0, url, path, group: 'geo', error: err.message }
+  }
+}
+
 async function testApi(name, fn) {
   try {
     const detail = await fn()
@@ -128,6 +150,30 @@ async function main() {
   results.push(await testFrontend('/', 'infra'))
   results.push(await testFrontend('/ar', 'infra'))
 
+  const robotsUrl = `${BASE_URL}/robots.txt`
+  try {
+    const res = await fetch(robotsUrl, { redirect: 'manual' })
+    const text = await res.text()
+    const ok = res.status === 200 && /Sitemap:\s*\S+\/sitemap\.xml/i.test(text)
+    results.push({
+      ok,
+      status: res.status,
+      url: robotsUrl,
+      path: '/robots.txt',
+      group: 'geo',
+      error: ok ? undefined : 'robots.txt must advertise Sitemap: …/sitemap.xml',
+    })
+  } catch (err) {
+    results.push({
+      ok: false,
+      status: 0,
+      url: robotsUrl,
+      path: '/robots.txt',
+      group: 'geo',
+      error: err.message,
+    })
+  }
+
   // Public pages
   for (const { path, group } of buildPublicPaths()) {
     results.push(await testFrontend(path, group))
@@ -135,6 +181,15 @@ async function main() {
 
   // GEO routes
   for (const route of GEO_ROUTES) {
+    if (route === '/robots.txt') continue
+    if (route === '/sitemap.xml') {
+      results.push(await testSitemapXml(route, '<sitemapindex'))
+      continue
+    }
+    if (route === '/sitemap/en.xml' || route === '/sitemap/ar.xml') {
+      results.push(await testSitemapXml(route, '<urlset'))
+      continue
+    }
     results.push(await testFrontend(route, 'geo'))
   }
   for (const route of OPTIONAL_GEO_ROUTES) {

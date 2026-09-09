@@ -4,6 +4,7 @@ import { allPages } from '@/lib/site-content'
 import { fetchSiteContent, getApiUrl } from '@/lib/api'
 import { BAB_SOCIAL_URLS } from '@/lib/social-profiles'
 import { basePath } from '@/lib/base-path'
+import { companySitemapLinks, solutionGroups } from '@/lib/nav-tree'
 
 export const SEO_TITLE_MAX = 70
 export const SEO_DESCRIPTION_MAX = 160
@@ -605,22 +606,157 @@ export function geoCrawlerUrls(): string[] {
   ]
 }
 
-export async function collectSitemapUrls(): Promise<string[]> {
-  const pages = await loadPublishedPages()
-  const site = getSiteUrl()
-  const staticPaths = ['', 'about-us', 'success-stories', 'articles', 'careers', 'contact-us', 'privacy-policy', 'terms-conditions', 'sitemap']
-  const urls: string[] = [site, ...geoCrawlerUrls()]
+export const SITEMAP_LOCALES = ['en', 'ar'] as const
+export type SitemapLocale = (typeof SITEMAP_LOCALES)[number]
 
-  for (const locale of ['en', 'ar'] as const) {
-    for (const path of staticPaths) {
-      urls.push(localePath(locale, path))
-    }
-    for (const page of pages) {
-      urls.push(localePath(locale, page.slug))
-    }
+export const SITEMAP_STATIC_PATHS = [
+  '',
+  'about-us',
+  'success-stories',
+  'articles',
+  'careers',
+  'contact-us',
+  'privacy-policy',
+  'terms-conditions',
+  'sitemap',
+] as const
+
+const SITEMAP_STATIC_SET = new Set<string>(SITEMAP_STATIC_PATHS)
+
+export type HtmlSitemapEntry = {
+  path: string
+  url: string
+  lastModified: Date
+  changeFrequency: 'weekly' | 'monthly'
+  priority: number
+  languages: { en: string; ar: string; 'x-default': string }
+}
+
+function sitemapSlugFromHref(href: string) {
+  return href.replace(/^\//, '')
+}
+
+function sitemapEntryMeta(path: string) {
+  if (path === '') return { changeFrequency: 'weekly' as const, priority: 1 }
+  if (SITEMAP_STATIC_SET.has(path)) {
+    return { changeFrequency: 'monthly' as const, priority: 0.7 }
+  }
+  return { changeFrequency: 'weekly' as const, priority: 0.8 }
+}
+
+export async function collectHtmlSitemapSlugs(): Promise<string[]> {
+  const pages = await loadPublishedPages()
+  const slugs = new Set<string>()
+
+  for (const path of SITEMAP_STATIC_PATHS) slugs.add(path)
+  for (const item of companySitemapLinks) slugs.add(sitemapSlugFromHref(item.href))
+  for (const group of solutionGroups) {
+    for (const item of group.items) slugs.add(sitemapSlugFromHref(item.href))
+  }
+  for (const page of pages) slugs.add(sitemapSlugFromHref(page.slug))
+
+  return [...slugs]
+}
+
+export async function htmlSitemapEntriesForLocale(
+  locale: SitemapLocale,
+): Promise<HtmlSitemapEntry[]> {
+  const slugs = await collectHtmlSitemapSlugs()
+  const now = new Date()
+  const seen = new Set<string>()
+  const entries: HtmlSitemapEntry[] = []
+
+  for (const path of slugs) {
+    const url = localePath(locale, path)
+    if (seen.has(url)) continue
+    seen.add(url)
+    const en = localePath('en', path)
+    const ar = localePath('ar', path)
+    entries.push({
+      path,
+      url,
+      lastModified: now,
+      ...sitemapEntryMeta(path),
+      languages: { en, ar, 'x-default': en },
+    })
   }
 
+  return entries
+}
+
+/** Public HTML page URLs for IndexNow and crawlers — not GEO text files. */
+export async function collectSitemapUrls(): Promise<string[]> {
+  const slugs = await collectHtmlSitemapSlugs()
+  const urls: string[] = []
+  for (const locale of SITEMAP_LOCALES) {
+    for (const path of slugs) {
+      urls.push(localePath(locale, path))
+    }
+  }
   return Array.from(new Set(urls))
+}
+
+export function childSitemapUrls() {
+  const site = getSiteUrl()
+  return SITEMAP_LOCALES.map((locale) => `${site}/sitemap/${locale}.xml`)
+}
+
+function xmlEscape(value: string) {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+}
+
+function isoDate(date: Date) {
+  return date.toISOString().slice(0, 10)
+}
+
+export function buildSitemapIndexXml(lastModified = new Date()) {
+  const lastmod = isoDate(lastModified)
+  const body = childSitemapUrls()
+    .map(
+      (loc) =>
+        `  <sitemap>\n    <loc>${xmlEscape(loc)}</loc>\n    <lastmod>${lastmod}</lastmod>\n  </sitemap>`,
+    )
+    .join('\n')
+
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</sitemapindex>\n`
+}
+
+export function buildUrlsetXml(entries: HtmlSitemapEntry[]) {
+  const body = entries
+    .map((entry) => {
+      const lastmod = isoDate(entry.lastModified)
+      const alts = (['en', 'ar', 'x-default'] as const)
+        .map(
+          (lang) =>
+            `    <xhtml:link rel="alternate" hreflang="${lang}" href="${xmlEscape(entry.languages[lang])}"/>`,
+        )
+        .join('\n')
+      return [
+        '  <url>',
+        `    <loc>${xmlEscape(entry.url)}</loc>`,
+        `    <lastmod>${lastmod}</lastmod>`,
+        `    <changefreq>${entry.changeFrequency}</changefreq>`,
+        `    <priority>${entry.priority.toFixed(1)}</priority>`,
+        alts,
+        '  </url>',
+      ].join('\n')
+    })
+    .join('\n')
+
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${body}\n</urlset>\n`
+}
+
+export function sitemapXmlResponse(xml: string) {
+  return new Response(xml, {
+    headers: {
+      'Content-Type': 'application/xml; charset=utf-8',
+      'Cache-Control': 'public, max-age=0, must-revalidate',
+    },
+  })
 }
 
 export function buildOrganizationJsonLd(

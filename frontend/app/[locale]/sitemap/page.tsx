@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useLocale, useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import { Reveal } from '@/components/reveal'
+import { withBasePath } from '@/lib/base-path'
 import { companySitemapLinks, solutionGroups } from '@/lib/nav-tree'
 import {
   emptyCmsNavExtras,
@@ -92,6 +93,14 @@ export default function SitemapPage() {
             <p className="text-[11px] font-bold tracking-[0.16em] text-primary">{t('root')}</p>
             <h1 className="mt-2 text-3xl font-extrabold text-white md:text-4xl">{t('title')}</h1>
             <p className="mt-3 max-w-xl text-base leading-relaxed text-white/75">{t('body')}</p>
+            <p className="mt-4">
+              <a
+                href={withBasePath('/sitemap.xml')}
+                className="text-sm font-semibold text-primary underline-offset-2 hover:underline"
+              >
+                {t('crawlerSitemap')}
+              </a>
+            </p>
           </Reveal>
         </div>
       </section>

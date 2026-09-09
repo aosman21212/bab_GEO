@@ -340,7 +340,8 @@
     "company": "Company",
     "solutions": "Solutions & content",
     "products": "Products",
-    "caseStudies": "Case studies"
+    "caseStudies": "Case studies",
+    "crawlerSitemap": "XML sitemap for Google and Bing (sitemap.xml)"
   },
   "legal": {
     "privacyTitle": "Privacy Policy",
@@ -823,11 +824,11 @@
       "indexNowKeyError": "Could not save IndexNow key",
       "bingHelp": "For Bing IndexNow (if GEO shows Bing 403 while Yandex OK): open Bing Webmaster Tools → confirm the site is Verified → URL Submission → IndexNow → Generate API key → run npm run seo:rotate-indexnow-key — then deploy and retry Submit.",
       "bingSiteAuthHelp": "For Bing site verification: set BING_SITE_AUTH_CODE in env (the <user> code from Bing Webmaster Tools → Verify → XML file or Meta tag), rebuild frontend, then confirm BingSiteAuth.xml shows OK above and click Verify in Bing.",
-      "googleSiteAuthHelp": "For Google Search Console: set GOOGLE_SITE_VERIFICATION=googled43fdb9897d9f8a7 in env (filename without .html), rebuild frontend, confirm googled43fdb9897d9f8a7.html shows OK above, then click Verify in Search Console. Submit sitemap.xml under Sitemaps.",
-      "googleHelp": "For Google: open Search Console → Sitemaps → submit sitemap.xml, then URL Inspection → Request indexing for the priority URLs below. Gemini uses Google Search — IndexNow does not notify Google.",
+      "googleSiteAuthHelp": "For Google Search Console: set GOOGLE_SITE_VERIFICATION=googled43fdb9897d9f8a7 in env (filename without .html), rebuild frontend, confirm googled43fdb9897d9f8a7.html shows OK above, then click Verify in Search Console. Submit https://bab.com.sa/sitemap.xml once under Sitemaps — child files sitemap/en.xml and sitemap/ar.xml appear under it.",
+      "googleHelp": "For Google: open Search Console → Sitemaps → submit https://bab.com.sa/sitemap.xml once. Search Console then lists child files sitemap/en.xml and sitemap/ar.xml. Use URL Inspection → Request indexing for the priority URLs below. Gemini uses Google Search — IndexNow does not notify Google.",
       "bingUrlsTitle": "Bing — all sitemap URLs",
-      "bingUrlsBody": "Submit sitemap.xml once in Bing Webmaster Tools (Sitemaps), then use Submit sitemap (IndexNow) above to push all URLs. Or copy the full list below.",
-      "bingSitemapSubmit": "Bing sitemap URL",
+      "bingUrlsBody": "Submit https://bab.com.sa/sitemap.xml once in Bing Webmaster Tools (Sitemaps). Bing lists child files sitemap/en.xml and sitemap/ar.xml under it. Then use Submit sitemap (IndexNow) above to push all HTML URLs. Or copy the full list below.",
+      "bingSitemapSubmit": "Bing sitemap index URL",
       "copyAllUrls": "Copy all URLs",
       "urlsCopied": "All URLs copied to clipboard.",
       "urlsCopyFailed": "Could not copy — select and copy manually.",

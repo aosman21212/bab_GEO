@@ -13,7 +13,7 @@ function isLoginPage(pathname: string) {
 
 /**
  * Client idle logout (UX). Server-side enforcement is JWT expiry + Redis session denylist
- * on logout (admin-security-findings #1 / #4). Hidden-tab time counts toward idle.
+ * on logout (admin-security-findings #1 / #4). Hidden-tab time counts toward the 8-hour idle window.
  */
 export function AdminSessionGuard({ children }: { children: ReactNode }) {
   const pathname = usePathname()

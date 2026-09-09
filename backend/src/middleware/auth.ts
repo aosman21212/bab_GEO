@@ -19,9 +19,9 @@ export type MfaPendingPayload = {
   purpose: 'mfa_pending'
 }
 
-/** Must stay aligned with frontend ADMIN_SESSION_COOKIE_MAX_AGE (20 minutes). */
-export const ADMIN_JWT_EXPIRES_IN = '20m'
-export const ADMIN_JWT_EXPIRES_SECONDS = 20 * 60
+/** Must stay aligned with frontend ADMIN_SESSION_COOKIE_MAX_AGE (8 hours). */
+export const ADMIN_JWT_EXPIRES_IN = '8h'
+export const ADMIN_JWT_EXPIRES_SECONDS = 8 * 60 * 60
 
 /** Intermediate MFA verification token valid for 10 minutes. */
 export const MFA_PENDING_EXPIRES_IN = '10m'

@@ -340,7 +340,8 @@
     "company": "الشركة",
     "solutions": "الحلول والمحتوى",
     "products": "المنتجات",
-    "caseStudies": "دراسات الحالة"
+    "caseStudies": "دراسات الحالة",
+    "crawlerSitemap": "خريطة XML لمحركات البحث (sitemap.xml)"
   },
   "legal": {
     "privacyTitle": "سياسة الخصوصية",
@@ -823,11 +824,11 @@
       "indexNowKeyError": "تعذّر حفظ مفتاح IndexNow",
       "bingHelp": "لـ Bing IndexNow (إذا ظهر 403 بينما Yandex ناجح): افتح Bing Webmaster Tools → أكد التحقق من الموقع → URL Submission → IndexNow → أنشئ مفتاحاً → نفّذ npm run seo:rotate-indexnow-key ثم انشر وأعد الإرسال.",
       "bingSiteAuthHelp": "للتحقق من موقع Bing: عيّن BING_SITE_AUTH_CODE في البيئة (رمز <user> من Bing Webmaster Tools → Verify → XML أو Meta tag)، أعد بناء الواجهة، ثم تأكد أن BingSiteAuth.xml يظهر OK أعلاه واضغط Verify في Bing.",
-      "googleSiteAuthHelp": "لـ Google Search Console: عيّن GOOGLE_SITE_VERIFICATION=googled43fdb9897d9f8a7 في البيئة (اسم الملف بدون .html)، أعد بناء الواجهة، تأكد أن googled43fdb9897d9f8a7.html يظهر OK أعلاه، ثم اضغط Verify في Search Console. أرسل sitemap.xml تحت Sitemaps.",
-      "googleHelp": "لـ Google: افتح Search Console → Sitemaps → أرسل sitemap.xml ثم URL Inspection → اطلب الفهرسة للروابط ذات الأولوية أدناه. Gemini يعتمد على بحث Google — IndexNow لا يُخطر Google.",
+      "googleSiteAuthHelp": "لـ Google Search Console: عيّن GOOGLE_SITE_VERIFICATION=googled43fdb9897d9f8a7 في البيئة (اسم الملف بدون .html)، أعد بناء الواجهة، تأكد أن googled43fdb9897d9f8a7.html يظهر OK أعلاه، ثم اضغط Verify في Search Console. أرسل https://bab.com.sa/sitemap.xml مرة واحدة تحت Sitemaps — ستظهر الملفات الفرعية sitemap/en.xml و sitemap/ar.xml تحتها.",
+      "googleHelp": "لـ Google: افتح Search Console → Sitemaps → أرسل https://bab.com.sa/sitemap.xml مرة واحدة. بعدها تظهر الملفات الفرعية sitemap/en.xml و sitemap/ar.xml. استخدم URL Inspection → اطلب الفهرسة للروابط ذات الأولوية أدناه. Gemini يعتمد على بحث Google — IndexNow لا يُخطر Google.",
       "bingUrlsTitle": "Bing — جميع روابط خريطة الموقع",
-      "bingUrlsBody": "أرسل sitemap.xml مرة واحدة في Bing Webmaster Tools (Sitemaps)، ثم استخدم إرسال خريطة الموقع (IndexNow) أعلاه لدفع كل الروابط. أو انسخ القائمة الكاملة أدناه.",
-      "bingSitemapSubmit": "رابط خريطة الموقع لـ Bing",
+      "bingUrlsBody": "أرسل https://bab.com.sa/sitemap.xml مرة واحدة في Bing Webmaster Tools (Sitemaps). تظهر الملفات الفرعية sitemap/en.xml و sitemap/ar.xml تحتها. ثم استخدم إرسال خريطة الموقع (IndexNow) أعلاه لدفع صفحات HTML. أو انسخ القائمة الكاملة أدناه.",
+      "bingSitemapSubmit": "رابط فهرس خريطة الموقع لـ Bing",
       "copyAllUrls": "نسخ كل الروابط",
       "urlsCopied": "تم نسخ كل الروابط.",
       "urlsCopyFailed": "تعذّر النسخ — انسخ يدوياً.",

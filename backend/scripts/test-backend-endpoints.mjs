@@ -61,7 +61,7 @@ function generateAdminToken(secret, sub = '66f000000000000000000001') {
       mfaVerified: true,
     },
     secret,
-    { expiresIn: '20m' }
+    { expiresIn: '8h' }
   )
 }
 

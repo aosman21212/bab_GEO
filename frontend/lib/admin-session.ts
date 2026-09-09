@@ -2,9 +2,9 @@ import type { NextResponse } from 'next/server'
 import { basePath } from '@/lib/base-path'
 
 export const ADMIN_SESSION_COOKIE = 'bab_admin_token'
-/** Idle timeout — keep in sync with backend ADMIN_JWT_EXPIRES_IN (`20m`). */
-export const ADMIN_SESSION_IDLE_MS = 20 * 60 * 1000
-export const ADMIN_SESSION_COOKIE_MAX_AGE = 20 * 60
+/** Idle timeout — keep in sync with backend ADMIN_JWT_EXPIRES_IN (`8h`). */
+export const ADMIN_SESSION_IDLE_MS = 8 * 60 * 60 * 1000
+export const ADMIN_SESSION_COOKIE_MAX_AGE = 8 * 60 * 60
 
 const COOKIE_PATH = basePath || '/'
 

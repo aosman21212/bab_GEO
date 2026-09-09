@@ -98,7 +98,7 @@ export async function cacheDelPattern(pattern: string) {
 }
 
 const SESSION_DENY_PREFIX = 'admin:deny:'
-const SESSION_DENY_TTL = 20 * 60
+const SESSION_DENY_TTL = 8 * 60 * 60
 
 function denyKey(sid: string) {
   return `${SESSION_DENY_PREFIX}${sid}`
