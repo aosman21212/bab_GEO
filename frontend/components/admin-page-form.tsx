@@ -7,7 +7,7 @@ import { AdminGalleryImagesField } from '@/components/admin-gallery-images-field
 import { AdminImagePicker } from '@/components/admin-image-picker'
 import { AdminMediaPreview } from '@/components/admin-media-preview'
 import type { PageCategory, LandingType } from '@/lib/page-categories'
-import { SEO_DESCRIPTION_MAX, SEO_TITLE_MIN, SEO_TITLE_SEGMENT_MAX, SEO_TITLE_SUFFIX } from '@/lib/geo-content'
+import { SEO_DESCRIPTION_MAX, SEO_DESCRIPTION_MIN, SEO_TITLE_MIN, SEO_TITLE_SEGMENT_MAX, SEO_TITLE_SUFFIX } from '@/lib/geo-content'
 
 function SeoFieldHint({
   value,
@@ -33,7 +33,7 @@ function SeoFieldHint({
       {length}/{max} characters
       {suffix && value.trim() ? ` · effective: ${effectiveLength} with suffix` : ''}
       {overLimit ? ' — may be truncated in search results' : ''}
-      {underMin ? ` — title too short (min ${min} chars${suffix ? ' including suffix' : ''})` : ''}
+      {underMin ? ` — too short (min ${min} chars${suffix ? ' including suffix' : ''})` : ''}
     </span>
   )
 }
@@ -420,7 +420,11 @@ export function AdminPageForm({
             value={value.metaDescription}
             onChange={(e) => set('metaDescription', e.target.value)}
           />
-          <SeoFieldHint value={value.metaDescription} max={SEO_DESCRIPTION_MAX} />
+          <SeoFieldHint
+            value={value.metaDescription}
+            max={SEO_DESCRIPTION_MAX}
+            min={SEO_DESCRIPTION_MIN}
+          />
         </Label>
       </Card>
 

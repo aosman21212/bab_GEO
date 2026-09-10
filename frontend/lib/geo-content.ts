@@ -8,6 +8,7 @@ import { companySitemapLinks, solutionGroups } from '@/lib/nav-tree'
 
 export const SEO_TITLE_MAX = 70
 export const SEO_DESCRIPTION_MAX = 160
+export const SEO_DESCRIPTION_MIN = 150
 export const SEO_TITLE_MIN = 15
 export const SEO_TITLE_SUFFIX = ' | BAB'
 export const SEO_TITLE_SEGMENT_MAX = SEO_TITLE_MAX - SEO_TITLE_SUFFIX.length
@@ -73,8 +74,12 @@ export function formatSeoTitle(title: string, max = SEO_TITLE_MAX): string {
   return slice.trimEnd()
 }
 
-export function formatSeoDescription(description: string): string {
-  return formatSeoTitle(description, SEO_DESCRIPTION_MAX)
+/** Keep meta descriptions in Bing's 150–160 character band. */
+export function formatSeoDescription(
+  description: string,
+  locale: 'en' | 'ar' = 'en',
+): string {
+  return formatSocialText(description, SEO_DESCRIPTION_MIN, SEO_DESCRIPTION_MAX, locale)
 }
 
 export function formatSeoSegment(title: string): string {
@@ -835,7 +840,7 @@ export function buildSiteMetadata(opts: {
   const locale = opts.locale === 'ar' ? 'ar' : 'en'
   const site = getSiteUrl()
   const defaultTitle = formatSeoTitle(opts.title)
-  const description = formatSeoDescription(opts.description)
+  const description = formatSeoDescription(opts.description, locale)
   const googleCode = getGoogleSiteVerification()
   const bingCode = getBingSiteAuthCode()
   const verification = {
@@ -886,7 +891,7 @@ export function buildPageMetadata(opts: {
     ...(bingCode ? { other: { 'msvalidate.01': bingCode } } : {}),
   }
   const { title, fullTitle } = resolvePageTitle(opts.title, opts.absoluteTitle)
-  const description = formatSeoDescription(opts.description)
+  const description = formatSeoDescription(opts.description, locale)
   const isHome = !path
   const social = isHome
     ? homepageSocialMeta(locale)

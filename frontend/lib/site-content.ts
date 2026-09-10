@@ -458,7 +458,7 @@ export const solutions: PageContent[] = [
     category: 'solution',
     metaTitle: 'Contact Center Solutions in Saudi Arabia',
     metaDescription:
-      'Grow your call center operations with advanced technology. Drive efficiency, ensure data security, and improve client experiences.',
+      'Grow call-center operations in KSA with BAB. Drive efficiency, protect data, and improve client experiences with AI routing, analytics, and omnichannel support.',
     eyebrow: 'Call Center',
     heroHeading: 'Grow Your Call Center Operations with Advanced Technology Solutions',
     heroDescription:
@@ -650,7 +650,7 @@ export const industries: PageContent[] = [
     category: 'industry',
     metaTitle: 'Government & Public Sector CX Solutions in KSA',
     metaDescription:
-      'Equipping the government and public sector â€” driving digital transformation and enhancing citizen engagement.',
+      'BAB helps Saudi government and public-sector teams drive digital transformation, improve citizen engagement, and deliver secure omnichannel citizen services.',
     eyebrow: 'Government & Public Sector',
     heroHeading: 'Equipping the Government & Public Sector',
     heroDescription:

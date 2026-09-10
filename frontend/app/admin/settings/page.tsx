@@ -10,6 +10,7 @@ import {
   DEFAULT_GEO_ABOUT_EN,
   DEFAULT_GEO_CITATION_NOTE,
   SEO_DESCRIPTION_MAX,
+  SEO_DESCRIPTION_MIN,
   SEO_TITLE_MAX,
   SEO_TITLE_MIN,
 } from '@/lib/geo-content'
@@ -151,12 +152,15 @@ function SeoTitleLengthHint({ value }: { value: string }) {
 function SeoDescriptionLengthHint({ value }: { value: string }) {
   const length = value.length
   const overLimit = length > SEO_DESCRIPTION_MAX
+  const underMin = value.trim().length > 0 && length < SEO_DESCRIPTION_MIN
+  const warn = overLimit || underMin
   return (
     <span
-      className={`text-xs font-normal ${overLimit ? 'text-red-600' : 'text-muted-foreground'}`}
+      className={`text-xs font-normal ${warn ? 'text-red-600' : 'text-muted-foreground'}`}
     >
       {length}/{SEO_DESCRIPTION_MAX} characters
       {overLimit ? ' — description may be truncated in search results' : ''}
+      {underMin ? ` — too short (min ${SEO_DESCRIPTION_MIN} characters)` : ''}
     </span>
   )
 }
