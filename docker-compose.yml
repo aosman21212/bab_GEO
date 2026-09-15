@@ -80,7 +80,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
       args:
-        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:4001}
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-}
         NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3003}
         NEXT_PUBLIC_BASE_PATH: ${NEXT_PUBLIC_BASE_PATH:-}
         INDEXNOW_KEY: ${INDEXNOW_KEY:-a0d1d00c073c48c2b85694d1a36ccfbf}
@@ -92,9 +92,9 @@ services:
     environment:
       SITE_URL: ${SITE_URL:-}
       # Server fetch inside the compose network. NEXT_PUBLIC_* is inlined at build
-      # (localhost / public API) and cannot be overridden here.
+      # and cannot be overridden here. Empty default avoids baking localhost into the visitor bundle.
       API_URL: ${API_URL:-http://backend:4001}
-      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:4001}
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-}
       NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3003}
       NEXT_PUBLIC_BASE_PATH: ${NEXT_PUBLIC_BASE_PATH:-}
       INDEXNOW_KEY: ${INDEXNOW_KEY:-a0d1d00c073c48c2b85694d1a36ccfbf}

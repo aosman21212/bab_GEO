@@ -9,7 +9,7 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-ARG NEXT_PUBLIC_API_URL=http://localhost:4001
+ARG NEXT_PUBLIC_API_URL=
 ARG NEXT_PUBLIC_SITE_URL=http://localhost:3003
 ARG NEXT_PUBLIC_BASE_PATH=
 ARG INDEXNOW_KEY=

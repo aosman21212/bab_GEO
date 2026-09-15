@@ -1,14 +1,43 @@
 import { withBasePath } from '@/lib/base-path'
 
+function isPrivateOrLocalApiOrigin(origin: string) {
+  if (!origin) return false
+  try {
+    const { hostname } = new URL(origin.includes('://') ? origin : `http://${origin}`)
+    const host = hostname.toLowerCase()
+    if (
+      host === 'localhost' ||
+      host === 'backend' ||
+      host === 'host.docker.internal' ||
+      host === '127.0.0.1' ||
+      host === '::1' ||
+      host.endsWith('.localhost')
+    ) {
+      return true
+    }
+    if (/^10\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(host)) return true
+    if (/^192\.168\.\d{1,3}\.\d{1,3}$/.test(host)) return true
+    if (/^172\.(1[6-9]|2\d|3[0-1])\.\d{1,3}\.\d{1,3}$/.test(host)) return true
+    return false
+  } catch {
+    return true
+  }
+}
+
 /**
  * Backend origin for server-side fetch.
  * Prefer API_URL (not inlined by Next) so Docker can use http://backend:4001 at runtime.
- * NEXT_PUBLIC_API_URL is the browser-facing fallback, baked in at build.
+ * In the browser, never return localhost / private hosts (Chrome Local Network Access).
  */
 export function getApiUrl() {
-  const serverUrl = process.env.API_URL?.replace(/\/$/, '')
-  if (serverUrl) return serverUrl
-  return String(process.env.NEXT_PUBLIC_API_URL ?? '').replace(/\/$/, '')
+  if (typeof window === 'undefined') {
+    const serverUrl = process.env.API_URL?.replace(/\/$/, '')
+    if (serverUrl) return serverUrl
+    return String(process.env.NEXT_PUBLIC_API_URL ?? '').replace(/\/$/, '')
+  }
+  const publicUrl = String(process.env.NEXT_PUBLIC_API_URL ?? '').replace(/\/$/, '')
+  if (!publicUrl || isPrivateOrLocalApiOrigin(publicUrl)) return ''
+  return publicUrl
 }
 
 /** Node surfaces the real network failure on `cause.code`; fetch itself only throws a generic TypeError. */
@@ -69,13 +98,30 @@ export async function fetchSiteContent(locale: string) {
   return apiFetch<Record<string, unknown>>(`/api/content/${locale}`)
 }
 
+async function sameOriginJson<T>(path: string, timeoutMs = 4000): Promise<T | null> {
+  const controller = new AbortController()
+  const timer = setTimeout(() => controller.abort(), timeoutMs)
+  try {
+    const res = await fetch(withBasePath(path), {
+      signal: controller.signal,
+      headers: { 'Content-Type': 'application/json' },
+    })
+    if (!res.ok) return null
+    return (await res.json()) as T
+  } catch {
+    return null
+  } finally {
+    clearTimeout(timer)
+  }
+}
+
 export async function fetchPartners() {
-  return apiFetch<ApiPartner[]>('/api/partners')
+  return sameOriginJson<ApiPartner[]>('/api/partners')
 }
 
 export async function fetchTestimonials(locale?: string) {
-  const q = locale ? `?locale=${locale}` : ''
-  return apiFetch<ApiTestimonial[]>(`/api/testimonials${q}`)
+  const q = locale ? `?locale=${encodeURIComponent(locale)}` : ''
+  return sameOriginJson<ApiTestimonial[]>(`/api/testimonials${q}`)
 }
 
 export async function submitInquiry(body: {
