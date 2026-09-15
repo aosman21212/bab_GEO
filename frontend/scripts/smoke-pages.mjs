@@ -2,11 +2,11 @@
 /**
  * HTTP smoke test for all public, GEO, and admin pages.
  * Usage: npm run smoke
- *        BASE_URL=http://localhost:3003 API_URL=http://localhost:4001 node scripts/smoke-pages.mjs
+ *        BASE_URL=http://localhost:3003 NEXT_PUBLIC_API_URL=http://localhost:4001 node scripts/smoke-pages.mjs
  */
 
-const BASE_URL = (process.env.BASE_URL || 'http://localhost:3003').replace(/\/$/, '')
-const API_URL = (process.env.API_URL || 'http://localhost:4001').replace(/\/$/, '')
+const BASE_URL = (process.env.BASE_URL || process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3003').replace(/\/$/, '')
+const API_URL = (process.env.NEXT_PUBLIC_API_URL ?? '').replace(/\/$/, '')
 
 const STATIC_PATHS = [
   '',
@@ -69,8 +69,15 @@ const ADMIN_ROUTES = [
   '/admin/content',
 ]
 
-/** Paths that may legitimately redirect (locale prefix normalization, admin aliases). */
+/** Paths that may legitimately redirect (locale prefix, trailing slash, admin aliases). */
 const ALLOW_REDIRECT = new Set(['/en', '/en/', '/admin/content'])
+
+function allowsRedirect(path) {
+  if (ALLOW_REDIRECT.has(path)) return true
+  if (path === '/en' || path.startsWith('/en/')) return true
+  if (path.length > 1 && path.endsWith('/')) return true
+  return false
+}
 
 function localePath(locale, path) {
   if (locale === 'en') return path ? `/${path}` : '/'
@@ -104,7 +111,7 @@ async function fetchPage(url, { allowRedirect = false } = {}) {
 
 async function testFrontend(path, group, { optional = false } = {}) {
   const url = `${BASE_URL}${path}`
-  const allowRedirect = ALLOW_REDIRECT.has(path)
+  const allowRedirect = allowsRedirect(path)
   const result = await fetchPage(url, { allowRedirect })
   const ok = result.ok || (optional && result.status === 404)
   return { ...result, ok, path, group }

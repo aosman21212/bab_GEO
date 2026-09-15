@@ -55,11 +55,11 @@ export const solutions: PageContent[] = [
     category: 'solution',
     metaTitle: 'Omnichannel CX Solutions for Enterprises in Saudi Arabia',
     metaDescription:
-      'Unify every touchpoint and deliver seamless customer journeys across all channels with BAB omnichannel solutions.',
+      'Unify every customer touchpoint with BAB omnichannel solutions in Saudi Arabia. Connect voice, chat, and social into one seamless journey across all channels.',
     eyebrow: 'Omnichannel',
     heroHeading: 'Unify Every Touchpoint. Deliver Seamless Customer Journeys',
     heroDescription:
-      'Connect, engage, and retain customers effortlessly across all channels with our advanced omnichannel solutionsâ€”turning every interaction into a growth opportunity.',
+      'Connect, engage, and retain customers effortlessly across all channels with our advanced omnichannel solutions—turning every interaction into a growth opportunity.',
     ctaLabel: 'Get Started with Digital Transformation Today',
     image: '/images/bab-hero.png',
     features: {
@@ -123,7 +123,7 @@ export const solutions: PageContent[] = [
       ],
     },
     impact: {
-      heading: "Unify Your Customer Experience â€” Connect All Channels with BAB's Omnichannel Solutions",
+      heading: "Unify Your Customer Experience — Connect All Channels with BAB's Omnichannel Solutions",
       text: 'Contact BAB today to explore customized omnichannel communication solutions for your business.',
     },
   },
@@ -132,7 +132,7 @@ export const solutions: PageContent[] = [
     category: 'solution',
     metaTitle: 'Live Customer Engagement Platform for Saudi Enterprises',
     metaDescription:
-      'Turn every visitor into a real-time conversation. Boost engagement and convert faster with BAB live interaction tools.',
+      'Turn website visitors into live conversations with BAB. Boost engagement and convert faster using real-time chat, routing, and collaboration for Saudi teams.',
     eyebrow: 'Live Engagement Platform',
     heroHeading: 'Turn Every Visitor into a Real-Time Conversation',
     heroDescription:
@@ -172,7 +172,7 @@ export const solutions: PageContent[] = [
           title: 'Interactive Messaging',
           points: [
             'Supports rich media content such as images, videos, carousels, and clickable buttons.',
-            'Enhances engagement with actionable messages (e.g., â€œBook Now,â€ â€œGet a Discountâ€).',
+            'Enhances engagement with actionable messages (e.g., "Book Now," "Get a Discount").',
           ],
         },
       ],
@@ -180,7 +180,7 @@ export const solutions: PageContent[] = [
     benefits: {
       heading: 'Live Engagement Unpacked',
       items: [
-        { title: 'Increased Conversions', desc: 'Timely engagement ensures customers act when theyâ€™re most interested.' },
+        { title: 'Increased Conversions', desc: "Timely engagement ensures customers act when they're most interested." },
         { title: 'Enhanced Customer Experience', desc: 'Fast responses reduce frustration and build trust.' },
         { title: 'Improved Customer Retention', desc: 'Engaging with users at key moments improves loyalty.' },
         { title: 'Reduced Abandonment Rates', desc: 'Proactive messages address hesitations during checkout or sign-up.' },
@@ -200,11 +200,11 @@ export const solutions: PageContent[] = [
     category: 'solution',
     metaTitle: 'Rich Communication Services (RCS) for Saudi Businesses',
     metaDescription:
-      'Revolutionize customer conversations with RCS messaging â€” rich, interactive, branded messages with no downloads needed.',
+      'Send rich, branded RCS messages with BAB—interactive cards, images, and CTAs in native messaging apps, with no app download required for Saudi customers.',
     eyebrow: 'Rich Communication Services',
     heroHeading: 'Revolutionize Customer Conversations with RCS Messaging',
     heroDescription:
-      'Deliver rich, interactive, and branded messages directly to your customersâ€™ native messaging appsâ€”no downloads needed.',
+      "Deliver rich, interactive, and branded messages directly to your customers' native messaging apps—no downloads needed.",
     ctaLabel: 'Contact Us',
     image: '/images/bab-hero.png',
     features: {
@@ -223,7 +223,7 @@ export const solutions: PageContent[] = [
           accent: 'Journey',
           title: 'Interactive Buttons & Quick Actions',
           points: [
-            'Offers clickable CTAs like â€œBuy Nowâ€, â€œTrack Orderâ€, or â€œBook an Appointment.â€',
+            'Offers clickable CTAs like "Buy Now", "Track Order", or "Book an Appointment."',
             'Improves user convenience by reducing friction in decision-making.',
           ],
         },
@@ -232,7 +232,7 @@ export const solutions: PageContent[] = [
           title: 'Verified Business Profiles',
           points: [
             'Branded profiles with logos, company names, and verified checkmarks.',
-            'Builds trust by ensuring recipients know theyâ€™re communicating with a legitimate business.',
+            "Builds trust by ensuring recipients know they're communicating with a legitimate business.",
           ],
         },
         {
@@ -267,11 +267,11 @@ export const solutions: PageContent[] = [
     category: 'solution',
     metaTitle: 'Conversational Messaging Platform for Customer Engagement',
     metaDescription:
-      'Connect all your social channels in one seamless inbox â€” WhatsApp, Instagram, Facebook and more.',
+      'Manage WhatsApp, Instagram, Facebook, and more in one BAB inbox. Speed up replies, never miss a lead, and keep social customer conversations in a single thread.',
     eyebrow: 'Conversational Messaging Platform',
     heroHeading: 'Connect All Your Social Channels in One Seamless Inbox',
     heroDescription:
-      'Manage conversations across WhatsApp, Instagram, Facebook, and moreâ€”boost response time and never miss a lead.',
+      'Manage conversations across WhatsApp, Instagram, Facebook, and more—boost response time and never miss a lead.',
     ctaLabel: 'Contact Us',
     image: '/images/bab-hero.png',
     features: {
@@ -343,7 +343,7 @@ export const solutions: PageContent[] = [
     category: 'solution',
     metaTitle: 'Digital Transformation & Cloud Solutions in Saudi Arabia',
     metaDescription:
-      'Transform your business with cloud solutions, custom development, interactive services, and data analytics.',
+      'Modernize operations with BAB digital transformation: cloud platforms, custom development, interactive services, and analytics built for Saudi enterprises.',
     eyebrow: 'Digital Transformation Solutions',
     heroHeading: 'Transform Your Business with Digital Innovation',
     heroDescription:
@@ -369,7 +369,7 @@ export const solutions: PageContent[] = [
       ],
     },
     impact: {
-      heading: "Transform Your Business Operations â€” Modernize Your Processes with BAB's Digital Solutions",
+      heading: "Transform Your Business Operations — Modernize Your Processes with BAB's Digital Solutions",
       text: 'Contact BAB today to explore customized digital transformation solutions for your business.',
     },
   },
@@ -378,11 +378,11 @@ export const solutions: PageContent[] = [
     category: 'solution',
     metaTitle: 'AI Voice Bot Solutions for Customer Service in KSA',
     metaDescription:
-      'AI Voice Bot that speaks your customerâ€™s language â€” human-like conversations in Saudi dialects, anytime.',
+      'BAB AI voice bots speak Saudi Arabic dialects with human-like tone and intent. Automate customer service anytime across government, healthcare, and retail.',
     eyebrow: 'Voice Bot',
     heroHeading: 'Natural. Local. Instant.',
     heroDescription:
-      'AI Voice Bot that speaks your customerâ€™s language â€” anytime, anywhere. Deliver human-like conversations in Saudi Arabic dialects with tone and intent awareness across government, healthcare, retail, and real estate.',
+      "AI Voice Bot that speaks your customer's language — anytime, anywhere. Deliver human-like conversations in Saudi Arabic dialects with tone and intent awareness across government, healthcare, retail, and real estate.",
     ctaLabel: 'Contact Us',
     image: '/images/network-sphere.png',
     features: {
@@ -392,7 +392,7 @@ export const solutions: PageContent[] = [
         {
           accent: 'Feels Human',
           title: 'Understands tone, dialect, and intent',
-          points: ['Just like your best agent â€” natural, tone-aware responses that feel truly human.'],
+          points: ['Just like your best agent — natural, tone-aware responses that feel truly human.'],
         },
         {
           accent: 'Always Ready',
@@ -421,7 +421,7 @@ export const solutions: PageContent[] = [
       ],
     },
     impact: {
-      heading: 'Letâ€™s Talk Voice.',
+      heading: "Let's Talk Voice.",
       text: 'Book a free demo and experience human-like voice automation built for your business.',
     },
   },
@@ -430,7 +430,7 @@ export const solutions: PageContent[] = [
     category: 'solution',
     metaTitle: 'AI & NLP Solutions for Enterprise Customer Experience',
     metaDescription:
-      'Accelerate business growth with AI-powered automation and intelligence. Unlock efficiency and personalize customer experiences.',
+      'Scale customer experience with BAB AI and NLP: chatbots, predictive analytics, workflow automation, and agentic systems that personalize enterprise support.',
     eyebrow: 'AI Solutions',
     heroHeading: 'Accelerating Business Growth with AI-Powered Automation and Intelligence',
     heroDescription:
@@ -449,7 +449,7 @@ export const solutions: PageContent[] = [
       ],
     },
     impact: {
-      heading: "Supercharge Your Business Intelligence â€” Harness AI Power with BAB's Smart Solutions",
+      heading: "Supercharge Your Business Intelligence — Harness AI Power with BAB's Smart Solutions",
       text: 'Contact BAB today to explore customized AI automation and intelligence solutions for your business.',
     },
   },
@@ -518,7 +518,7 @@ export const industries: PageContent[] = [
     category: 'industry',
     metaTitle: 'Healthcare Contact Center & CX Solutions in KSA',
     metaDescription:
-      'Enhancing healthcare delivery with integrated patient engagement technology â€” reliable, scalable, and compassionate.',
+      'BAB healthcare CX platforms support patients 24/7 with secure omnichannel engagement, appointment routing, and compassionate contact-center operations in KSA.',
     eyebrow: 'Healthcare Support Solutions',
     heroHeading: 'Enhancing Healthcare Delivery with Integrated Patient Engagement Technology',
     heroDescription:
@@ -571,7 +571,7 @@ export const industries: PageContent[] = [
       items: [
         'Your practice is expanding and you need scalable support.',
         'Call volumes are rising and your staff struggles to keep up.',
-        'Your patients expect 24/7 support but maintaining in-house staff isnâ€™t feasible.',
+        "Your patients expect 24/7 support but maintaining in-house staff isn't feasible.",
         'Your team faces operational strain that affects the quality of care.',
       ],
     },
@@ -585,7 +585,7 @@ export const industries: PageContent[] = [
     category: 'industry',
     metaTitle: 'Food & Beverage Customer Experience Solutions in KSA',
     metaDescription:
-      'Driving growth for F&B businesses â€” outsource key operations to improve efficiency, customer satisfaction, and profitability.',
+      'BAB food and beverage BPO improves order handling, satisfaction, and profitability by outsourcing contact-center work for restaurants and QSR brands in KSA.',
     eyebrow: 'Food & Beverage Industry',
     heroHeading: 'Driving Growth for F&B Businesses',
     heroDescription:
@@ -715,11 +715,11 @@ export const industries: PageContent[] = [
     category: 'industry',
     metaTitle: 'Insurance Contact Center & Customer Support in KSA',
     metaDescription:
-      'Future-proof your insurance operations with BAB â€” trusted insurance BPO solutions for efficiency and compliance.',
+      'BAB insurance BPO and contact-center services improve claims support, compliance, and customer experience so Saudi insurers can scale without extra headcount.',
     eyebrow: 'Insurance Call Center',
     heroHeading: 'Future-Proof Your Insurance Operations with BAB',
     heroDescription:
-      'Trusted insurance BPO solutions that ensure efficiency, compliance, and outstanding customer experience â€” empowering your business to thrive in a competitive landscape.',
+      'Trusted insurance BPO solutions that ensure efficiency, compliance, and outstanding customer experience — empowering your business to thrive in a competitive landscape.',
     ctaLabel: 'Contact Us',
     image: '/images/industries/insurance.png',
     features: {
@@ -775,11 +775,11 @@ export const industries: PageContent[] = [
     category: 'industry',
     metaTitle: 'Retail Customer Support & Omnichannel Solutions in KSA',
     metaDescription:
-      'Delivering retail growth with smart, scalable solutions. Enhance customer experience and streamline operations.',
+      'BAB retail BPO and omnichannel support help brands scale customer service, unify store and digital channels, and keep shoppers supported across Saudi Arabia.',
     eyebrow: 'Retail Support Solutions',
     heroHeading: 'Delivering Retail Growth with Smart, Scalable Solutions',
     heroDescription:
-      'Enhance customer experience, streamline operations, and scale efficiently with BABâ€™s expert retail BPO services.',
+      "Enhance customer experience, streamline operations, and scale efficiently with BAB's expert retail BPO services.",
     ctaLabel: 'Contact Us',
     image: '/images/industries/retail.png',
     benefits: {

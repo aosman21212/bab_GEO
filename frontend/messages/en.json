@@ -74,7 +74,7 @@
   },
   "successStories": {
     "metaTitle": "Customer Success Stories & CX Case Studies in KSA",
-    "metaDescription": "Real customer outcomes powered by BAB omnichannel, contact center, and AI solutions across Saudi Arabia and the MENA region.",
+    "metaDescription": "See how Saudi and MENA enterprises use BAB omnichannel, contact-center, and AI platforms to unify channels and deliver measurable customer-experience results.",
     "eyebrow": "Case studies",
     "title": "Success Stories",
     "body": "See how enterprises use BAB platforms to unify channels, elevate service quality, and deliver measurable customer experience results.",
@@ -83,7 +83,7 @@
   },
   "articlesPage": {
     "metaTitle": "CX Insights on Omnichannel, AI & Contact Centers in KSA",
-    "metaDescription": "Insights on omnichannel CX, AI voice bots, and contact-center strategy for Saudi Arabia and the MENA region from BAB International Corp.",
+    "metaDescription": "Read BAB insights on omnichannel CX, AI voice bots, and contact-center strategy written for enterprise teams in Saudi Arabia and the MENA region.",
     "eyebrow": "Insights",
     "title": "Articles",
     "body": "Practical perspectives on connectivity, intelligent service, and customer experience — written for enterprise teams across Saudi Arabia and MENA.",
@@ -92,7 +92,7 @@
   },
   "careersPage": {
     "metaTitle": "Careers at BAB — Jobs in Riyadh & Saudi Arabia",
-    "metaDescription": "Browse open positions at BAB International Corp and submit your CV to join our team in Riyadh and across the region.",
+    "metaDescription": "Explore open roles at BAB International Corp in Riyadh. Join teams building omnichannel, AI, and contact-center platforms for enterprises in Saudi Arabia.",
     "eyebrow": "Careers",
     "title": "Browse all open positions",
     "body": "Join BAB to build intelligent communication platforms for enterprises across Saudi Arabia and the MENA region. Explore open roles or send us your CV for future opportunities.",
@@ -280,7 +280,7 @@
   },
   "about": {
     "metaTitle": "About BAB — Omnichannel & Contact Center Experts Since 1999",
-    "metaDescription": "Learn about BAB International Corp — Riyadh-based experts in omnichannel CX, contact centers, and AI solutions since 1999.",
+    "metaDescription": "BAB International Corp is a Riyadh company since 1999 delivering omnichannel CX, contact-center, and AI solutions for enterprises across Saudi Arabia and MENA.",
     "title": "Pioneering Change",
     "intro": "At Bab International, we redefine the way businesses connect, communicate, and grow. Since 1999, we have been at the forefront of digital transformation, delivering cutting-edge IT and communication solutions tailored to our clients' unique needs.",
     "contact": "Contact Us",
@@ -318,7 +318,7 @@
   },
   "contactPage": {
     "metaTitle": "Contact BAB for Demos & Enterprise CX Solutions in KSA",
-    "metaDescription": "Contact BAB International Corp in Riyadh for demos, partnerships, and omnichannel or contact-center solutions in Saudi Arabia.",
+    "metaDescription": "Contact BAB in Riyadh for product demos, partnerships, and enterprise omnichannel or contact-center solutions in Saudi Arabia. Call, email, or book a meeting.",
     "title": "Get in Touch With Us!",
     "body": "Reach out for questions, demos or partnerships.",
     "info": "Contact Information",
@@ -333,7 +333,7 @@
   },
   "sitemapPage": {
     "metaTitle": "Sitemap — All BAB Solutions, Industries & Company Pages",
-    "metaDescription": "Browse every public page on bab.com.sa — solutions, industries, articles, careers, and company information.",
+    "metaDescription": "Browse every public BAB page in one tree: company information, omnichannel solutions, industries, articles, careers, and legal pages published on bab.com.sa.",
     "title": "Sitemap",
     "body": "Browse every public page on bab.com.sa in one place.",
     "root": "BAB",
@@ -342,6 +342,13 @@
     "products": "Products",
     "caseStudies": "Case studies",
     "crawlerSitemap": "XML sitemap for Google and Bing (sitemap.xml)"
+  },
+  "notFound": {
+    "metaTitle": "Page not found — BAB International Corp",
+    "metaDescription": "This BAB page is not available. Return home for omnichannel, contact-center, and AI solutions in Saudi Arabia, or use the sitemap to find a published page.",
+    "title": "Page not found",
+    "body": "This page is not available. It may have been moved or unpublished.",
+    "home": "Back to home"
   },
   "legal": {
     "privacyTitle": "Privacy Policy",

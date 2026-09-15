@@ -25,7 +25,8 @@ ENV NODE_OPTIONS=--max-old-space-size=4096
 ENV NEXT_PRIVATE_WORKERS=1
 ENV NEXT_TELEMETRY_DISABLED=1
 
-RUN npx next build
+# Turbopack production builds SIGSEGV on Alpine/musl in Docker; webpack is stable.
+RUN npx next build --webpack
 
 FROM node:20-alpine AS runner
 WORKDIR /app

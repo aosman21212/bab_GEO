@@ -27,7 +27,7 @@ export async function POST(req: Request) {
     return NextResponse.json(
       {
         error: 'Authentication service temporarily unavailable. Please try again.',
-        detail: code,
+        ...(process.env.NODE_ENV === 'production' ? {} : { detail: code }),
       },
       { status: 503 },
     )

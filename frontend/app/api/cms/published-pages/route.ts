@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { getApiUrl } from '@/lib/api'
 
-export const revalidate = 120
+export const dynamic = 'force-dynamic'
 
 function upstreamHost(url: string) {
   try {
@@ -20,7 +20,7 @@ export async function GET() {
 
   try {
     const res = await fetch(upstream, {
-      next: { revalidate: 120 },
+      cache: 'no-store',
       signal: controller.signal,
     })
     if (!res.ok) {

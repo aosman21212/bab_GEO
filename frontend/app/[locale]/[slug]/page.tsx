@@ -32,7 +32,14 @@ export async function generateMetadata({
     redirect(getPathname({ locale: locale as Locale, href: '/' }))
   }
   const page = await getCmsPage(slug, locale as Locale)
-  if (!page) return {}
+  if (!page) {
+    return {
+      title: 'Page not found | BAB',
+      description:
+        'This BAB page is not available. Return home for omnichannel, contact-center, and AI solutions in Saudi Arabia, or use the sitemap to find a published page.',
+      robots: { index: false, follow: false },
+    }
+  }
   return buildPageMetadata({
     locale,
     title: page.metaTitle?.trim() || page.heroHeading || humanizeSlug(slug),

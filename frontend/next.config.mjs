@@ -19,6 +19,7 @@ const nextConfig = {
     root: __dirname,
   },
   output: 'standalone',
+  trailingSlash: false,
   async redirects() {
     return [
       ...(basePath
@@ -28,6 +29,9 @@ const nextConfig = {
       { source: '/en/admin', destination: '/admin', permanent: false },
       { source: '/ar/admin/:path*', destination: '/admin/:path*', permanent: false },
       { source: '/en/admin/:path*', destination: '/admin/:path*', permanent: false },
+      { source: '/en', destination: '/', permanent: true },
+      { source: '/en/:path*', destination: '/:path*', permanent: true },
+      { source: '/:path+/', destination: '/:path+', permanent: true },
     ]
   },
   async rewrites() {

@@ -1,57 +1,14 @@
 import { withBasePath } from '@/lib/base-path'
 
-function isLocalHostname(hostname: string) {
-  return hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1'
-}
-
-function hostnameOf(raw: string | undefined) {
-  if (!raw?.trim()) return ''
-  try {
-    return new URL(raw).hostname
-  } catch {
-    return ''
-  }
-}
-
 /**
- * Server-side API base URL. Prefer API_URL (Docker: http://backend:4001).
- * Avoid falling back to localhost when the public site URL is a real host.
+ * Backend origin for server-side fetch.
+ * Prefer API_URL (not inlined by Next) so Docker can use http://backend:4001 at runtime.
+ * NEXT_PUBLIC_API_URL is the browser-facing fallback, baked in at build.
  */
 export function getApiUrl() {
-  const explicit = process.env.API_URL?.trim()
-  if (explicit) return explicit.replace(/\/$/, '')
-
-  const publicUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4001').replace(/\/$/, '')
-
-  if (typeof window === 'undefined') {
-    const apiHost = hostnameOf(publicUrl)
-    const siteHost =
-      hostnameOf(process.env.SITE_URL) || hostnameOf(process.env.NEXT_PUBLIC_SITE_URL)
-    if (apiHost && isLocalHostname(apiHost) && siteHost && !isLocalHostname(siteHost)) {
-      console.error(
-        `[api] NEXT_PUBLIC_API_URL points at ${apiHost} but site is ${siteHost}; using http://backend:4001. Set API_URL explicitly.`,
-      )
-      return 'http://backend:4001'
-    }
-  }
-
-  return publicUrl
-}
-
-/**
- * Every host the Express API may answer on, in priority order. Covers both topologies:
- * all services in one Compose network (`backend`), and Express on the host with Next.js
- * in a container (`host.docker.internal`, the default bridge gateway `172.17.0.1`).
- */
-export function backendCandidateUrls() {
-  return [
-    getApiUrl().replace(/\/$/, ''),
-    'http://127.0.0.1:4001',
-    'http://localhost:4001',
-    'http://backend:4001',
-    'http://host.docker.internal:4001',
-    'http://172.17.0.1:4001',
-  ].filter((url, index, self) => self.indexOf(url) === index)
+  const serverUrl = process.env.API_URL?.replace(/\/$/, '')
+  if (serverUrl) return serverUrl
+  return String(process.env.NEXT_PUBLIC_API_URL ?? '').replace(/\/$/, '')
 }
 
 /** Node surfaces the real network failure on `cause.code`; fetch itself only throws a generic TypeError. */
@@ -60,58 +17,10 @@ export function backendErrorCode(err: unknown) {
   return cause?.code || (err as { code?: string })?.code || 'UNKNOWN'
 }
 
-const HEALTH_PROBE_TIMEOUT_MS = 2000
-
-/**
- * Bounded, side-effect-free reachability check. A dead host can otherwise burn undici's
- * 10s connect timeout, and aborting `/api/health` is safe in a way aborting the real
- * request would not be (a login POST may already have sent its MFA email).
- */
-async function backendHostAnswers(baseUrl: string) {
-  try {
-    const res = await fetch(`${baseUrl}/api/health`, {
-      cache: 'no-store',
-      signal: AbortSignal.timeout(HEALTH_PROBE_TIMEOUT_MS),
-    })
-    return res.ok
-  } catch {
-    return false
-  }
-}
-
-/**
- * Executes a fetch request to the Express backend with automatic host fallback.
- * Tries the primary URL from `getApiUrl()` first. If that fails to connect
- * (e.g. ENOTFOUND backend, ECONNREFUSED), the remaining candidates are health-probed
- * concurrently and the request is replayed against the first one that answers.
- */
 export async function fetchBackend(path: string, init?: RequestInit): Promise<Response> {
-  const [primary, ...fallbacks] = backendCandidateUrls()
+  const base = getApiUrl()
   const normalizedPath = path.startsWith('/') ? path : `/${path}`
-
-  try {
-    return await fetch(`${primary}${normalizedPath}`, init)
-  } catch (err) {
-    if (init?.signal?.aborted) throw err
-    console.warn(
-      `[api] fetchBackend primary host failed (${primary}${normalizedPath}) ${backendErrorCode(err)}:`,
-      (err as Error)?.message || err,
-    )
-
-    const probes = await Promise.all(
-      fallbacks.map(async (baseUrl) => ({ baseUrl, answers: await backendHostAnswers(baseUrl) })),
-    )
-    const alive = probes.find((probe) => probe.answers)
-    if (!alive) {
-      console.error(
-        `[api] fetchBackend found no reachable backend host for ${normalizedPath}; tried ${[primary, ...fallbacks].join(', ')}`,
-      )
-      throw err
-    }
-
-    console.warn(`[api] fetchBackend falling back to ${alive.baseUrl}. Set API_URL to this host.`)
-    return fetch(`${alive.baseUrl}${normalizedPath}`, init)
-  }
+  return fetch(`${base}${normalizedPath}`, init)
 }
 
 async function apiFetch<T>(path: string, init?: RequestInit, timeoutMs = 4000): Promise<T | null> {
