@@ -283,6 +283,7 @@ export function AdminPageForm({
   value,
   onChange,
   slugEditable = false,
+  onSlugManualChange,
 }: {
   locale: 'en' | 'ar'
   meta: PageMetaForm
@@ -290,6 +291,7 @@ export function AdminPageForm({
   value: LocaleFormData
   onChange: (value: LocaleFormData) => void
   slugEditable?: boolean
+  onSlugManualChange?: () => void
 }) {
   const { t } = useAdminLocale()
   const dir = locale === 'ar' ? 'rtl' : 'ltr'
@@ -314,7 +316,8 @@ export function AdminPageForm({
                 className={`${fieldClass()} font-mono`}
                 value={meta.slug}
                 disabled={!slugEditable}
-                onChange={(e) =>
+                onChange={(e) => {
+                  onSlugManualChange?.()
                   onMetaChange({
                     ...meta,
                     slug: e.target.value
@@ -322,7 +325,7 @@ export function AdminPageForm({
                       .replace(/[^a-z0-9-]/g, '-')
                       .replace(/^-|-$/g, ''),
                   })
-                }
+                }}
                 required
               />
             </Label>

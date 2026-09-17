@@ -12,14 +12,7 @@ import {
   type PageMetaForm,
 } from '@/components/admin-page-form'
 import { withBasePath } from '@/lib/base-path'
-
-function slugify(value: string) {
-  return value
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '')
-}
+import { fallbackContentSlug, slugFromLocalePair } from '@/lib/content-slug'
 
 export default function AdminLibraryNewPage() {
   const router = useRouter()
@@ -33,23 +26,27 @@ export default function AdminLibraryNewPage() {
   })
   const [enForm, setEnForm] = useState<LocaleFormData>(emptyLocaleForm())
   const [arForm, setArForm] = useState<LocaleFormData>(emptyLocaleForm())
+  const [slugTouched, setSlugTouched] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [pending, setPending] = useState(false)
 
   const activeForm = locale === 'ar' ? arForm : enForm
   const setActiveForm = (next: LocaleFormData) => {
-    if (locale === 'ar') {
-      setArForm(next)
-      return
-    }
-    setEnForm(next)
-    setMeta((m) => ({ ...m, slug: slugify(next.heroHeading) }))
+    if (locale === 'ar') setArForm(next)
+    else setEnForm(next)
+    if (slugTouched) return
+    const other = locale === 'ar' ? enForm : arForm
+    setMeta((m) => ({
+      ...m,
+      slug: slugFromLocalePair(next, other) || m.slug,
+    }))
   }
 
   const submit = async () => {
-    if (!meta.slug) {
-      setError(t('library.slugRequired'))
-      return
+    const slug =
+      meta.slug || slugFromLocalePair(enForm, arForm) || fallbackContentSlug()
+    if (slug !== meta.slug) {
+      setMeta((m) => ({ ...m, slug }))
     }
     setPending(true)
     setError(null)
@@ -60,7 +57,7 @@ export default function AdminLibraryNewPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          slug: meta.slug,
+          slug,
           category: meta.category,
           landingType: meta.category === 'landing' ? meta.landingType || 'lead-form' : undefined,
           status: meta.status,
@@ -84,7 +81,7 @@ export default function AdminLibraryNewPage() {
         )
         return
       }
-      router.push(`/admin/library/${meta.slug}`)
+      router.push(`/admin/library/${slug}`)
     } catch (err) {
       const timedOut = err instanceof Error && err.name === 'AbortError'
       setError(timedOut ? t('common.createTimeout') : t('common.createFailed'))
@@ -119,6 +116,7 @@ export default function AdminLibraryNewPage() {
         value={activeForm}
         onChange={setActiveForm}
         slugEditable
+        onSlugManualChange={() => setSlugTouched(true)}
       />
     </AdminShell>
   )
