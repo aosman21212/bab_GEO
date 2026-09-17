@@ -513,6 +513,7 @@
       "updated": "Updated",
       "added": "Added",
       "createFailed": "Create failed",
+      "createTimeout": "Create timed out. Try again.",
       "pageNotFound": "Page not found"
     },
     "imagePicker": {

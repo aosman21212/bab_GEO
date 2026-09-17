@@ -50,7 +50,11 @@ function tokenForSlide(upstream: Response, fallback: string) {
   return upstream.headers.get('x-admin-token') || fallback
 }
 
+const PROXY_TIMEOUT_MS = 15_000
+
 async function proxy(req: Request, ctx: Ctx, method: string) {
+  const controller = new AbortController()
+  const timer = setTimeout(() => controller.abort(), PROXY_TIMEOUT_MS)
   try {
     const { path } = await ctx.params
     const jar = await cookies()
@@ -69,7 +73,12 @@ async function proxy(req: Request, ctx: Ctx, method: string) {
       body = await req.text()
     }
 
-    const res = await fetchBackend(targetPath, { method, headers, body })
+    const res = await fetchBackend(targetPath, {
+      method,
+      headers,
+      body,
+      signal: controller.signal,
+    })
     const contentType = res.headers.get('Content-Type') || 'application/json'
     const disposition = res.headers.get('Content-Disposition')
     const nextToken = tokenForSlide(res, token)
@@ -90,10 +99,19 @@ async function proxy(req: Request, ctx: Ctx, method: string) {
       nextToken,
     )
   } catch (err) {
+    const timedOut =
+      (err as { name?: string })?.name === 'AbortError' ||
+      (err as { cause?: { name?: string } })?.cause?.name === 'AbortError'
     console.error('[admin/proxy] connection error:', (err as Error)?.message || err)
     return NextResponse.json(
-      { error: 'Backend service temporarily unavailable.' },
+      {
+        error: timedOut
+          ? 'Backend request timed out.'
+          : 'Backend service temporarily unavailable.',
+      },
       { status: 503 },
     )
+  } finally {
+    clearTimeout(timer)
   }
 }

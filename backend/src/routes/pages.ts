@@ -23,7 +23,24 @@ pagesRouter.get('/', requireAuth, async (_req, res) => {
   } catch (err) {
     console.error('[pages] ensureHomePage failed', err)
   }
-  const pages = await Page.find().sort({ updatedAt: -1 }).lean()
+  const pages = await Page.aggregate([
+    { $sort: { updatedAt: -1 } },
+    {
+      $project: {
+        slug: 1,
+        category: 1,
+        landingType: 1,
+        status: 1,
+        updatedAt: 1,
+        'locales.en.metaTitle': 1,
+        'locales.en.heroHeading': 1,
+        'locales.en.hero.title': 1,
+        'locales.ar.metaTitle': 1,
+        'locales.ar.heroHeading': 1,
+        'locales.ar.hero.title': 1,
+      },
+    },
+  ])
   return res.json(pages)
 })
 

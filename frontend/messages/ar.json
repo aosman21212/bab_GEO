@@ -513,6 +513,7 @@
       "updated": "تم التحديث",
       "added": "تمت الإضافة",
       "createFailed": "فشل الإنشاء",
+      "createTimeout": "انتهت مهلة الإنشاء. حاول مرة أخرى.",
       "pageNotFound": "الصفحة غير موجودة"
     },
     "imagePicker": {

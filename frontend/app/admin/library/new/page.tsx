@@ -47,42 +47,51 @@ export default function AdminLibraryNewPage() {
   }
 
   const submit = async () => {
-    setPending(true)
-    setError(null)
     if (!meta.slug) {
-      setPending(false)
       setError(t('library.slugRequired'))
       return
     }
-    const res = await fetch(withBasePath('/api/admin/proxy/pages'), {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        slug: meta.slug,
-        category: meta.category,
-        landingType: meta.category === 'landing' ? meta.landingType || 'lead-form' : undefined,
-        status: meta.status,
-        locales: {
-          en: localeToApi(enForm),
-          ar: localeToApi(arForm),
-        },
-      }),
-    })
-    setPending(false)
-    if (res.status === 401) {
-      router.push('/admin')
-      return
+    setPending(true)
+    setError(null)
+    const controller = new AbortController()
+    const timer = setTimeout(() => controller.abort(), 15_000)
+    try {
+      const res = await fetch(withBasePath('/api/admin/proxy/pages'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          slug: meta.slug,
+          category: meta.category,
+          landingType: meta.category === 'landing' ? meta.landingType || 'lead-form' : undefined,
+          status: meta.status,
+          locales: {
+            en: localeToApi(enForm),
+            ar: localeToApi(arForm),
+          },
+        }),
+        signal: controller.signal,
+      })
+      if (res.status === 401) {
+        router.push('/admin')
+        return
+      }
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}))
+        setError(
+          typeof data.error === 'string'
+            ? data.error
+            : data.error?.formErrors?.[0] || t('common.createFailed'),
+        )
+        return
+      }
+      router.push(`/admin/library/${meta.slug}`)
+    } catch (err) {
+      const timedOut = err instanceof Error && err.name === 'AbortError'
+      setError(timedOut ? t('common.createTimeout') : t('common.createFailed'))
+    } finally {
+      clearTimeout(timer)
+      setPending(false)
     }
-    if (!res.ok) {
-      const data = await res.json().catch(() => ({}))
-      setError(
-        typeof data.error === 'string'
-          ? data.error
-          : data.error?.formErrors?.[0] || t('common.createFailed'),
-      )
-      return
-    }
-    router.push(`/admin/library/${meta.slug}`)
   }
 
   return (
