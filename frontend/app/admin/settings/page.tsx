@@ -95,6 +95,16 @@ const defaults: SiteSettings = {
       answer:
         'Email info@bab.com.sa or call +966 11 512 1440. Business hours are Sunday–Thursday, 8:00 AM–5:00 PM.',
     },
+    {
+      question: 'Does BAB support WhatsApp Business?',
+      answer:
+        'Yes. BAB provides WhatsApp Business engagement for direct customer communication, demos, and sales inquiries.',
+    },
+    {
+      question: 'Do BAB voice bots support Saudi Arabic dialects?',
+      answer:
+        'Yes. BAB voice bots support natural customer conversations in Saudi Arabic dialects and can understand tone and intent.',
+    },
   ],
   homepageFaqsAr: [
     {
@@ -125,6 +135,16 @@ const defaults: SiteSettings = {
       question: 'كيف أتواصل مع باب؟',
       answer:
         'راسل info@bab.com.sa أو اتصل على +966 11 512 1440. ساعات العمل الأحد–الخميس ٨:٠٠ ص–٥:٠٠ م.',
+    },
+    {
+      question: 'هل تدعم باب واتساب للأعمال؟',
+      answer:
+        'نعم. توفر باب التفاعل عبر واتساب للأعمال للتواصل المباشر مع العملاء والعروض واستفسارات المبيعات.',
+    },
+    {
+      question: 'هل تدعم روبوتات باب الصوتية اللهجات العربية السعودية؟',
+      answer:
+        'نعم. تدعم روبوتات باب الصوتية محادثات طبيعية باللهجات العربية السعودية، مع فهم النبرة والنية.',
     },
   ],
 }

@@ -366,12 +366,8 @@ export function mergeGeoSettings(partial?: Partial<GeoSiteSettings> | null): Geo
   return {
     ...fallbackSettings,
     ...settings,
-    homepageFaqsEn: settings.homepageFaqsEn?.length
-      ? settings.homepageFaqsEn
-      : fallbackSettings.homepageFaqsEn,
-    homepageFaqsAr: settings.homepageFaqsAr?.length
-      ? settings.homepageFaqsAr
-      : fallbackSettings.homepageFaqsAr,
+    homepageFaqsEn: mergeFaqsByQuestion(settings.homepageFaqsEn, fallbackSettings.homepageFaqsEn),
+    homepageFaqsAr: mergeFaqsByQuestion(settings.homepageFaqsAr, fallbackSettings.homepageFaqsAr),
     geoAboutEn: settings.geoAboutEn?.trim()
       ? settings.geoAboutEn
       : fallbackSettings.geoAboutEn,
@@ -423,6 +419,22 @@ export function localePath(locale: 'en' | 'ar', path = '') {
 export function faqsForLocale(settings: GeoSiteSettings, locale: 'en' | 'ar'): GeoFaq[] {
   const list = locale === 'ar' ? settings.homepageFaqsAr : settings.homepageFaqsEn
   return (list || []).filter((f) => f.question.trim() && f.answer.trim())
+}
+
+function mergeFaqsByQuestion(stored: GeoFaq[] | undefined, defaults: GeoFaq[]) {
+  const list = (stored || []).filter((f) => f.question.trim() && f.answer.trim())
+  if (!list.length) return defaults
+  const seen = new Set(list.map((f) => f.question.trim().toLowerCase()))
+  const extras = defaults.filter((f) => !seen.has(f.question.trim().toLowerCase()))
+  return extras.length ? [...list, ...extras] : list
+}
+
+function faqSection(label: string, faqs: GeoFaq[]) {
+  if (!faqs.length) return `${label}\n(No FAQ items configured yet.)`
+  return [
+    label,
+    ...faqs.flatMap((f, i) => [`${i + 1}. Q: ${f.question}`, `   A: ${f.answer}`, '']),
+  ].join('\n')
 }
 
 function contactBlock(settings: GeoSiteSettings) {
@@ -506,6 +518,10 @@ export async function buildLlmsTxt(): Promise<string> {
     '## Contact',
     contactBlock(settings),
     '',
+    faqSection('## FAQ (English)', faqsForLocale(settings, 'en')),
+    '',
+    faqSection('## FAQ (Arabic)', faqsForLocale(settings, 'ar')),
+    '',
     '## Key pages',
     `- Home (EN): ${localePath('en', '')}`,
     `- Home (AR): ${localePath('ar', '')}`,
@@ -534,16 +550,6 @@ export async function buildLlmsTxt(): Promise<string> {
 export async function buildLlmsFullTxt(): Promise<string> {
   const [settings, pages] = await Promise.all([loadGeoSettings(), loadPublishedPages()])
   const site = getSiteUrl()
-  const faqsEn = faqsForLocale(settings, 'en')
-  const faqsAr = faqsForLocale(settings, 'ar')
-
-  const faqSection = (label: string, faqs: GeoFaq[]) => {
-    if (!faqs.length) return `${label}\n(No FAQ items configured yet.)`
-    return [
-      label,
-      ...faqs.flatMap((f, i) => [`${i + 1}. Q: ${f.question}`, `   A: ${f.answer}`, '']),
-    ].join('\n')
-  }
 
   return [
     '# BAB International Corp — Full summary for AI tools',
@@ -558,9 +564,9 @@ export async function buildLlmsFullTxt(): Promise<string> {
     '## Content library',
     pageLinks(pages),
     '',
-    faqSection('## FAQ (English)', faqsEn),
+    faqSection('## FAQ (English)', faqsForLocale(settings, 'en')),
     '',
-    faqSection('## FAQ (Arabic)', faqsAr),
+    faqSection('## FAQ (Arabic)', faqsForLocale(settings, 'ar')),
     '',
     `Also see: ${site}/llms.txt · ${site}/llms-small.txt · ${site}/.well-known/ai.txt`,
     '',
