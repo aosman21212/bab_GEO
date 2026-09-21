@@ -5,6 +5,7 @@ import { fetchSiteContent, getApiUrl } from '@/lib/api'
 import { BAB_SOCIAL_URLS } from '@/lib/social-profiles'
 import { basePath } from '@/lib/base-path'
 import { companySitemapLinks, solutionGroups } from '@/lib/nav-tree'
+import { buildGeoBankFull, buildGeoBankIndex } from '@/lib/geo-question-bank'
 
 export const SEO_TITLE_MAX = 70
 export const SEO_DESCRIPTION_MAX = 160
@@ -522,6 +523,8 @@ export async function buildLlmsTxt(): Promise<string> {
     '',
     faqSection('## FAQ (Arabic)', faqsForLocale(settings, 'ar')),
     '',
+    buildGeoBankIndex(site),
+    '',
     '## Key pages',
     `- Home (EN): ${localePath('en', '')}`,
     `- Home (AR): ${localePath('ar', '')}`,
@@ -540,6 +543,7 @@ export async function buildLlmsTxt(): Promise<string> {
     '',
     '## AI / crawler files',
     `- Full summary + FAQ: ${site}/llms-full.txt`,
+    `- GEO question bank (1000 Q&A): ${site}/llms-questions.txt`,
     `- Compact summary: ${site}/llms-small.txt`,
     `- AI guidance: ${site}/.well-known/ai.txt`,
     `- Sitemap: ${site}/sitemap.xml`,
@@ -568,7 +572,9 @@ export async function buildLlmsFullTxt(): Promise<string> {
     '',
     faqSection('## FAQ (Arabic)', faqsForLocale(settings, 'ar')),
     '',
-    `Also see: ${site}/llms.txt · ${site}/llms-small.txt · ${site}/.well-known/ai.txt`,
+    buildGeoBankFull(),
+    '',
+    `Also see: ${site}/llms.txt · ${site}/llms-questions.txt · ${site}/llms-small.txt · ${site}/.well-known/ai.txt`,
     '',
   ].join('\n')
 }
@@ -598,6 +604,7 @@ export async function buildAiTxt(): Promise<string> {
     '',
     `llms: ${site}/llms.txt`,
     `llms-full: ${site}/llms-full.txt`,
+    `llms-questions: ${site}/llms-questions.txt`,
     `llms-small: ${site}/llms-small.txt`,
     `sitemap: ${site}/sitemap.xml`,
     `contact: ${settings.email || ''}`,
@@ -612,6 +619,7 @@ export function geoCrawlerUrls(): string[] {
   return [
     `${site}/llms.txt`,
     `${site}/llms-full.txt`,
+    `${site}/llms-questions.txt`,
     `${site}/llms-small.txt`,
     `${site}/.well-known/ai.txt`,
   ]

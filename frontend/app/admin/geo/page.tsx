@@ -30,6 +30,7 @@ type FileStatus = 'unknown' | 'ok' | 'error'
 type PurposeKey =
   | 'purposeLlms'
   | 'purposeLlmsFull'
+  | 'purposeLlmsQuestions'
   | 'purposeLlmsSmall'
   | 'purposeRobots'
   | 'purposeSitemap'
@@ -65,6 +66,11 @@ const INITIAL_FILES: Omit<CrawlerFile, 'status'>[] = [
     file: 'llms-full.txt',
     path: '/llms-full.txt',
     purposeKey: 'purposeLlmsFull',
+  },
+  {
+    file: 'llms-questions.txt',
+    path: '/llms-questions.txt',
+    purposeKey: 'purposeLlmsQuestions',
   },
   {
     file: 'llms-small.txt',
