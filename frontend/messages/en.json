@@ -276,7 +276,8 @@
     "privacy": "Privacy Policy",
     "terms": "Terms & Conditions",
     "contact": "Contact Us",
-    "sitemap": "Sitemap"
+    "sitemap": "Sitemap",
+    "geoQuestions": "GEO Question Bank"
   },
   "about": {
     "metaTitle": "About BAB — Omnichannel & Contact Center Experts Since 1999",
@@ -880,6 +881,7 @@
       "purposeLlmsFull": "Summary plus FAQ and 1000 GEO Q&A",
       "purposeLlmsQuestions": "1,000 bilingual GEO question-bank Q&A",
       "purposeLlmsSmall": "Compact summary for AI crawlers",
+      "purposeGeoQuestions": "HTML GEO Q&A hub for ChatGPT, Gemini, and search",
       "purposeRobots": "Crawler rules and sitemap",
       "purposeSitemap": "List of all public pages",
       "purposeAi": "AI crawler guidance (.well-known)",

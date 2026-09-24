@@ -5,7 +5,11 @@ import { fetchSiteContent, getApiUrl } from '@/lib/api'
 import { BAB_SOCIAL_URLS } from '@/lib/social-profiles'
 import { basePath } from '@/lib/base-path'
 import { companySitemapLinks, solutionGroups } from '@/lib/nav-tree'
-import { buildGeoBankFull, buildGeoBankIndex } from '@/lib/geo-question-bank'
+import {
+  buildGeoBankFull,
+  buildGeoBankIndex,
+  getGeoQuestionPageSegments,
+} from '@/lib/geo-question-bank'
 
 export const SEO_TITLE_MAX = 70
 export const SEO_DESCRIPTION_MAX = 160
@@ -542,6 +546,8 @@ export async function buildLlmsTxt(): Promise<string> {
     pageLinks(pages),
     '',
     '## AI / crawler files',
+    `- HTML GEO Q&A hub: ${site}/geo-questions`,
+    `- HTML GEO Q&A hub (AR): ${site}/ar/geo-questions`,
     `- Full summary + FAQ: ${site}/llms-full.txt`,
     `- GEO question bank (1000 Q&A): ${site}/llms-questions.txt`,
     `- Compact summary: ${site}/llms-small.txt`,
@@ -574,7 +580,7 @@ export async function buildLlmsFullTxt(): Promise<string> {
     '',
     buildGeoBankFull(),
     '',
-    `Also see: ${site}/llms.txt · ${site}/llms-questions.txt · ${site}/llms-small.txt · ${site}/.well-known/ai.txt`,
+    `Also see: ${site}/geo-questions · ${site}/llms.txt · ${site}/llms-questions.txt · ${site}/llms-small.txt · ${site}/.well-known/ai.txt`,
     '',
   ].join('\n')
 }
@@ -605,6 +611,8 @@ export async function buildAiTxt(): Promise<string> {
     `llms: ${site}/llms.txt`,
     `llms-full: ${site}/llms-full.txt`,
     `llms-questions: ${site}/llms-questions.txt`,
+    `geo-questions-html: ${site}/geo-questions`,
+    `geo-questions-html-ar: ${site}/ar/geo-questions`,
     `llms-small: ${site}/llms-small.txt`,
     `sitemap: ${site}/sitemap.xml`,
     `contact: ${settings.email || ''}`,
@@ -617,6 +625,8 @@ export async function buildAiTxt(): Promise<string> {
 export function geoCrawlerUrls(): string[] {
   const site = getSiteUrl()
   return [
+    `${site}/geo-questions`,
+    `${site}/ar/geo-questions`,
     `${site}/llms.txt`,
     `${site}/llms-full.txt`,
     `${site}/llms-questions.txt`,
@@ -638,6 +648,7 @@ export const SITEMAP_STATIC_PATHS = [
   'privacy-policy',
   'terms-conditions',
   'sitemap',
+  'geo-questions',
 ] as const
 
 const SITEMAP_STATIC_SET = new Set<string>(SITEMAP_STATIC_PATHS)
@@ -668,6 +679,9 @@ export async function collectHtmlSitemapSlugs(): Promise<string[]> {
   const slugs = new Set<string>()
 
   for (const path of SITEMAP_STATIC_PATHS) slugs.add(path)
+  for (const segment of getGeoQuestionPageSegments()) {
+    slugs.add(`geo-questions/${segment.slug}`)
+  }
   for (const item of companySitemapLinks) slugs.add(sitemapSlugFromHref(item.href))
   for (const group of solutionGroups) {
     for (const item of group.items) slugs.add(sitemapSlugFromHref(item.href))
@@ -703,7 +717,7 @@ export async function htmlSitemapEntriesForLocale(
   return entries
 }
 
-/** Public HTML page URLs for IndexNow and crawlers — not GEO text files. */
+/** Public HTML page URLs for IndexNow and crawlers — includes GEO Q&A pages. */
 export async function collectSitemapUrls(): Promise<string[]> {
   const slugs = await collectHtmlSitemapSlugs()
   const urls: string[] = []
@@ -711,6 +725,16 @@ export async function collectSitemapUrls(): Promise<string[]> {
     for (const path of slugs) {
       urls.push(localePath(locale, path))
     }
+  }
+  const site = getSiteUrl()
+  for (const path of [
+    '/llms.txt',
+    '/llms-full.txt',
+    '/llms-questions.txt',
+    '/llms-small.txt',
+    '/.well-known/ai.txt',
+  ]) {
+    urls.push(`${site}${path}`)
   }
   return Array.from(new Set(urls))
 }

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>BAB Homepage Code — What Is In It</title>
+  <style>
+    @page { margin: 18mm 16mm; }
+    body { font-family: "Segoe UI", Calibri, Arial, sans-serif; color: #1a1a3d; line-height: 1.45; font-size: 11pt; }
+    h1 { font-size: 22pt; margin: 0 0 6px; }
+    .sub { color: #555; margin: 0 0 22px; }
+    h2 { font-size: 14pt; margin: 22px 0 8px; border-bottom: 2px solid #e85d04; padding-bottom: 4px; }
+    h3 { font-size: 12pt; margin: 16px 0 6px; }
+    p, li { margin: 0 0 8px; }
+    table { width: 100%; border-collapse: collapse; margin: 8px 0 16px; font-size: 10pt; }
+    th, td { border: 1px solid #d8d6e3; padding: 7px 8px; vertical-align: top; text-align: left; }
+    th { background: #1a1a3d; color: #fff; }
+    tr:nth-child(even) td { background: #f7f6fb; }
+    code { font-family: Consolas, "Courier New", monospace; font-size: 9.5pt; background: #f0eef6; padding: 1px 4px; }
+    pre { background: #1a1a3d; color: #f7f6fb; padding: 12px 14px; font-size: 8.5pt; line-height: 1.4; overflow: hidden; white-space: pre-wrap; }
+    .note { background: #fff4ec; border-left: 4px solid #e85d04; padding: 8px 12px; margin: 12px 0; }
+  </style>
+</head>
+<body>
+  <h1>BAB homepage code</h1>
+  <p class="sub">What lives in the homepage, how it loads, and how each section is used. File: frontend/app/[locale]/page.tsx</p>
+
+  <h2>1. What this file is</h2>
+  <p>This is the public home route for English (<code>/</code>) and Arabic (<code>/ar</code>). It does two jobs:</p>
+  <ol>
+    <li><strong>SEO metadata</strong> — title and description for Google and Bing.</li>
+    <li><strong>Page body</strong> — a vertical stack of homepage sections.</li>
+  </ol>
+  <p>The site header and footer are <strong>not</strong> in this file. They come from the locale layout that wraps every public page: <code>frontend/app/[locale]/layout.tsx</code>.</p>
+
+  <h2>2. What loads first</h2>
+  <ol>
+    <li><code>locale</code> is <code>en</code> or <code>ar</code>.</li>
+    <li>The page loads homepage copy from the CMS (<code>fetchHomepageContent</code>) and site settings (SEO titles, FAQs).</li>
+    <li><code>generateMetadata</code> chooses the search title and description in this order: homepage CMS fields, then Admin SEO settings, then a hard-coded fallback.</li>
+    <li>If FAQs exist, the page injects FAQ JSON-LD so search engines can show Q&amp;A rich results.</li>
+  </ol>
+  <p class="note">Words and images are not hard-coded in <code>page.tsx</code>. They come from homepage CMS data (types in <code>frontend/lib/homepage-content.ts</code> and the admin home form). English vs Arabic is chosen by locale.</p>
+
+  <h2>3. Sections on the page (top to bottom)</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Order</th>
+        <th>Component</th>
+        <th>What visitors see</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td><code>HeroSection</code></td><td>Headline, intro, call-to-action, sliding images</td></tr>
+      <tr><td>2</td><td><code>OurWorksSection</code></td><td>“What we do” cards (productivity, experience, reporting)</td></tr>
+      <tr><td>3</td><td><code>ExperienceSection</code></td><td>Connect / engage / analyze pillars</td></tr>
+      <tr><td>4</td><td><code>IndustriesSection</code></td><td>Food, government, healthcare, insurance, retail, plus stats</td></tr>
+      <tr><td>5</td><td><code>TransformationSection</code></td><td>Digital transformation block and image</td></tr>
+      <tr><td>6</td><td><code>ChannelsSection</code></td><td>Omnichannel headline and body</td></tr>
+      <tr><td>7</td><td><code>PartnersSection</code></td><td>Partner logos and copy</td></tr>
+      <tr><td>8</td><td><code>TestimonialsSection</code></td><td>Customer quotes</td></tr>
+      <tr><td>9</td><td><code>FaqSection</code></td><td>Homepage FAQ (CMS, or site settings if CMS FAQ is empty)</td></tr>
+      <tr><td>10</td><td><code>ImpactSection</code></td><td>Impact / results call-to-action</td></tr>
+      <tr><td>11</td><td><code>CtaContactSection</code></td><td>Final “get in touch” strip</td></tr>
+    </tbody>
+  </table>
+
+  <h2>4. Main page code</h2>
+  <pre>export default async function Page({ params }) {
+  const { locale } = await params
+  setRequestLocale(locale)
+  const loc = locale === 'ar' ? 'ar' : 'en'
+  const [messages, home] = await Promise.all([
+    getMessages(),
+    getHomepageContent(loc),
+  ])
+  const faqs = home.faq.items.length
+    ? home.faq.items
+    : faqsForLocale(siteSettings, loc)
+
+  return (
+    &lt;&gt;
+      {faqLd ? &lt;script type="application/ld+json" /&gt; : null}
+      &lt;HeroSection content={home.hero} /&gt;
+      &lt;OurWorksSection title={home.works.title} /&gt;
+      &lt;ExperienceSection works={home.works} experience={home.experience} /&gt;
+      &lt;IndustriesSection industries={home.industries} stats={home.stats} /&gt;
+      &lt;TransformationSection content={home.transformation} /&gt;
+      &lt;ChannelsSection content={home.channels} /&gt;
+      &lt;PartnersSection content={home.partners} /&gt;
+      &lt;TestimonialsSection title={home.testimonials.title} /&gt;
+      &lt;FaqSection faqs={faqs} /&gt;
+      &lt;ImpactSection content={home.impact} /&gt;
+      &lt;CtaContactSection content={home.cta} /&gt;
+    &lt;/&gt;
+  )
+}</pre>
+
+  <h2>5. HomeRichText helper</h2>
+  <p>File: <code>frontend/components/home-rich-text.tsx</code>. This is <strong>not</strong> the whole homepage. It is a small parser used on Channels and Testimonials titles.</p>
+  <p>Admins can type markup in CMS text:</p>
+  <ul>
+    <li><code>&lt;accent&gt;this text&lt;/accent&gt;</code> — primary (brand) color</li>
+    <li><code>&lt;muted&gt;this text&lt;/muted&gt;</code> — navy</li>
+    <li><code>&lt;br&gt;</code> — line break</li>
+  </ul>
+  <p>The helper turns that string into React nodes so headings can have colored words without a full HTML editor.</p>
+
+  <h2>6. Related files</h2>
+  <table>
+    <thead>
+      <tr><th>File</th><th>Role</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>frontend/app/[locale]/page.tsx</code></td><td>Homepage route (this document)</td></tr>
+      <tr><td><code>frontend/app/[locale]/layout.tsx</code></td><td>Header, footer, fonts, analytics wrapper</td></tr>
+      <tr><td><code>frontend/lib/homepage-cms.ts</code></td><td>Fetches homepage content from the API</td></tr>
+      <tr><td><code>frontend/lib/homepage-content.ts</code></td><td>Types and default structure of homepage fields</td></tr>
+      <tr><td><code>frontend/components/home-rich-text.tsx</code></td><td>Accent / muted / line-break markup</td></tr>
+      <tr><td><code>frontend/components/*-section.tsx</code></td><td>Each visual block listed above</td></tr>
+    </tbody>
+  </table>
+</body>
+</html>

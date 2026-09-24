@@ -276,7 +276,8 @@
     "privacy": "سياسة الخصوصية",
     "terms": "الشروط والأحكام",
     "contact": "تواصل معنا",
-    "sitemap": "خريطة الموقع"
+    "sitemap": "خريطة الموقع",
+    "geoQuestions": "بنك أسئلة GEO"
   },
   "about": {
     "metaTitle": "عن باب — خبراء القنوات المتعددة ومراكز الاتصال منذ 1999",
@@ -881,6 +882,7 @@
       "purposeLlmsFull": "الملخص مع الشائعة وبنك أسئلة GEO",
       "purposeLlmsQuestions": "بنك 1000 سؤال GEO باللغتين",
       "purposeLlmsSmall": "ملخص مختصر لزواحف الذكاء الاصطناعي",
+      "purposeGeoQuestions": "مركز أسئلة GEO بصيغة HTML لـ ChatGPT وGemini",
       "purposeRobots": "قواعد الزواحف وخريطة الموقع",
       "purposeSitemap": "قائمة بجميع الصفحات العامة",
       "purposeAi": "إرشادات زواحف الذكاء الاصطناعي (.well-known)",

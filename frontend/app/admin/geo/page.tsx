@@ -32,6 +32,7 @@ type PurposeKey =
   | 'purposeLlmsFull'
   | 'purposeLlmsQuestions'
   | 'purposeLlmsSmall'
+  | 'purposeGeoQuestions'
   | 'purposeRobots'
   | 'purposeSitemap'
   | 'purposeAi'
@@ -57,6 +58,11 @@ type IndexNowMeta = {
 }
 
 const INITIAL_FILES: Omit<CrawlerFile, 'status'>[] = [
+  {
+    file: 'geo-questions',
+    path: '/geo-questions',
+    purposeKey: 'purposeGeoQuestions',
+  },
   {
     file: 'llms.txt',
     path: '/llms.txt',
@@ -515,7 +521,9 @@ export default function AdminGeoPage() {
                 meta?.priorityUrls || [
                   siteUrl,
                   `${siteUrl}/ar`,
+                  `${siteUrl}/geo-questions`,
                   `${siteUrl}/llms.txt`,
+                  `${siteUrl}/llms-questions.txt`,
                   `${siteUrl}/about-us`,
                 ]
               ).map((url) => (

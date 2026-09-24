@@ -61,7 +61,11 @@ export async function GET() {
       priorityUrls: [
         `${site}`,
         `${site}/ar`,
+        `${site}/geo-questions`,
+        `${site}/ar/geo-questions`,
         `${site}/llms.txt`,
+        `${site}/llms-questions.txt`,
+        `${site}/llms-full.txt`,
         `${site}/about-us`,
       ],
     }),

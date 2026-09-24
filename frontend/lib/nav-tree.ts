@@ -50,6 +50,7 @@ export const companySitemapLinks: { footerKey: string; href: string }[] = [
   { footerKey: 'articles', href: '/articles' },
   { footerKey: 'careers', href: '/careers' },
   { footerKey: 'contact', href: '/contact-us' },
+  { footerKey: 'geoQuestions', href: '/geo-questions' },
   { footerKey: 'privacy', href: '/privacy-policy' },
   { footerKey: 'terms', href: '/terms-conditions' },
 ]
