@@ -26,9 +26,15 @@ type PublishedMeta = {
 }
 
 /** Published CMS case studies for the Success Stories listing. */
-export async function fetchSuccessStories(locale: Locale): Promise<SuccessStoryCard[]> {
+export async function fetchSuccessStories(
+  locale: Locale,
+  timeoutMs = 4000,
+): Promise<SuccessStoryCard[]> {
+  const controller = new AbortController()
+  const timer = setTimeout(() => controller.abort(), timeoutMs)
   try {
     const res = await fetch(`${getApiUrl()}/api/pages/meta/published`, {
+      signal: controller.signal,
       next: { revalidate: 60 },
     })
     if (!res.ok) return []
@@ -51,5 +57,7 @@ export async function fetchSuccessStories(locale: Locale): Promise<SuccessStoryC
       })
   } catch {
     return []
+  } finally {
+    clearTimeout(timer)
   }
 }

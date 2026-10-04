@@ -29,6 +29,8 @@ const nextConfig = {
       { source: '/en/admin', destination: '/admin', permanent: false },
       { source: '/ar/admin/:path*', destination: '/admin/:path*', permanent: false },
       { source: '/en/admin/:path*', destination: '/admin/:path*', permanent: false },
+      { source: '/ar/%D8%A7%D9%84%D8%B1%D8%A6%D9%8A%D8%B3%D9%8A%D8%A9', destination: '/ar', permanent: true },
+      { source: '/ar/الرئيسية', destination: '/ar', permanent: true },
       { source: '/en', destination: '/', permanent: true },
       { source: '/en/:path*', destination: '/:path*', permanent: true },
       { source: '/:path+/', destination: '/:path+', permanent: true },

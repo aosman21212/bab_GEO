@@ -26,9 +26,12 @@ type PublishedMeta = {
 }
 
 /** Published CMS articles for the Articles / مقالات listing. */
-export async function fetchArticles(locale: Locale): Promise<ArticleCard[]> {
+export async function fetchArticles(locale: Locale, timeoutMs = 4000): Promise<ArticleCard[]> {
+  const controller = new AbortController()
+  const timer = setTimeout(() => controller.abort(), timeoutMs)
   try {
     const res = await fetch(`${getApiUrl()}/api/pages/meta/published`, {
+      signal: controller.signal,
       next: { revalidate: 60 },
     })
     if (!res.ok) return []
@@ -51,5 +54,7 @@ export async function fetchArticles(locale: Locale): Promise<ArticleCard[]> {
       })
   } catch {
     return []
+  } finally {
+    clearTimeout(timer)
   }
 }

@@ -392,9 +392,12 @@ export async function loadGeoSettings(): Promise<GeoSiteSettings> {
   return mergeGeoSettings(settings)
 }
 
-export async function loadPublishedPages(): Promise<GeoPageRef[]> {
+export async function loadPublishedPages(timeoutMs = 4000): Promise<GeoPageRef[]> {
+  const controller = new AbortController()
+  const timer = setTimeout(() => controller.abort(), timeoutMs)
   try {
     const res = await fetch(`${getApiUrl()}/api/pages/meta/published`, {
+      signal: controller.signal,
       next: { revalidate: 60 },
     })
     if (res.ok) {
@@ -403,6 +406,8 @@ export async function loadPublishedPages(): Promise<GeoPageRef[]> {
     }
   } catch {
     // fall through to static catalog
+  } finally {
+    clearTimeout(timer)
   }
 
   return allPages.map((page) => ({
