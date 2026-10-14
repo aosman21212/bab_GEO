@@ -15,6 +15,7 @@ import {
   DEFAULT_WHATSAPP_PHONE,
   formatWhatsAppPhoneDisplay,
 } from '@/lib/landing-defaults'
+import Image from '@/components/app-image'
 import { ContactForm } from '@/components/contact-form'
 import { LandingChromeHider } from '@/components/landing-chrome-hider'
 import { LandingPartnersSlider } from '@/components/landing-partners-slider'
@@ -46,6 +47,7 @@ export function LandingPage({
   }, [page.slug, landingType, isAr])
 
   const highlights = page.highlights?.filter(Boolean) ?? []
+  const logos = page.logos?.map((src) => src.trim()).filter(Boolean) ?? []
   const waPhone = page.whatsappPhone?.trim() || DEFAULT_WHATSAPP_PHONE
   const waDisplay = page.whatsappDisplayName?.trim() || DEFAULT_WHATSAPP_DISPLAY
   const officialWebsite = page.officialWebsite?.trim() || DEFAULT_OFFICIAL_WEBSITE
@@ -92,6 +94,21 @@ export function LandingPage({
                         <Check className="h-3.5 w-3.5" />
                       </span>
                       <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
+              {logos.length > 0 ? (
+                <ul className="mt-10 flex flex-wrap items-center gap-6" aria-label={t('logosLabel')}>
+                  {logos.map((src) => (
+                    <li key={src}>
+                      <Image
+                        src={src}
+                        alt={t('logoAlt')}
+                        width={320}
+                        height={160}
+                        className="h-20 w-auto max-w-[300px] object-contain md:h-24"
+                      />
                     </li>
                   ))}
                 </ul>

@@ -23,6 +23,7 @@ export type PageContent = {
   ctaLabel: string
   image: string
   galleryImages?: string[]
+  logos?: string[]
   highlights?: string[]
   formNote?: string
   whatsappDisplayName?: string

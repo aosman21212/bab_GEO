@@ -23,6 +23,12 @@ export function AdminGalleryImagesField({
   uploading,
   onUploadingChange,
   onError,
+  uploadLabel,
+  removeLabel,
+  placeholder,
+  hint,
+  previewClassName = 'aspect-[16/10] w-full',
+  previewFit,
 }: {
   value: string
   onChange: (value: string) => void
@@ -30,6 +36,12 @@ export function AdminGalleryImagesField({
   uploading?: boolean
   onUploadingChange?: (uploading: boolean) => void
   onError?: (message: string | null) => void
+  uploadLabel?: string
+  removeLabel?: string
+  placeholder?: string
+  hint?: string
+  previewClassName?: string
+  previewFit?: 'cover' | 'contain'
 }) {
   const { t } = useAdminLocale()
   const urls = parseGalleryLines(value)
@@ -56,27 +68,27 @@ export function AdminGalleryImagesField({
         className="inline-flex w-fit cursor-pointer items-center gap-2 rounded-full border border-border bg-white px-4 py-2 text-sm font-semibold text-navy hover:border-primary disabled:cursor-not-allowed disabled:opacity-60"
       >
         <Upload className="h-4 w-4 text-primary" />
-        {uploading ? t('common.uploading') : t('pageForm.uploadGalleryImage')}
+        {uploading ? t('common.uploading') : uploadLabel ?? t('pageForm.uploadGalleryImage')}
       </AdminImagePicker>
 
       <textarea
         className={`${fieldClass()} min-h-[100px] resize-y font-mono text-xs`}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        placeholder={t('pageForm.galleryImagesPlaceholder')}
+        placeholder={placeholder ?? t('pageForm.galleryImagesPlaceholder')}
       />
-      <p className="text-xs text-muted-foreground">{t('pageForm.galleryImagesHint')}</p>
+      <p className="text-xs text-muted-foreground">{hint ?? t('pageForm.galleryImagesHint')}</p>
 
       {urls.length > 0 ? (
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
           {urls.map((url) => (
             <div key={url} className="group relative space-y-1">
-              <AdminMediaPreview src={url} className="aspect-[16/10] w-full" />
+              <AdminMediaPreview src={url} className={previewClassName} fit={previewFit} />
               <button
                 type="button"
                 onClick={() => removeUrl(url)}
                 className="absolute end-2 top-2 flex h-7 w-7 items-center justify-center rounded-full border border-border bg-white/95 text-navy shadow-sm transition hover:border-red-300 hover:text-red-600"
-                aria-label={t('pageForm.removeGalleryImage')}
+                aria-label={removeLabel ?? t('pageForm.removeGalleryImage')}
               >
                 <X className="h-3.5 w-3.5" />
               </button>

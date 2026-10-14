@@ -8,10 +8,12 @@ export function AdminMediaPreview({
   src,
   className = 'h-28 w-full max-w-[200px]',
   label,
+  fit = 'cover',
 }: {
   src: string
   className?: string
   label?: string
+  fit?: 'cover' | 'contain'
 }) {
   const [failed, setFailed] = useState(false)
   const trimmed = src?.trim()
@@ -48,7 +50,7 @@ export function AdminMediaPreview({
       <img
         src={withBasePathIfInternal(trimmed)}
         alt=""
-        className="h-full w-full object-cover"
+        className={`h-full w-full ${fit === 'contain' ? 'bg-white object-contain p-2' : 'object-cover'}`}
         onError={() => setFailed(true)}
       />
     </div>

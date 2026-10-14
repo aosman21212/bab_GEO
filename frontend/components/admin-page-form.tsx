@@ -71,6 +71,7 @@ export type LocaleFormData = {
   useCasesText: string
   highlightsText: string
   galleryImagesText: string
+  logosText: string
   formNote: string
   whatsappDisplayName: string
   whatsappPhone: string
@@ -109,6 +110,7 @@ export function emptyLocaleForm(partial?: Partial<LocaleFormData>): LocaleFormDa
     useCasesText: '',
     highlightsText: '',
     galleryImagesText: '',
+    logosText: '',
     formNote: '',
     whatsappDisplayName: '',
     whatsappPhone: '',
@@ -164,6 +166,7 @@ export function localeFromApi(raw: Record<string, unknown> | undefined | null): 
     galleryImagesText: Array.isArray(raw.galleryImages)
       ? (raw.galleryImages as string[]).join('\n')
       : '',
+    logosText: Array.isArray(raw.logos) ? (raw.logos as string[]).join('\n') : '',
     formNote: String(raw.formNote ?? ''),
     whatsappDisplayName: String(raw.whatsappDisplayName ?? ''),
     whatsappPhone: String(raw.whatsappPhone ?? ''),
@@ -201,6 +204,13 @@ export function localeToApi(form: LocaleFormData): Record<string, unknown> {
       text: form.impactText,
     },
   }
+
+  // Omitted when empty so the Arabic page inherits the English logos (API merges en → ar).
+  const logos = form.logosText
+    .split('\n')
+    .map((l) => l.trim())
+    .filter(Boolean)
+  if (logos.length > 0) payload.logos = logos
 
   if (form.featuresEnabled) {
     payload.features = {
@@ -301,6 +311,8 @@ export function AdminPageForm({
   const [galleryUploading, setGalleryUploading] = useState(false)
   const [uploadError, setUploadError] = useState<string | null>(null)
   const [galleryUploadError, setGalleryUploadError] = useState<string | null>(null)
+  const [logoUploading, setLogoUploading] = useState(false)
+  const [logoUploadError, setLogoUploadError] = useState<string | null>(null)
 
   const set = <K extends keyof LocaleFormData>(key: K, v: LocaleFormData[K]) => {
     onChange({ ...value, [key]: v })
@@ -514,6 +526,23 @@ export function AdminPageForm({
             {galleryUploadError ? (
               <p className="mt-2 text-xs text-red-600">{galleryUploadError}</p>
             ) : null}
+          </Label>
+          <Label label={t('pageForm.logos')}>
+            <AdminGalleryImagesField
+              value={value.logosText}
+              onChange={(logosText) => set('logosText', logosText)}
+              disabled={uploading}
+              uploading={logoUploading}
+              onUploadingChange={setLogoUploading}
+              onError={setLogoUploadError}
+              uploadLabel={t('pageForm.uploadLogo')}
+              removeLabel={t('pageForm.removeLogo')}
+              placeholder="/uploads/meta-business-partner.png"
+              hint={t('pageForm.logosHint')}
+              previewClassName="aspect-[2/1] w-full"
+              previewFit="contain"
+            />
+            {logoUploadError ? <p className="mt-2 text-xs text-red-600">{logoUploadError}</p> : null}
           </Label>
           {landingType === 'lead-form' ? (
             <Label label={t('pageForm.formNote')} dir={dir}>

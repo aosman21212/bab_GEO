@@ -27,6 +27,10 @@ function mapToPageContent(raw: Record<string, unknown>, slug: string): PageConte
     ? raw.galleryImages.map((h) => String(h)).filter(Boolean)
     : undefined
 
+  const logos = Array.isArray(raw.logos)
+    ? raw.logos.map((h) => String(h)).filter(Boolean)
+    : undefined
+
   return {
     slug,
     category: (raw.category as PageContent['category']) || 'solution',
@@ -39,6 +43,7 @@ function mapToPageContent(raw: Record<string, unknown>, slug: string): PageConte
     ctaLabel: String(raw.ctaLabel ?? ''),
     image: String(raw.image ?? '/images/bab-hero.png'),
     galleryImages,
+    logos,
     highlights,
     formNote: String(raw.formNote ?? ''),
     whatsappDisplayName: String(raw.whatsappDisplayName ?? ''),
