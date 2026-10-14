@@ -1,4 +1,5 @@
 import { cookies } from 'next/headers'
+import { revalidatePath } from 'next/cache'
 import { NextResponse } from 'next/server'
 import { fetchBackend } from '@/lib/api'
 import { ADMIN_SESSION_COOKIE, clearAdminSessionCookie, setAdminSessionCookie } from '@/lib/admin-session'
@@ -79,6 +80,11 @@ async function proxy(req: Request, ctx: Ctx, method: string) {
       body,
       signal: controller.signal,
     })
+    // Public pages are ISR-cached; without this, admin edits take up to a minute to appear.
+    if (method !== 'GET' && res.ok && path[0] !== 'uploads' && path[0] !== 'auth') {
+      revalidatePath('/', 'layout')
+    }
+
     const contentType = res.headers.get('Content-Type') || 'application/json'
     const disposition = res.headers.get('Content-Disposition')
     const nextToken = tokenForSlide(res, token)
