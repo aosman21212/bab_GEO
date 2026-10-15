@@ -590,6 +590,8 @@
       "hoursEn": "Business hours (English)",
       "addressAr": "Address (Arabic)",
       "addressEn": "Address (English)",
+      "socialLinks": "Social media links",
+      "socialLinksHint": "Shown as icons in the site footer and listed as BAB's official profiles for search engines. Leave a field empty to hide that icon.",
       "faq": "Homepage FAQ",
       "faqBody": "Questions and answers appear in llms-full.txt and FAQ structured data.",
       "faqsEn": "English FAQs",

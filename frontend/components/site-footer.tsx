@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useLocale, useTranslations } from 'next-intl'
+import { useLocale, useMessages, useTranslations } from 'next-intl'
 import { ArrowRight, MapPin, Phone, Mail } from 'lucide-react'
 import { Link } from '@/i18n/navigation'
 import { BabLogo } from './bab-logo'
@@ -12,15 +12,15 @@ import {
   XIcon,
   YoutubeIcon,
 } from './social-icons'
-import { BAB_SOCIAL_URLS } from '@/lib/social-profiles'
+import { resolveSocialLinks, type SocialKey, type SocialSettings } from '@/lib/social-profiles'
 
-const socials = [
-  { icon: FacebookIcon, label: 'Facebook', href: BAB_SOCIAL_URLS[0] },
-  { icon: YoutubeIcon, label: 'YouTube', href: BAB_SOCIAL_URLS[1] },
-  { icon: LinkedinIcon, label: 'LinkedIn', href: BAB_SOCIAL_URLS[2] },
-  { icon: XIcon, label: 'X', href: BAB_SOCIAL_URLS[3] },
-  { icon: InstagramIcon, label: 'Instagram', href: BAB_SOCIAL_URLS[4] },
-]
+const SOCIAL_ICONS: Record<SocialKey, typeof FacebookIcon> = {
+  socialFacebook: FacebookIcon,
+  socialYoutube: YoutubeIcon,
+  socialLinkedin: LinkedinIcon,
+  socialX: XIcon,
+  socialInstagram: InstagramIcon,
+}
 
 const MAPS_URL = 'https://maps.app.goo.gl/s4Lvq93xyFv5QEpW7?g_st=awb'
 
@@ -28,6 +28,8 @@ export function SiteFooter() {
   const t = useTranslations('footer')
   const s = useTranslations('siteSettings')
   const locale = useLocale()
+  const messages = useMessages() as { siteSettings?: SocialSettings }
+  const socials = resolveSocialLinks(messages.siteSettings)
   const [email, setEmail] = useState('')
   const [agreed, setAgreed] = useState(false)
   const [sent, setSent] = useState(false)
@@ -167,20 +169,25 @@ export function SiteFooter() {
               </form>
             )}
 
-            <div className="mt-5 flex gap-2">
-              {socials.map((s) => (
-                <a
-                  key={s.label}
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={s.label}
-                  className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border text-navy transition-colors hover:border-primary hover:bg-primary hover:text-primary-foreground"
-                >
-                  <s.icon className="h-4 w-4" />
-                </a>
-              ))}
-            </div>
+            {socials.length > 0 ? (
+              <div className="mt-5 flex gap-2">
+                {socials.map((s) => {
+                  const Icon = SOCIAL_ICONS[s.key]
+                  return (
+                    <a
+                      key={s.key}
+                      href={s.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={s.label}
+                      className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border text-navy transition-colors hover:border-primary hover:bg-primary hover:text-primary-foreground"
+                    >
+                      <Icon className="h-4 w-4" />
+                    </a>
+                  )
+                })}
+              </div>
+            ) : null}
           </div>
         </div>
 

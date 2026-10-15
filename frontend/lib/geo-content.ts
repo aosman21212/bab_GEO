@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { getPathname } from '@/i18n/navigation'
 import { allPages } from '@/lib/site-content'
 import { fetchSiteContent, getApiUrl } from '@/lib/api'
-import { BAB_SOCIAL_URLS } from '@/lib/social-profiles'
+import { resolveSocialLinks, type SocialSettings } from '@/lib/social-profiles'
 import { basePath } from '@/lib/base-path'
 import { companySitemapLinks, solutionGroups } from '@/lib/nav-tree'
 import {
@@ -164,7 +164,7 @@ export function homepageSocialMeta(locale: 'en' | 'ar') {
 
 export type GeoFaq = { question: string; answer: string }
 
-export type GeoSiteSettings = {
+export type GeoSiteSettings = SocialSettings & {
   maintenanceMode?: boolean
   email?: string
   phone?: string
@@ -830,7 +830,7 @@ export function buildOrganizationJsonLd(
     logo: `${site}${GEO_LOGO_PATH}`,
     email: settings.email,
     telephone: settings.phone,
-    sameAs: [...BAB_SOCIAL_URLS],
+    sameAs: resolveSocialLinks(settings).map((link) => link.href),
     address: {
       '@type': 'PostalAddress',
       streetAddress: street,

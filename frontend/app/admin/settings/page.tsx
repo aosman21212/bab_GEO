@@ -16,10 +16,11 @@ import {
 } from '@/lib/geo-content'
 import { Mail, Plus, Trash2 } from 'lucide-react'
 import { withBasePath } from '@/lib/base-path'
+import { SOCIAL_NETWORKS, type SocialKey } from '@/lib/social-profiles'
 
 type FaqItem = { question: string; answer: string }
 
-type SiteSettings = {
+type SiteSettings = Record<SocialKey, string> & {
   maintenanceMode: boolean
   defaultLanguage: 'en' | 'ar'
   email: string
@@ -53,6 +54,7 @@ const defaults: SiteSettings = {
   hoursAr: 'الأحد - الخميس ٨:٠٠ ص - ٥:٠٠ م',
   addressEn: 'Al-Yasmin, King Abdulaziz Rd, Riyadh, KSA',
   addressAr: 'الياسمين، طريق الملك عبدالعزيز، الرياض، المملكة العربية السعودية',
+  ...(Object.fromEntries(SOCIAL_NETWORKS.map((n) => [n.key, n.defaultUrl])) as Record<SocialKey, string>),
   seoTitleEn:
     'BAB International Corp | Omnichannel & Contact Center in KSA',
   seoTitleAr:
@@ -546,6 +548,29 @@ export default function AdminSettingsPage() {
                   onChange={(e) => set('addressEn', e.target.value)}
                 />
               </label>
+            </div>
+
+            <div className="mt-8 border-t border-border pt-6">
+              <p className="text-sm font-semibold text-navy">{t('settings.socialLinks')}</p>
+              <p className="mt-1 text-sm text-muted-foreground">{t('settings.socialLinksHint')}</p>
+              <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                {SOCIAL_NETWORKS.map((network) => (
+                  <label
+                    key={network.key}
+                    className="flex flex-col gap-2 text-sm font-semibold text-navy"
+                  >
+                    {network.label}
+                    <input
+                      className={fieldClass()}
+                      type="url"
+                      dir="ltr"
+                      placeholder="https://"
+                      value={settings[network.key]}
+                      onChange={(e) => set(network.key, e.target.value)}
+                    />
+                  </label>
+                ))}
+              </div>
             </div>
           </section>
         ) : null}
