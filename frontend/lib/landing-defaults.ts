@@ -1,6 +1,19 @@
 export const DEFAULT_WHATSAPP_PHONE = '966920035161'
 export const DEFAULT_WHATSAPP_DISPLAY = 'BAB International Corp'
 export const DEFAULT_OFFICIAL_WEBSITE = 'https://bab.com.sa'
+
+/** Only allow https: URLs for CMS-driven links (blocks javascript:/data:). */
+export function safeHttpsUrl(raw: string | undefined | null): string | null {
+  const value = raw?.trim()
+  if (!value) return null
+  try {
+    const url = new URL(value)
+    if (url.protocol !== 'https:') return null
+    return url.href
+  } catch {
+    return null
+  }
+}
 export const DEFAULT_OFFICIAL_EMAIL = 'sales@bab.com.sa'
 export const DEFAULT_PROFILE_DESCRIPTION_EN =
   'BAB International Corp is a Riyadh-based enterprise technology company delivering omnichannel engagement, AI voice bots, and contact-center solutions across Saudi Arabia and MENA.'

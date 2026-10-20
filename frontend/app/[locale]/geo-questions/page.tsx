@@ -5,6 +5,7 @@ import {
   buildPageMetadata,
   buildFaqPageJsonLd,
   getSiteUrl,
+  safeJsonLd,
   type GeoFaq,
 } from '@/lib/geo-content'
 import {
@@ -75,7 +76,7 @@ export default async function GeoQuestionsHubPage({
       {faqLd ? (
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }}
+          dangerouslySetInnerHTML={{ __html: safeJsonLd(faqLd) }}
         />
       ) : null}
       <section className="bg-secondary pt-16 md:pt-20">

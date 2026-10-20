@@ -125,16 +125,29 @@ export async function isSessionDenied(sid: string | undefined) {
   }
 }
 
+type RateLimitOptions = {
+  /** When true, deny the request if Redis is down (use for auth). Default: fail open. */
+  failClosed?: boolean
+}
+
 /** Simple Redis rate limit: max N hits per windowSeconds for a key. */
-export async function rateLimit(key: string, max: number, windowSeconds: number) {
-  if (!redisAvailable) return { ok: true, remaining: max }
+export async function rateLimit(
+  key: string,
+  max: number,
+  windowSeconds: number,
+  opts?: RateLimitOptions,
+) {
+  const unavailable = opts?.failClosed
+    ? { ok: false as const, remaining: 0 }
+    : { ok: true as const, remaining: max }
+  if (!redisAvailable) return unavailable
   try {
     const client = getRedis()
     const count = await client.incr(key)
     if (count === 1) await client.expire(key, windowSeconds)
     return { ok: count <= max, remaining: Math.max(0, max - count) }
   } catch {
-    return { ok: true, remaining: max }
+    return unavailable
   }
 }
 

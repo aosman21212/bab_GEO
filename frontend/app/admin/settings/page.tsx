@@ -66,7 +66,7 @@ const defaults: SiteSettings = {
   geoAboutEn: DEFAULT_GEO_ABOUT_EN,
   geoAboutAr: DEFAULT_GEO_ABOUT_AR,
   geoCitationNote: DEFAULT_GEO_CITATION_NOTE,
-  indexNowKey: 'a0d1d00c073c48c2b85694d1a36ccfbf',
+  indexNowKey: '',
   homepageFaqsEn: [
     {
       question: 'What does BAB International Corp offer?',

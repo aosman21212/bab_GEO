@@ -1,11 +1,12 @@
 'use client'
 
-import { useState, type ReactNode } from 'react'
+import { useState } from 'react'
 import { Plus, Trash2, Upload } from 'lucide-react'
 import { useAdminLocale } from '@/components/admin-locale-provider'
 import { AdminGalleryImagesField } from '@/components/admin-gallery-images-field'
 import { AdminImagePicker } from '@/components/admin-image-picker'
 import { AdminMediaPreview } from '@/components/admin-media-preview'
+import { AdminFormCard as Card, AdminFormLabel as Label, fieldClass } from '@/components/admin-form-ui'
 import type { PageCategory, LandingType } from '@/lib/page-categories'
 import { SEO_DESCRIPTION_MAX, SEO_DESCRIPTION_MIN, SEO_TITLE_MIN, SEO_TITLE_SEGMENT_MAX, SEO_TITLE_SUFFIX } from '@/lib/geo-content'
 
@@ -196,7 +197,16 @@ export function localeToApi(form: LocaleFormData): Record<string, unknown> {
     formNote: form.formNote,
     whatsappDisplayName: form.whatsappDisplayName,
     whatsappPhone: form.whatsappPhone,
-    officialWebsite: form.officialWebsite,
+    officialWebsite: (() => {
+      const raw = form.officialWebsite.trim()
+      if (!raw) return ''
+      try {
+        const u = new URL(raw)
+        return u.protocol === 'https:' ? u.href : ''
+      } catch {
+        return ''
+      }
+    })(),
     officialEmail: form.officialEmail,
     profileDescription: form.profileDescription,
     impact: {
@@ -245,45 +255,6 @@ export function localeToApi(form: LocaleFormData): Record<string, unknown> {
   }
 
   return payload
-}
-
-function fieldClass() {
-  return 'w-full rounded-xl border border-border bg-muted px-3 py-2.5 text-sm text-navy outline-none transition focus:border-primary focus:bg-white'
-}
-
-function Card({
-  title,
-  subtitle,
-  children,
-}: {
-  title: string
-  subtitle?: string
-  children: ReactNode
-}) {
-  return (
-    <section className="rounded-2xl border border-border bg-white p-6 shadow-sm">
-      <h2 className="text-lg font-extrabold text-navy">{title}</h2>
-      {subtitle ? <p className="mt-1 text-sm text-muted-foreground">{subtitle}</p> : null}
-      <div className="mt-5 space-y-4">{children}</div>
-    </section>
-  )
-}
-
-function Label({
-  label,
-  children,
-  dir,
-}: {
-  label: string
-  children: ReactNode
-  dir?: 'ltr' | 'rtl'
-}) {
-  return (
-    <label className="flex flex-col gap-1.5 text-sm font-semibold text-navy" dir={dir}>
-      {label}
-      {children}
-    </label>
-  )
 }
 
 export function AdminPageForm({

@@ -11,9 +11,10 @@ import {
   DEFAULT_OFFICIAL_WEBSITE,
   DEFAULT_PROFILE_DESCRIPTION_AR,
   DEFAULT_PROFILE_DESCRIPTION_EN,
-  DEFAULT_WHATSAPP_DISPLAY,
   DEFAULT_WHATSAPP_PHONE,
+  DEFAULT_WHATSAPP_DISPLAY,
   formatWhatsAppPhoneDisplay,
+  safeHttpsUrl,
 } from '@/lib/landing-defaults'
 import Image from '@/components/app-image'
 import { ContactForm } from '@/components/contact-form'
@@ -50,7 +51,8 @@ export function LandingPage({
   const logos = page.logos?.map((src) => src.trim()).filter(Boolean) ?? []
   const waPhone = page.whatsappPhone?.trim() || DEFAULT_WHATSAPP_PHONE
   const waDisplay = page.whatsappDisplayName?.trim() || DEFAULT_WHATSAPP_DISPLAY
-  const officialWebsite = page.officialWebsite?.trim() || DEFAULT_OFFICIAL_WEBSITE
+  const officialWebsite =
+    safeHttpsUrl(page.officialWebsite) || DEFAULT_OFFICIAL_WEBSITE
   const officialEmail = page.officialEmail?.trim() || DEFAULT_OFFICIAL_EMAIL
   const profileDescription =
     page.profileDescription?.trim() ||

@@ -10,7 +10,6 @@ const MIME: Record<string, string> = {
   '.jpeg': 'image/jpeg',
   '.webp': 'image/webp',
   '.gif': 'image/gif',
-  '.svg': 'image/svg+xml',
 }
 
 function safeName(raw: string) {
@@ -38,7 +37,24 @@ export async function GET(
 
   const buf = await readFile(filePath)
   const ext = path.extname(filename).toLowerCase()
-  const type = MIME[ext] || 'application/octet-stream'
+
+  // Legacy SVG uploads: force download so the browser never executes embedded script.
+  if (ext === '.svg') {
+    return new NextResponse(buf, {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/octet-stream',
+        'Content-Disposition': `attachment; filename="${filename}"`,
+        'Cache-Control': 'no-store',
+        'Content-Length': String(buf.byteLength),
+      },
+    })
+  }
+
+  const type = MIME[ext]
+  if (!type) {
+    return NextResponse.json({ error: 'Unsupported file type' }, { status: 415 })
+  }
 
   return new NextResponse(buf, {
     status: 200,

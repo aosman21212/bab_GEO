@@ -10,11 +10,16 @@ const uploadsDir = path.resolve(__dirname, '../../../frontend/public/uploads')
 
 fs.mkdirSync(uploadsDir, { recursive: true })
 
+/** SVG is excluded — browsers execute script inside image/svg+xml. */
+const ALLOWED_MIME = new Set(['image/png', 'image/jpeg', 'image/webp', 'image/gif'])
+const ALLOWED_EXT = new Set(['.png', '.jpg', '.jpeg', '.webp', '.gif'])
+
 const storage = multer.diskStorage({
   destination: (_req, _file, cb) => cb(null, uploadsDir),
   filename: (_req, file, cb) => {
-    const ext = path.extname(file.originalname).toLowerCase() || '.jpg'
-    const safe = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}${ext}`
+    const ext = path.extname(file.originalname).toLowerCase()
+    const safeExt = ALLOWED_EXT.has(ext) ? ext : '.jpg'
+    const safe = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}${safeExt}`
     cb(null, safe)
   },
 })
@@ -23,8 +28,9 @@ const upload = multer({
   storage,
   limits: { fileSize: 5 * 1024 * 1024 },
   fileFilter: (_req, file, cb) => {
-    if (!file.mimetype.startsWith('image/')) {
-      cb(new Error('Only image uploads are allowed'))
+    const ext = path.extname(file.originalname).toLowerCase()
+    if (!ALLOWED_MIME.has(file.mimetype) || !ALLOWED_EXT.has(ext)) {
+      cb(new Error('Only PNG, JPEG, WebP, or GIF uploads are allowed'))
       return
     }
     cb(null, true)

@@ -8,6 +8,7 @@ import { useAdminLocale } from '@/components/admin-locale-provider'
 import { AdminImagePicker } from '@/components/admin-image-picker'
 import { ImagePlus, Pencil, Trash2, Upload } from 'lucide-react'
 import { withBasePath } from '@/lib/base-path'
+import { slugifyContentTitle as slugify } from '@/lib/content-slug'
 
 type Partner = {
   _id: string
@@ -32,14 +33,6 @@ const emptyForm: FormState = {
   logoUrl: '',
   order: 0,
   active: true,
-}
-
-function slugify(value: string) {
-  return value
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
 }
 
 function fieldClass() {

@@ -2,8 +2,9 @@ services:
   mongo:
     image: mongo:7
     restart: unless-stopped
+    # Localhost only — do not expose Mongo on the LAN/internet.
     ports:
-      - '27018:27017'
+      - '127.0.0.1:27018:27017'
     volumes:
       - mongo_data:/data/db
     healthcheck:
@@ -17,10 +18,12 @@ services:
     image: mongo-express:1.0.2
     restart: unless-stopped
     ports:
-      - '8081:8081'
+      - '127.0.0.1:8081:8081'
     environment:
       ME_CONFIG_MONGODB_URL: mongodb://mongo:27017/bab_cms
-      ME_CONFIG_BASICAUTH: 'false'
+      ME_CONFIG_BASICAUTH: 'true'
+      ME_CONFIG_BASICAUTH_USERNAME: ${MONGO_EXPRESS_USER:-admin}
+      ME_CONFIG_BASICAUTH_PASSWORD: ${MONGO_EXPRESS_PASSWORD:-changeme-mongo-express}
     depends_on:
       mongo:
         condition: service_healthy
@@ -28,8 +31,9 @@ services:
   redis:
     image: redis:7
     restart: unless-stopped
+    # Localhost only — MFA/session denylist must not be reachable on the LAN.
     ports:
-      - '6379:6379'
+      - '127.0.0.1:6379:6379'
     volumes:
       - redis_data:/data
     healthcheck:
@@ -43,8 +47,9 @@ services:
       context: .
       dockerfile: backend/Dockerfile
     restart: unless-stopped
+    # Localhost only — public traffic should go through the Next frontend proxy.
     ports:
-      - '4001:4001'
+      - '127.0.0.1:4001:4001'
     environment:
       PORT: '4001'
       MONGODB_URI: mongodb://mongo:27017/bab_cms
@@ -83,7 +88,7 @@ services:
         NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-}
         NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3003}
         NEXT_PUBLIC_BASE_PATH: ${NEXT_PUBLIC_BASE_PATH:-}
-        INDEXNOW_KEY: ${INDEXNOW_KEY:-a0d1d00c073c48c2b85694d1a36ccfbf}
+        INDEXNOW_KEY: ${INDEXNOW_KEY:-}
         BING_SITE_AUTH_CODE: ${BING_SITE_AUTH_CODE:-}
         GOOGLE_SITE_VERIFICATION: ${GOOGLE_SITE_VERIFICATION:-googled43fdb9897d9f8a7}
     restart: unless-stopped
@@ -97,7 +102,7 @@ services:
       NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-}
       NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3003}
       NEXT_PUBLIC_BASE_PATH: ${NEXT_PUBLIC_BASE_PATH:-}
-      INDEXNOW_KEY: ${INDEXNOW_KEY:-a0d1d00c073c48c2b85694d1a36ccfbf}
+      INDEXNOW_KEY: ${INDEXNOW_KEY:-}
       BING_SITE_AUTH_CODE: ${BING_SITE_AUTH_CODE:-}
       GOOGLE_SITE_VERIFICATION: ${GOOGLE_SITE_VERIFICATION:-googled43fdb9897d9f8a7}
       GA_MEASUREMENT_ID: ${GA_MEASUREMENT_ID:-G-BCLTJXVS8F}

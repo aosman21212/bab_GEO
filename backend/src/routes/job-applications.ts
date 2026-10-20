@@ -141,12 +141,20 @@ jobApplicationsRouter.get('/:id/cv', requireAuth, async (req, res) => {
   const item = await JobApplication.findById(req.params.id).lean()
   if (!item) return res.status(404).json({ error: 'Not found' })
 
-  const filePath = path.join(cvUploadsDir, item.cvFilename)
+  const safeName = path.basename(String(item.cvFilename || ''))
+  if (!safeName || safeName !== item.cvFilename) {
+    return res.status(400).json({ error: 'Invalid CV filename' })
+  }
+  const filePath = path.resolve(cvUploadsDir, safeName)
+  const uploadsRoot = path.resolve(cvUploadsDir) + path.sep
+  if (!filePath.startsWith(uploadsRoot)) {
+    return res.status(400).json({ error: 'Invalid CV path' })
+  }
   if (!fs.existsSync(filePath)) {
     return res.status(404).json({ error: 'CV file not found' })
   }
 
-  const ext = path.extname(item.cvFilename).toLowerCase()
+  const ext = path.extname(safeName).toLowerCase()
   const type =
     ext === '.pdf'
       ? 'application/pdf'

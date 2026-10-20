@@ -6,6 +6,7 @@ import { AdminShell } from '@/components/admin-shell'
 import { useAdminLocale } from '@/components/admin-locale-provider'
 import { Pencil, Trash2 } from 'lucide-react'
 import { withBasePath } from '@/lib/base-path'
+import { slugifyContentTitle as slugify } from '@/lib/content-slug'
 
 type EmploymentType = 'full-time' | 'part-time' | 'contract' | 'internship'
 type JobStatus = 'open' | 'closed'
@@ -54,14 +55,6 @@ const emptyForm: FormState = {
   descriptionAr: '',
   status: 'open',
   order: 0,
-}
-
-function slugify(value: string) {
-  return value
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
 }
 
 function fieldClass() {

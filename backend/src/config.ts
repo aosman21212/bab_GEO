@@ -31,14 +31,14 @@ function requiredSecret(name: string, devFallback?: string) {
 /** Rejecting here exits the process before listen(), so the reason must name the fix. */
 function insecureSecretError(name: string, reason: string, requirement: string) {
   return new Error(
-    `Insecure ${name} in production (${reason}). The API cannot start. ` +
-      `Set ${name} to ${requirement} in the root .env next to docker-compose.yml, ` +
-      'then run: docker compose up -d backend',
+    `Insecure ${name} (${reason}). The API cannot start. ` +
+      `Set ${name} to ${requirement} in the root .env next to docker-compose.yml` +
+      (isProd ? ', then run: docker compose up -d backend' : ' (required in all environments)'),
   )
 }
 
-function assertProductionSecrets(jwtSecret: string, adminPassword: string) {
-  if (!isProd) return
+/** Weak/known defaults are rejected in every environment — not only production. */
+function assertSecrets(jwtSecret: string, adminPassword: string) {
   if (WEAK_JWT_SECRETS.has(jwtSecret)) {
     throw insecureSecretError('JWT_SECRET', 'known placeholder value', 'a strong random secret (24+ chars)')
   }
@@ -53,9 +53,11 @@ function assertProductionSecrets(jwtSecret: string, adminPassword: string) {
   }
 }
 
-const jwtSecret = requiredSecret('JWT_SECRET', 'dev-secret')
-const adminPassword = requiredSecret('ADMIN_PASSWORD', 'Admin123!')
-assertProductionSecrets(jwtSecret, adminPassword)
+const jwtSecret = requiredSecret('JWT_SECRET')
+const adminPassword = requiredSecret('ADMIN_PASSWORD')
+if (!jwtSecret) throw new Error('Missing env: JWT_SECRET')
+if (!adminPassword) throw new Error('Missing env: ADMIN_PASSWORD')
+assertSecrets(jwtSecret, adminPassword)
 
 export const env = {
   port: Number(process.env.PORT ?? 4001),

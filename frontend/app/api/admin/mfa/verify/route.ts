@@ -5,17 +5,13 @@ import { setAdminSessionCookie } from '@/lib/admin-session'
 export async function POST(req: Request) {
   try {
     const body = await req.json().catch(() => ({}))
-    const forwardedFor =
-      req.headers.get('x-forwarded-for') ||
-      req.headers.get('x-real-ip') ||
-      ''
+    // Do not forward client X-Forwarded-For — spoofable; see admin/login.
     const userAgent = req.headers.get('user-agent') || ''
 
     const res = await fetchBackend('/api/auth/mfa/verify', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        ...(forwardedFor ? { 'x-forwarded-for': forwardedFor } : {}),
         ...(userAgent ? { 'user-agent': userAgent } : {}),
       },
       body: JSON.stringify(body),

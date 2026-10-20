@@ -17,6 +17,7 @@ import {
   buildPageMetadata,
   faqsForLocale,
   mergeGeoSettings,
+  safeJsonLd,
   type GeoSiteSettings,
 } from '@/lib/geo-content'
 import { fetchHomepageContent } from '@/lib/homepage-cms'
@@ -76,7 +77,7 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
       {faqLd ? (
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }}
+          dangerouslySetInnerHTML={{ __html: safeJsonLd(faqLd) }}
         />
       ) : null}
       <HeroSection content={home.hero} />

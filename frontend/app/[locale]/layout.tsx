@@ -18,6 +18,7 @@ import {
   buildSiteMetadata,
   buildWebSiteJsonLd,
   mergeGeoSettings,
+  safeJsonLd,
   type GeoSiteSettings,
 } from '@/lib/geo-content'
 import { getGaMeasurementId, getGtmId } from '@/lib/analytics'
@@ -114,11 +115,11 @@ export default async function LocaleLayout({
           <>
             <script
               type="application/ld+json"
-              dangerouslySetInnerHTML={{ __html: JSON.stringify(orgLd) }}
+              dangerouslySetInnerHTML={{ __html: safeJsonLd(orgLd) }}
             />
             <script
               type="application/ld+json"
-              dangerouslySetInnerHTML={{ __html: JSON.stringify(webLd) }}
+              dangerouslySetInnerHTML={{ __html: safeJsonLd(webLd) }}
             />
           </>
         ) : null}

@@ -41,7 +41,7 @@ function generate6DigitCode(): string {
 
 authRouter.post('/login', async (req, res) => {
   const ip = clientIpFromRequest(req) || 'unknown'
-  const ipLimit = await rateLimit(`rl:login:ip:${ip}`, 10, 60)
+  const ipLimit = await rateLimit(`rl:login:ip:${ip}`, 10, 60, { failClosed: true })
   if (!ipLimit.ok) {
     return res.status(429).json({ error: 'Too many login attempts. Please try again later.' })
   }
@@ -59,7 +59,7 @@ authRouter.post('/login', async (req, res) => {
   }
 
   const email = parsed.data.email.toLowerCase().trim()
-  const emailLimit = await rateLimit(`rl:login:email:${email}`, 10, 60)
+  const emailLimit = await rateLimit(`rl:login:email:${email}`, 10, 60, { failClosed: true })
   if (!emailLimit.ok) {
     return res.status(429).json({ error: 'Too many login attempts. Please try again later.' })
   }

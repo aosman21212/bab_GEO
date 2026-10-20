@@ -5,6 +5,7 @@ import { Link } from '@/i18n/navigation'
 import {
   buildPageMetadata,
   buildFaqPageJsonLd,
+  safeJsonLd,
   type GeoFaq,
 } from '@/lib/geo-content'
 import {
@@ -74,7 +75,7 @@ export default async function GeoQuestionsCategoryPage({
       {faqLd ? (
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }}
+          dangerouslySetInnerHTML={{ __html: safeJsonLd(faqLd) }}
         />
       ) : null}
 
