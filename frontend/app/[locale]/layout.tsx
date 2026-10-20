@@ -10,13 +10,17 @@ import { SiteFooter } from '@/components/site-footer'
 import { MaintenanceScreen } from '@/components/maintenance-screen'
 import { GoogleAnalytics } from '@/components/google-analytics'
 import {
+  GoogleTagManagerHead,
+  GoogleTagManagerNoscript,
+} from '@/components/google-tag-manager'
+import {
   buildOrganizationJsonLd,
   buildSiteMetadata,
   buildWebSiteJsonLd,
   mergeGeoSettings,
   type GeoSiteSettings,
 } from '@/lib/geo-content'
-import { getGaMeasurementId } from '@/lib/analytics'
+import { getGaMeasurementId, getGtmId } from '@/lib/analytics'
 import '../globals.css'
 
 const poppins = Poppins({
@@ -89,6 +93,7 @@ export default async function LocaleLayout({
   const orgLd = buildOrganizationJsonLd(siteSettings, loc)
   const webLd = buildWebSiteJsonLd(siteSettings, loc)
   const gaId = getGaMeasurementId()
+  const gtmId = getGtmId()
 
   return (
     <html
@@ -97,10 +102,14 @@ export default async function LocaleLayout({
       className={`${poppins.variable} ${cairo.variable} bg-background`}
       suppressHydrationWarning
     >
+      <head>
+        {gtmId ? <GoogleTagManagerHead containerId={gtmId} /> : null}
+      </head>
       <body
         className={`antialiased ${locale === 'ar' ? 'font-[family-name:var(--font-cairo)]' : 'font-sans'}`}
         suppressHydrationWarning
       >
+        <GoogleTagManagerNoscript containerId={gtmId} />
         {!maintenance ? (
           <>
             <script

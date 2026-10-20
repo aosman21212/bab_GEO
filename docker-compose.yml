@@ -103,6 +103,7 @@ services:
       GA_MEASUREMENT_ID: ${GA_MEASUREMENT_ID:-G-BCLTJXVS8F}
       GA_LEAD_CURRENCY: ${GA_LEAD_CURRENCY:-SAR}
       GA_LEAD_VALUE: ${GA_LEAD_VALUE:-1}
+      GTM_ID: ${GTM_ID:-GTM-KDLK9HVS}
     volumes:
       - uploads:/app/public/uploads
     depends_on:

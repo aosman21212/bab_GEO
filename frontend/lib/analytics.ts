@@ -11,6 +11,13 @@ export function getGaMeasurementId() {
   return process.env.GA_MEASUREMENT_ID?.trim() || ''
 }
 
+/** Google Tag Manager container ID (e.g. GTM-XXXX). Empty / invalid → GTM off. */
+export function getGtmId() {
+  const id = process.env.GTM_ID?.trim() || ''
+  if (!/^GTM-[A-Z0-9]+$/i.test(id)) return ''
+  return id.toUpperCase()
+}
+
 const DEFAULT_LEAD_CURRENCY = 'SAR'
 const DEFAULT_LEAD_VALUE = 1
 
